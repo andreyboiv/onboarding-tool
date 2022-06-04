@@ -1,6 +1,6 @@
-package com.boivalenko.businessapp.web.backend.entity;
+package com.boivalenko.businessapp.web.entity;
 
-import com.boivalenko.businessapp.web.backend.entity.base.BaseEntity;
+import com.boivalenko.businessapp.web.entity.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

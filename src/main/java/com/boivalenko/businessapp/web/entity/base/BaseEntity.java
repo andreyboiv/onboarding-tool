@@ -1,4 +1,4 @@
-package com.boivalenko.businessapp.web.backend.entity.base;
+package com.boivalenko.businessapp.web.entity.base;
 
 
 import lombok.AllArgsConstructor;

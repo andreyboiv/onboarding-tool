@@ -1,6 +1,7 @@
-package com.boivalenko.businessapp.web.backend.entity;
+package com.boivalenko.businessapp.web.entity;
 
-import com.boivalenko.businessapp.web.backend.entity.base.BaseEntity;
+import com.boivalenko.businessapp.web.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,11 +41,10 @@ public class Category extends BaseEntity {
     @Column(name = "uncompleted_count", updatable = false, nullable = true)
     private Long uncompletedCount;
 
-    // Daten von der Tabelle Employee braucht man
-    // an dieser Stelle nicht immer,
-    // deswegen - LAZY
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne
     @JoinColumn(name = "employee_id",referencedColumnName = "id")
+    @JsonBackReference
     private Employee employeesToCategory;
 
     @Override
