@@ -28,16 +28,28 @@ public class Category extends BaseEntity {
     @Column(name = "title", nullable = false, length = -1)
     private String title;
 
+    // updatable muss "false" sein,
+    // weil die Werte von einem Trigger gesteuert werden
     @Basic
-    @Column(name = "completed_count", nullable = true)
+    @Column(name = "completed_count", updatable = false, nullable = true)
     private Long completedCount;
 
+    // updatable muss "false" sein,
+    // weil die Werte von einem Trigger gesteuert werden
     @Basic
-    @Column(name = "uncompleted_count", nullable = true)
+    @Column(name = "uncompleted_count", updatable = false, nullable = true)
     private Long uncompletedCount;
 
-    @Basic
-    @Column(name = "employee_id", nullable = false)
-    private Long employeeId;
+    // Daten von der Tabelle Employee braucht man
+    // an dieser Stelle nicht immer,
+    // deswegen - LAZY
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id",referencedColumnName = "id")
+    private Employee employeesToCategory;
+
+    @Override
+    public String toString() {
+        return this.title;
+    }
 
 }

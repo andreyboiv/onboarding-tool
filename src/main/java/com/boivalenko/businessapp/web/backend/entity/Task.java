@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /*
 Task -
@@ -30,24 +31,42 @@ public class Task extends BaseEntity {
     @Column(name = "title", nullable = false, length = -1)
     private String title;
 
+    // wird konvertiert
+    // von boolean to numeric (true = 1, false = 0)
     @Basic
-    @Column(name = "completed", nullable = false)
-    private Short completed;
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean completed;
 
     @Basic
     @Column(name = "task_date", nullable = true)
-    private Timestamp taskDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date taskDate;
 
-    @Basic
-    @Column(name = "category_id", nullable = true)
-    private Long categoryId;
+    // Ein Task kann nur eine Kategorie haben
+    // (andererseits kann dieselbe Kategorie
+    // in mehreren Tasks verwendet werden)
+    // Default - EAGER
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
 
-    @Basic
-    @Column(name = "priority_id", nullable = true)
-    private Long priorityId;
+    // Ein Task kann nur eine Priorität haben
+    // (andererseits kann dieselbe Priorität
+    // in mehreren Tasks verwendet werden)
+    // Default - EAGER
+    @ManyToOne
+    @JoinColumn(name = "priority_id", referencedColumnName = "id")
+    private Priority priority;
 
-    @Basic
-    @Column(name = "employee_id", nullable = true)
-    private Long employeeId;
+    // Foreign Key
+    // Default - EAGER
+    @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private Employee employeesToTask;
+
+    @Override
+    public String toString() {
+        return this.title;
+    }
 
 }

@@ -12,7 +12,8 @@ import javax.persistence.*;
 
 /*
 Gesamte Statistik
-von abgeschlossenen und nicht abgeschlossenen Tasks eines Employees
+von abgeschlossenen und nicht abgeschlossenen Tasks eines Employees.
+Dabei ist es nicht wichtig welche Kategorien die Tasks haben.
 */
 
 @Entity
@@ -24,16 +25,23 @@ von abgeschlossenen und nicht abgeschlossenen Tasks eines Employees
 @Cacheable(value = true)
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Stat extends BaseEntity {
+
+    // updatable muss "false" sein,
+    // weil die Werte von einem Trigger gesteuert werden
     @Basic
-    @Column(name = "completed_total", nullable = true)
+    @Column(name = "completed_total", updatable = false, nullable = true)
     private Long completedTotal;
 
+    // updatable muss "false" sein,
+    // weil die Werte von einem Trigger gesteuert werden
     @Basic
-    @Column(name = "uncompleted_total", nullable = true)
+    @Column(name = "uncompleted_total", updatable = false, nullable = true)
     private Long uncompletedTotal;
 
-    @Basic
-    @Column(name = "employee_id", nullable = true)
-    private Long employeeId;
+    // Default - EAGER
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "employee_id", nullable = true)
+    private Employee employeesToStat;
 
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /*
 Alle Rechte, die zu einem Employee zugewiesen werden können
@@ -27,4 +28,16 @@ public class Powers extends BaseEntity {
     @Column(name = "name", nullable = false, length = -1)
     private String name;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "employee_powers",
+            joinColumns = @JoinColumn(name = "power_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private Set<Employee> employeesToPowers;
+
+    @Override
+    public String toString() {
+        return "Powers{" +
+                "name='" + this.name + '\'' +
+                '}';
+    }
 }

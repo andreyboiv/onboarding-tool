@@ -31,8 +31,17 @@ public class Priority extends BaseEntity {
     @Column(name = "color", nullable = false, length = -1)
     private String color;
 
-    @Basic
-    @Column(name = "employee_id", nullable = true)
-    private Long employeeId;
+    // Daten von der Tabelle Employee braucht man
+    // an dieser Stelle nicht immer,
+    // deswegen - LAZY
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private Employee employeesToPriority;
 
+    @Override
+    public String toString() {
+        return "Priority{" +
+                "title='" + this.title + '\'' +
+                '}';
+    }
 }
