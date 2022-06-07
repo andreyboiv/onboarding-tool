@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "514f5f7b-f938-4bc2-9c47-05b73aa55092",
+		"name": "Stat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21308407"
+	},
+	"item": [
+		{
+			"name": "findByEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "gfdh"
+				},
+				"url": {
+					"raw": "https://localhost:8083/stat/findByEmail",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"stat",
+						"findByEmail"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

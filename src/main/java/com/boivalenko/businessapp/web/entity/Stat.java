@@ -40,7 +40,7 @@ public class Stat extends BaseEntity {
     private Long uncompletedTotal = 0L;
 
     // Default - EAGER
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     @JsonBackReference

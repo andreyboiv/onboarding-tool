@@ -1,6 +1,7 @@
 package com.boivalenko.businessapp.web.entity;
 
 import com.boivalenko.businessapp.web.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,33 +36,36 @@ public class Task extends BaseEntity {
     // von boolean to numeric (true = 1, false = 0)
     @Basic
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean completed;
+    private Boolean completed = false;
 
     @Basic
     @Column(name = "task_date", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date taskDate;
+    private Date taskDate = new Date();
 
     // Ein Task kann nur eine Kategorie haben
     // (andererseits kann dieselbe Kategorie
     // in mehreren Tasks verwendet werden)
     // Default - EAGER
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id")
+    @JsonBackReference(value = "categoryBackReference")
     private Category category;
 
     // Ein Task kann nur eine Priorität haben
     // (andererseits kann dieselbe Priorität
     // in mehreren Tasks verwendet werden)
     // Default - EAGER
-    @ManyToOne
-    @JoinColumn(name = "priority_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
+    @JsonBackReference(value = "priorityBackReference")
     private Priority priority;
 
     // Foreign Key
     // Default - EAGER
-    @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false, updatable = false)
+    @JsonBackReference(value = "employeesToTaskBackReference")
     private Employee employeesToTask;
 
     @Override

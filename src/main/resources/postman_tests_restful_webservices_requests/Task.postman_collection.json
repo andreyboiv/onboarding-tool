@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "57ef1d27-b520-4786-b6ad-2d543668796d",
+		"name": "Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21308407"
+	},
+	"item": [
+		{
+			"name": "save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"title\": \"fsdfdsf\", \r\n\"category\": \r\n    {\"id\": 1}\r\n,\r\n\"priority\": \r\n    {\"id\": 1}\r\n,    \r\n\"employeesToTask\": \r\n    {\"id\": 1}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/task/save",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"id\": 34,\r\n\"title\": \"fffffff\", \r\n\"category\": \r\n    {\"id\": 2}\r\n,\r\n\"priority\": \r\n    {\"id\": 2}\r\n,    \r\n\"employeesToTask\": \r\n    {\"id\": 2}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/task/update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8083/task/deleteById/16",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"deleteById",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findById",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "14",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/task/findById",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"findById"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAll",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/task/findAll",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllByEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "ab@ab.de"
+				},
+				"url": {
+					"raw": "https://localhost:8083/task/findAllByEmail",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"findAllByEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllByEmailQuery",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \r\n\"email\": \"ab@ab.de\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/task/findAllByEmailQuery",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"findAllByEmailQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pagingSeachByEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \r\n    \"email\": \"ab@ab.de\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/task/search",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"task",
+						"search"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

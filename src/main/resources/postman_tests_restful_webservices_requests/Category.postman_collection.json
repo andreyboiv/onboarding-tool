@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "6fb63829-6b7e-4864-a5dc-d78bdcd64301",
+		"name": "Category",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21308407"
+	},
+	"item": [
+		{
+			"name": "save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"title\": \"g\",        \r\n\"employeesToCategory\": \r\n    {\"id\": 1}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/category/save",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"category",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 11,\r\n\"title\": \"f\",     \r\n\"uncompleted_count\": 4,    \r\n\"employeesToCategory\": \r\n    {\"id\": 1}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/category/update",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"category",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8083/category/deleteById/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"category",
+						"deleteById",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findById",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "7",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/category/findById",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"category",
+						"findById"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAll",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/category/findAll",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"category",
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllByEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "a@a.testj"
+				},
+				"url": {
+					"raw": "https://localhost:8083/category/findAllByEmail",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"category",
+						"findAllByEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllByEmailQuery",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{     \r\n\"email\": \"fj\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8083/category/findAllByEmailQuery",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"category",
+						"findAllByEmailQuery"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
