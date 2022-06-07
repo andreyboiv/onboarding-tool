@@ -33,17 +33,17 @@ public class Category extends BaseEntity {
     // weil die Werte von einem Trigger gesteuert werden
     @Basic
     @Column(name = "completed_count", updatable = false, nullable = true)
-    private Long completedCount;
+    private Long completedCount = 0L;
 
     // updatable muss "false" sein,
     // weil die Werte von einem Trigger gesteuert werden
     @Basic
     @Column(name = "uncompleted_count", updatable = false, nullable = true)
-    private Long uncompletedCount;
+    private Long uncompletedCount = 0L;
 
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id",referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id",referencedColumnName = "id", nullable = false, updatable = false)
     @JsonBackReference
     private Employee employeesToCategory;
 

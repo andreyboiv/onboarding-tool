@@ -38,16 +38,16 @@ public class Activity extends BaseEntity {
     // wird erst nach Bestätigung der Aktivierung durch
     // den Benutzer als "true" eingesetzt
     @Basic
-    @Column(name = "activated", nullable = false)
+    @Column(name = "activated", nullable = true)
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean activated;
+    private Boolean activated = false;
 
     // Daten von der Tabelle Employee braucht man
     // an dieser Stelle nicht immer,
     // deswegen - LAZY
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false, updatable = false)
     private Employee employeeToActivity;
 
 }

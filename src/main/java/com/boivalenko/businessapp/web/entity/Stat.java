@@ -1,6 +1,7 @@
 package com.boivalenko.businessapp.web.entity;
 
 import com.boivalenko.businessapp.web.entity.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,18 +31,19 @@ public class Stat extends BaseEntity {
     // weil die Werte von einem Trigger gesteuert werden
     @Basic
     @Column(name = "completed_total", updatable = false, nullable = true)
-    private Long completedTotal;
+    private Long completedTotal = 0L;
 
     // updatable muss "false" sein,
     // weil die Werte von einem Trigger gesteuert werden
     @Basic
     @Column(name = "uncompleted_total", updatable = false, nullable = true)
-    private Long uncompletedTotal;
+    private Long uncompletedTotal = 0L;
 
     // Default - EAGER
     @OneToOne
     @MapsId
-    @JoinColumn(name = "employee_id", nullable = true)
-    private Employee employeesToStat;
+    @JoinColumn(name = "employee_id", nullable = false, updatable = false)
+    @JsonBackReference
+    private Employee employeeToStat;
 
 }

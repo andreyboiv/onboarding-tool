@@ -56,7 +56,7 @@ public class Employee extends BaseEntity {
     @OneToOne(mappedBy = "employeeToActivity",fetch = FetchType.LAZY, optional = false)
     private Activity activity;
 
-    @OneToOne(mappedBy = "employeesToStat",fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "employeeToStat",fetch = FetchType.LAZY, optional = false)
     private Stat stat;
 
     @Override
