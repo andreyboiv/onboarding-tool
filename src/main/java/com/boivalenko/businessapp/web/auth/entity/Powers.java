@@ -1,6 +1,7 @@
-package com.boivalenko.businessapp.web.authorization.entity;
+package com.boivalenko.businessapp.web.auth.entity;
 
 import com.boivalenko.businessapp.web.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,7 @@ public class Powers extends BaseEntity {
     @JoinTable(name = "employee_powers",
             joinColumns = @JoinColumn(name = "power_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    @JsonBackReference
     private Set<Employee> employeesToPowers;
 
     @Override

@@ -2,6 +2,7 @@ package com.boivalenko.businessapp.web.app.service;
 
 import com.boivalenko.businessapp.web.app.entity.Category;
 import com.boivalenko.businessapp.web.app.repository.CategoryRepository;
+import com.boivalenko.businessapp.web.base.IBaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CategoryService implements IService<Category> {
+public class CategoryService implements IBaseService<Category> {
     private final CategoryRepository categoryRepository;
 
     public CategoryService(CategoryRepository categoryRepository) {

@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.web.app.service;
 import com.boivalenko.businessapp.web.app.entity.Task;
 import com.boivalenko.businessapp.web.app.repository.TaskRepository;
 import com.boivalenko.businessapp.web.app.search.TaskSearchValues;
+import com.boivalenko.businessapp.web.base.IBaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TaskService implements IService<Task> {
+public class TaskService implements IBaseService<Task> {
     public static final String SORT_COLUMN_DEFAULT = "id";
     public static final String ZWEITES_SORTIERUNGS_FELD = "title";
 

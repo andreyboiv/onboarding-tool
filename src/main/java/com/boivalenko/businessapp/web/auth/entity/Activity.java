@@ -1,4 +1,4 @@
-package com.boivalenko.businessapp.web.authorization.entity;
+package com.boivalenko.businessapp.web.auth.entity;
 
 
 import com.boivalenko.businessapp.web.base.BaseEntity;

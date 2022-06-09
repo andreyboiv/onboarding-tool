@@ -1,4 +1,4 @@
-package com.boivalenko.businessapp.web.app.aop;
+package com.boivalenko.businessapp.web.auth.aop;
 
 import lombok.extern.java.Log;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,10 +11,10 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 @Log
-public class LoggingAspect {
+public class AuthLoggingAspect {
 
     //Der Aspekt wird für alle Methoden bzw. für alle Klassen aus dem Controller-Paket ausgeführt
-    @Around("execution(* com.boivalenko.businessapp.web.app.controller..*(..)))")
+    @Around("execution(* com.boivalenko.businessapp.web.auth.controller..*(..)))")
     public Object profileControllerMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
         MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();

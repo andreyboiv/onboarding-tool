@@ -1,6 +1,6 @@
 package com.boivalenko.businessapp.web.app.entity;
 
-import com.boivalenko.businessapp.web.authorization.entity.Employee;
+import com.boivalenko.businessapp.web.auth.entity.Employee;
 import com.boivalenko.businessapp.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;

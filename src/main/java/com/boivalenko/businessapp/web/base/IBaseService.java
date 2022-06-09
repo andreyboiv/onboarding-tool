@@ -1,10 +1,10 @@
-package com.boivalenko.businessapp.web.app.service;
+package com.boivalenko.businessapp.web.base;
 
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface IService<V> {
+public interface IBaseService<V> {
     ResponseEntity<V> save(V obj);
     ResponseEntity<V> update(V obj);
     ResponseEntity<V> deleteById(Long id);

@@ -2,6 +2,7 @@ package com.boivalenko.businessapp.web.app.service;
 
 import com.boivalenko.businessapp.web.app.entity.Priority;
 import com.boivalenko.businessapp.web.app.repository.PriorityRepository;
+import com.boivalenko.businessapp.web.base.IBaseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class PriorityService implements IService<Priority> {
+public class PriorityService implements IBaseService<Priority> {
     private final PriorityRepository priorityRepository;
 
     public PriorityService(PriorityRepository priorityRepository) {
