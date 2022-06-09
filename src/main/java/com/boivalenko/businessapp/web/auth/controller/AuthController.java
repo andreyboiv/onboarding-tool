@@ -4,7 +4,10 @@ import com.boivalenko.businessapp.web.auth.entity.Employee;
 import com.boivalenko.businessapp.web.auth.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -22,12 +25,7 @@ public class AuthController {
 
     @PutMapping("/register")
     public ResponseEntity<Employee> register(@Valid @RequestBody Employee employee){
-        return this.employeeService.save(employee, passwordEncoder);
-    }
-
-    @PostMapping("/findById")
-    public ResponseEntity<Employee> findById(@RequestBody Long id){
-       return employeeService.findById(id);
+        return this.employeeService.register(employee, passwordEncoder);
     }
 
 }
