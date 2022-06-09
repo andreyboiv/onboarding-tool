@@ -2,6 +2,7 @@ package com.boivalenko.businessapp.web.auth.entity;
 
 
 import com.boivalenko.businessapp.web.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,7 +52,7 @@ public class Activity extends BaseEntity {
     // an dieser Stelle nicht immer,
     // deswegen - LAZY
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @JsonIgnore
     @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false, updatable = false)
     private Employee employeeToActivity;
 

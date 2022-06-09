@@ -10,7 +10,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /*
 Employee -
@@ -43,9 +45,11 @@ public class Employee extends BaseEntity {
     @Column(name = "email", nullable = true, length = -1)
     private String email;
 
-    /*
     @ManyToMany(mappedBy = "employeesToPowers", fetch = FetchType.EAGER)
     private Set<Powers> powers = new HashSet<>();
+
+    /*
+
 
     @OneToMany(mappedBy = "employeesToTask", fetch = FetchType.LAZY)
     private List<Task> tasks;
@@ -56,12 +60,13 @@ public class Employee extends BaseEntity {
     @OneToMany(mappedBy = "employeesToPriority",fetch = FetchType.LAZY)
     private List<Priority> priorities;
 
-    @OneToOne(mappedBy = "employeeToActivity",fetch = FetchType.LAZY, optional = false)
-    private Activity activity;
 
     @OneToOne(mappedBy = "employeeToStat",fetch = FetchType.LAZY, optional = false)
     private Stat stat;
 */
+
+    @OneToOne(mappedBy = "employeeToActivity",fetch = FetchType.LAZY, optional = false)
+    private Activity activity;
 
     @Override
     public boolean equals(Object o) {
