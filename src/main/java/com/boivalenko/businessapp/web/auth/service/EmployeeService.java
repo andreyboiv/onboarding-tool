@@ -1,6 +1,8 @@
 package com.boivalenko.businessapp.web.auth.service;
 
+import com.boivalenko.businessapp.web.auth.entity.Activity;
 import com.boivalenko.businessapp.web.auth.entity.Employee;
+import com.boivalenko.businessapp.web.auth.repository.ActivityRepository;
 import com.boivalenko.businessapp.web.auth.repository.EmployeeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,15 @@ import java.util.regex.Pattern;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final ActivityRepository activityRepository;
+
+    // Regex laut RFC822
     private static final String EMAIL_REGEX_PATTERN = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
     private String error;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, ActivityRepository activityRepository) {
         this.employeeRepository = employeeRepository;
+        this.activityRepository = activityRepository;
     }
 
     public ResponseEntity<Employee> register(Employee employee, PasswordEncoder passwordEncoder) {
@@ -36,6 +42,54 @@ public class EmployeeService {
         return ResponseEntity.ok().build();
     }
 
+    public Activity findActivityByUuid(String uuid){
+        return this.activityRepository.findActivityByUuid(uuid).get();
+    }
+
+    public ResponseEntity activateEmployee(String uuid){
+
+        // UUID Prüfung
+        Activity activity = this.findActivityByUuid(uuid);
+        if (activity == null) {
+            return new ResponseEntity("Activity nicht gefunden. UUID:" + uuid, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //wenn der Employee bereits zuvor aktiviert wurde
+        if (activity.getActivated() == true) {
+            return new ResponseEntity("Employee ist schon aktiviert", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        // gibt die Anzahl der aktualisierten Datensätze zurück (sollte 1 sein)
+        int updatedCount = this.activityRepository.activate(uuid);
+        if(updatedCount != 1) {
+            return new ResponseEntity("Aktivierung des Employee ist nicht geklappt", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity("Employee ist erfolgreich aktiviert", HttpStatus.OK);
+    }
+
+
+    public ResponseEntity deActivateEmployee(String uuid){
+
+        // UUID Prüfung
+        Activity activity = this.findActivityByUuid(uuid);
+        if (activity == null) {
+            return new ResponseEntity("Activity nicht gefunden. UUID:" + uuid, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //wenn der Employee bereits zuvor deaktiviert wurde
+        if (activity.getActivated() == false) {
+            return new ResponseEntity("Employee ist schon deaktiviert", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        // gibt die Anzahl der aktualisierten Datensätze zurück (sollte 1 sein)
+        int updatedCount = this.activityRepository.deActivate(uuid);
+        if(updatedCount != 1) {
+            return new ResponseEntity("Deaktivierung des Employee ist nicht geklappt", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity("Employee ist erfolgreich deaktiviert", HttpStatus.OK);
+    }
 
     private boolean isEmployeeValid(Employee employee) {
 
