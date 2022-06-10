@@ -4,7 +4,10 @@ import com.boivalenko.businessapp.web.auth.entity.Employee;
 import com.boivalenko.businessapp.web.auth.obj.JsonException;
 import com.boivalenko.businessapp.web.auth.service.EmployeeService;
 import com.boivalenko.businessapp.web.auth.service.UserDetailsImpl;
+import com.boivalenko.businessapp.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.web.auth.utils.JwtUtils;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,14 +27,15 @@ public class AuthController {
     private final EmployeeService employeeService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
     private final JwtUtils jwtUtils;
+    private final CookieUtils cookieUtils;
 
-    public AuthController(EmployeeService employeeService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public AuthController(EmployeeService employeeService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils, CookieUtils cookieUtils) {
         this.employeeService = employeeService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.cookieUtils = cookieUtils;
     }
 
     @PutMapping("/register")
@@ -73,7 +77,20 @@ public class AuthController {
 
         String jwt = this.jwtUtils.createAccessToken(userDetails.getEmployee());
 
-        return ResponseEntity.ok().body(userDetails.getEmployee());
+        //Password braucht man für authentication nur ein mal
+        //und dann nicht mehr. Damit Password nirgendwo
+        //zufällig auftaucht, kann man den als NULL setzen
+        userDetails.getEmployee().setPassword(null);
+
+        //wird Cookie mit jwt als Value erzeugt
+        HttpCookie httpCookie = this.cookieUtils.createJwtCookie(jwt);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        //wird Cookie in Header hinzugefügt.
+        // SET_COOKIE sagt dass es um eine Server Side Cookie geht
+        responseHeaders.add(HttpHeaders.SET_COOKIE, httpCookie.toString());
+
+        return ResponseEntity.ok().headers(responseHeaders).body(userDetails.getEmployee());
     }
 
 
