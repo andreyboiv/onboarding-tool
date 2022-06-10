@@ -4,6 +4,7 @@ import com.boivalenko.businessapp.web.auth.entity.Employee;
 import com.boivalenko.businessapp.web.auth.obj.JsonException;
 import com.boivalenko.businessapp.web.auth.service.EmployeeService;
 import com.boivalenko.businessapp.web.auth.service.UserDetailsImpl;
+import com.boivalenko.businessapp.web.auth.utils.JwtUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,10 +25,13 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public AuthController(EmployeeService employeeService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    private final JwtUtils jwtUtils;
+
+    public AuthController(EmployeeService employeeService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.employeeService = employeeService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
     }
 
     @PutMapping("/register")
@@ -66,6 +70,9 @@ public class AuthController {
         }
 
         //Employee ist erfolgreich angemeldet
+
+        String jwt = this.jwtUtils.createAccessToken(userDetails.getEmployee());
+
         return ResponseEntity.ok().body(userDetails.getEmployee());
     }
 
