@@ -91,6 +91,10 @@ public class EmployeeService {
         return new ResponseEntity("Employee ist erfolgreich deaktiviert", HttpStatus.OK);
     }
 
+    public int updatePassword(String password, String username) {
+        return this.employeeRepository.upddatePassword(password, username);
+    }
+
     private boolean isEmployeeValid(Employee employee) {
 
         if (employee.getId() != null) {

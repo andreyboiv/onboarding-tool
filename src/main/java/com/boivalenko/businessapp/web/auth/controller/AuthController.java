@@ -105,6 +105,16 @@ public class AuthController {
         return ResponseEntity.ok().headers(httpHeaders).build();
     }
 
+
+    @PostMapping("/update-password")
+    public ResponseEntity<Boolean> updatePassword(@RequestBody String password){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+        int updateCount = this.employeeService.updatePassword(this.passwordEncoder.encode(password), user.getUsername());
+        return ResponseEntity.ok(updateCount == 1);
+    }
+
+
     /*
     Einige Exceptions, die bearbeitet werden könnten:
 UserAlreadyActivatedException - Employee ist schon aktiviert
