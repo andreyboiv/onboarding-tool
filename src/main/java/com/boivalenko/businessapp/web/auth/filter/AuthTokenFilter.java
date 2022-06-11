@@ -1,9 +1,14 @@
 package com.boivalenko.businessapp.web.auth.filter;
 
+import com.boivalenko.businessapp.web.auth.entity.Employee;
+import com.boivalenko.businessapp.web.auth.service.UserDetailsImpl;
 import com.boivalenko.businessapp.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.web.auth.utils.JwtUtils;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -57,10 +62,21 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                     if (this.jwtUtils.validate(jwt)) {
 
-                        // TODO
-                        //  Man muss hier alle UserDetails (außer password)
-                        //  ermittelt werden aus JWT und die müssen
-                        //  in Spring Container hinzugefügt werden
+                        //Employee kommt aus dem Token
+                        Employee employee = this.jwtUtils.getEmployee(jwt);
+
+                        UserDetailsImpl userDetails = new UserDetailsImpl(employee);
+
+                        UsernamePasswordAuthenticationToken authenticationToken =
+                                new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
+
+                        // Request wird in Container hinzugefügt,
+                        // dass der Container die Authentication Daten erhält
+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                        // Objet Authentification wird in Spring Container hinzugefügt.
+                        // Damit Spring versteht, dass der Employee sich erfolgreich eingeloggt hat
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                     } else {
                         throw new JwtException("JWT ist ungültig");

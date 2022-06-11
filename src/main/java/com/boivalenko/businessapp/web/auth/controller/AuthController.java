@@ -75,12 +75,13 @@ public class AuthController {
 
         //Employee ist erfolgreich angemeldet
 
-        String jwt = this.jwtUtils.createAccessToken(userDetails.getEmployee());
-
         //Password braucht man für authentication nur ein mal
         //und dann nicht mehr. Damit Password nirgendwo
         //zufällig auftaucht, kann man den als NULL setzen
         userDetails.getEmployee().setPassword(null);
+
+
+        String jwt = this.jwtUtils.createAccessToken(userDetails.getEmployee());
 
         //wird Cookie mit jwt als Value erzeugt
         HttpCookie httpCookie = this.cookieUtils.createJwtCookie(jwt);
