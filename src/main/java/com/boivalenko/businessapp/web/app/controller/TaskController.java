@@ -5,6 +5,7 @@ import com.boivalenko.businessapp.web.app.search.TaskSearchValues;
 import com.boivalenko.businessapp.web.app.service.TaskService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/task")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class TaskController {
 
     private final TaskService taskService;

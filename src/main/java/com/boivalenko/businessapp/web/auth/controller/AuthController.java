@@ -10,6 +10,7 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +39,13 @@ public class AuthController {
         this.cookieUtils = cookieUtils;
     }
 
+    // Employee Deaktivierung
+    @PostMapping("/deactivate-account")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Boolean> deActivateEmployee(@RequestBody String uuid) {
+        return this.employeeService.deActivateEmployee(uuid);
+    }
+
     @PutMapping("/register")
     public ResponseEntity<Employee> register(@Valid @RequestBody Employee employee) {
         return this.employeeService.register(employee, passwordEncoder);
@@ -48,12 +56,6 @@ public class AuthController {
     @PostMapping("/activate-account")
     public ResponseEntity<Boolean> activateEmployee(@RequestBody String uuid) {
         return this.employeeService.activateEmployee(uuid);
-    }
-
-    // Employee Deaktivierung
-    @PostMapping("/deactivate-account")
-    public ResponseEntity<Boolean> deActivateEmployee(@RequestBody String uuid) {
-        return this.employeeService.deActivateEmployee(uuid);
     }
 
     @PostMapping("/login")
@@ -79,7 +81,6 @@ public class AuthController {
         //zufällig auftaucht, kann man den als NULL setzen
         userDetails.getEmployee().setPassword(null);
 
-
         String jwt = this.jwtUtils.createAccessToken(userDetails.getEmployee());
 
         //wird Cookie mit jwt als Value erzeugt
@@ -96,6 +97,7 @@ public class AuthController {
     //Log Out aus dem System. Es wird Cookie mit 0 Age erstellt,
     // dabei wird alte Cookie überschrieben und Im Endefekt vom Browser entfernt
     @PostMapping("/logout")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity logout(){
         HttpCookie cookie = this.cookieUtils.deleteJwtCookie();
 
@@ -107,6 +109,7 @@ public class AuthController {
 
 
     @PostMapping("/update-password")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Boolean> updatePassword(@RequestBody String password){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();

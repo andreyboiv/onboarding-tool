@@ -4,12 +4,14 @@ import com.boivalenko.businessapp.web.app.entity.Category;
 import com.boivalenko.businessapp.web.app.search.CategorySearchValues;
 import com.boivalenko.businessapp.web.app.service.CategoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/category")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class CategoryController {
 
     private final CategoryService categoryService;

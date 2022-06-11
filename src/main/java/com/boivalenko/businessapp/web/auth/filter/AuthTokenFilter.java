@@ -30,10 +30,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     // URL's, die keine Autorisation brauchen
     // Da werden keine Cookie und JWT validierung benötigt
     private final static List<String> permitURL = Arrays.asList(
+            "deactivate-account",
             "register",
-            "login",
-            "logout",
-            "activate-account"
+            "activate-account",
+            "login"
     );
 
     public AuthTokenFilter(CookieUtils cookieUtils, JwtUtils jwtUtils) {

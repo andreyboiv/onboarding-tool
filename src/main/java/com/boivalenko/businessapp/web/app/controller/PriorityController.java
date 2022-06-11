@@ -4,12 +4,14 @@ import com.boivalenko.businessapp.web.app.entity.Priority;
 import com.boivalenko.businessapp.web.app.search.PrioritySearchValues;
 import com.boivalenko.businessapp.web.app.service.PriorityService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/priority")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class PriorityController {
 
     private final PriorityService priorityService;
