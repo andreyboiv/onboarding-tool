@@ -2,6 +2,7 @@ package com.boivalenko.businessapp.web.auth.config;
 
 
 import com.boivalenko.businessapp.web.auth.filter.AuthTokenFilter;
+import com.boivalenko.businessapp.web.auth.filter.ExceptionHandlerFilter;
 import com.boivalenko.businessapp.web.auth.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -46,6 +47,13 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
         registrationBean.setEnabled(false); //wird die Verwendung des Filters für den Servlet Container ausgeschaltet
         return registrationBean;
+    }
+
+    private ExceptionHandlerFilter exceptionHandlerFilter;
+
+    @Autowired
+    public void setExceptionHandlerFilter(ExceptionHandlerFilter exceptionHandlerFilter) {
+        this.exceptionHandlerFilter = exceptionHandlerFilter;
     }
 
     //Einweg-Hash-Passwort-Encoder : Bcrypt
@@ -98,6 +106,9 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
 
         //Filter in FilterChain hinzugefügt. Der Filter wird VOR dem SessionManagementFilter ausgeführt 
         http.addFilterBefore(this.authTokenFilter, SessionManagementFilter.class);
+
+        //wird dadurch alle Exceptions gefangen in allen Filter, die danach stehen...
+        http.addFilterBefore(this.exceptionHandlerFilter, AuthTokenFilter.class);
     }
 
 }

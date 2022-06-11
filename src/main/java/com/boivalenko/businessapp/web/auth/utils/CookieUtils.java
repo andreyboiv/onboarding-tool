@@ -6,6 +6,9 @@ import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 @Component
 public class CookieUtils {
 
@@ -30,6 +33,20 @@ public class CookieUtils {
                 .path("/") //Cookie wird für jede URl vom Server verfügbar
                 .build();
 
+    }
+
+    public String getCookieAccessToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String retVal = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (ACCESS_TOKEN.equals(cookie.getName())) {
+                    retVal = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        return retVal;
     }
 
 }

@@ -1,13 +1,15 @@
 package com.boivalenko.businessapp.web.auth.utils;
 
 import com.boivalenko.businessapp.web.auth.entity.Employee;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.logging.Level;
 
+@Log
 @Component
 public class JwtUtils {
 
@@ -31,6 +33,26 @@ public class JwtUtils {
                 .setExpiration(new Date(currentDate.getTime() + accessTokenExpiration)) // Gültigkeit vom Token
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact(); //wird in Base64 Format konvertiert
+    }
+
+    public boolean validate(String jwt) {
+        try {
+            Jwts.
+                    parser(). //jwt format validierung
+                    setSigningKey(jwtSecret). //jwt validierung aufgrund jwtSecret Key
+                    parseClaimsJws(jwt); //jwt signature validierung
+            return true;
+        } catch (MalformedJwtException e) {
+            log.log(Level.SEVERE, "Ungültiger JWT Token:", jwt);
+        } catch (ExpiredJwtException e) {
+            log.log(Level.SEVERE, "JWT Token abgelaufen:", jwt);
+        } catch (UnsupportedJwtException e) {
+            log.log(Level.SEVERE, "JWT Token wird nicht unterstützt:", jwt);
+        } catch (IllegalArgumentException e) {
+            log.log(Level.SEVERE, "JWT unkorrekt", jwt);
+        }
+
+        return false;
     }
 
 
