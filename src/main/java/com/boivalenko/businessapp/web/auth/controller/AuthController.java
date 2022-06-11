@@ -50,7 +50,6 @@ public class AuthController {
         return this.employeeService.activateEmployee(uuid);
     }
 
-
     // Employee Deaktivierung
     @PostMapping("/deactivate-account")
     public ResponseEntity<Boolean> deActivateEmployee(@RequestBody String uuid) {
@@ -94,6 +93,17 @@ public class AuthController {
         return ResponseEntity.ok().headers(responseHeaders).body(userDetails.getEmployee());
     }
 
+    //Log Out aus dem System. Es wird Cookie mit 0 Age erstellt,
+    // dabei wird alte Cookie überschrieben und Im Endefekt vom Browser entfernt
+    @PostMapping("/logout")
+    public ResponseEntity logout(){
+        HttpCookie cookie = this.cookieUtils.deleteJwtCookie();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok().headers(httpHeaders).build();
+    }
 
     /*
     Einige Exceptions, die bearbeitet werden könnten:

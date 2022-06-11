@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class CookieUtils {
 
-    private final String ACCESS_TOKEN = "access_token";
+    @Value("${cookie.jwt.name}")
+    private String cookieJwtName;
 
     @Value("${cookie.jwt.max-age}")
     private int cookieAccessTokenDuration;
@@ -24,7 +25,7 @@ public class CookieUtils {
     // mit jwt als Value und auf dem Server wird er validiert
     public HttpCookie createJwtCookie(String jwt) { // jwt - Value für Cookie
         return ResponseCookie.
-        from(ACCESS_TOKEN, jwt) //Name und Bedeutung von Cookie
+        from(cookieJwtName, jwt) //Name und Bedeutung von Cookie
                 .maxAge(cookieAccessTokenDuration)
                 .sameSite(SameSiteCookies.STRICT.getValue())
                 .httpOnly(true)
@@ -40,13 +41,28 @@ public class CookieUtils {
         String retVal = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (ACCESS_TOKEN.equals(cookie.getName())) {
+                if (cookieJwtName.equals(cookie.getName())) {
                     retVal = cookie.getValue();
                     break;
                 }
             }
         }
         return retVal;
+    }
+
+
+    public HttpCookie deleteJwtCookie() {
+        return ResponseCookie.
+                from(cookieJwtName, null).
+                maxAge(0) //Cookie mit O Age wird vom Browser automatisch gelöscht
+                .sameSite(SameSiteCookies.STRICT.getValue())
+                .httpOnly(true)
+                .secure(true) //Cookie wird von Client an Server übergeben nur im Fall von https
+                .domain(cookieAccessTokenDomain) //für welche domain wird Cookie valid
+                .path("/") //Cookie wird für jede URl vom Server verfügbar
+                .build();
+
+
     }
 
 }

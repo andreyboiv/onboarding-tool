@@ -32,6 +32,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private final static List<String> permitURL = Arrays.asList(
             "register",
             "login",
+            "logout",
             "activate-account"
     );
 
