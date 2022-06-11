@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.web.auth.service;
 import com.boivalenko.businessapp.web.auth.entity.Employee;
 import com.boivalenko.businessapp.web.auth.entity.Powers;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,14 +18,11 @@ import java.util.Set;
 // (Wrapper für Employee, der Spring Container versteht)
 @Setter
 @Getter
+@RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
     private final Employee employee;
     private Collection<? extends GrantedAuthority> authorities;
-
-    public UserDetailsImpl(Employee employee) {
-        this.employee = employee;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

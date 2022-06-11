@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.web.app.controller;
 import com.boivalenko.businessapp.web.app.entity.Task;
 import com.boivalenko.businessapp.web.app.search.TaskSearchValues;
 import com.boivalenko.businessapp.web.app.service.TaskService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,14 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 @PreAuthorize("hasAuthority('ADMIN')")
+@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
-
-
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
 
     @PostMapping("/save")
     public ResponseEntity<Task> save(@RequestBody Task task) {

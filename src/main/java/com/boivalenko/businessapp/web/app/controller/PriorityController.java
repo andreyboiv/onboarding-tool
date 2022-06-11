@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.web.app.controller;
 import com.boivalenko.businessapp.web.app.entity.Priority;
 import com.boivalenko.businessapp.web.app.search.PrioritySearchValues;
 import com.boivalenko.businessapp.web.app.service.PriorityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/priority")
 @PreAuthorize("hasAuthority('ADMIN')")
+@RequiredArgsConstructor
 public class PriorityController {
 
     private final PriorityService priorityService;
-
-    public PriorityController(PriorityService priorityService) {
-        this.priorityService = priorityService;
-    }
 
     @PostMapping("/save")
     public ResponseEntity<Priority> save(@RequestBody Priority priority) {

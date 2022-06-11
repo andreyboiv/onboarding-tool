@@ -5,6 +5,7 @@ import com.boivalenko.businessapp.web.auth.service.UserDetailsImpl;
 import com.boivalenko.businessapp.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.web.auth.utils.JwtUtils;
 import io.jsonwebtoken.JwtException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     private final CookieUtils cookieUtils;
@@ -35,11 +37,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             "activate-account",
             "login"
     );
-
-    public AuthTokenFilter(CookieUtils cookieUtils, JwtUtils jwtUtils) {
-        this.cookieUtils = cookieUtils;
-        this.jwtUtils = jwtUtils;
-    }
 
     //Dieser Method wird jedes Mal automatisch bei jedem Request ausgeführt
     @Override

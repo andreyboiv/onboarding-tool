@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.web.app.controller;
 import com.boivalenko.businessapp.web.app.entity.Category;
 import com.boivalenko.businessapp.web.app.search.CategorySearchValues;
 import com.boivalenko.businessapp.web.app.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
+@RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class CategoryController {
 
     private final CategoryService categoryService;
-
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @PostMapping("/save")
     public ResponseEntity<Category> save(@RequestBody Category category) {
