@@ -25,8 +25,9 @@ Datenbank: PostgreSQL
 <p>
 Frontend ist noch nicht realisiert und befindet sich in der Entwicklungsphase
 <p>
-
-<b>Allgemeine Beschreibung des Projektes:</b>
+<p>
+<p>
+<b><h2>Allgemeine Beschreibung des Projektes:</h2></b>
 <p>
 <ins>Die Hauptfunktionalität besteht darin, dass die Mitarbeiter eines Unternehmens ihre individuellen Arbeitsaufgaben (Tasks) verwalten und planen können.</ins>
 Die Aufgaben der Mitarbeiter haben ihre eigenen Kategorien der Komplexität, Prioritäten und können von Mitarbeitern entweder erledigt oder nicht erledigt werden. 
@@ -38,7 +39,7 @@ Im System gibt es einen Registrierungsbestätigungsprozess und einen Mitarbeiter
 <p>
 TODO
 
-<b>Beschreibung des Projektes (aus Datenbank Sicht):</b>
+<b><h2>Beschreibung des Projektes (aus Datenbank Sicht):</h2></b>
 
 ![alt text](https://boivalenko.com/img/java_ep/spring/projekt_2/db_sicht.jpg?raw=true)
 
@@ -53,29 +54,35 @@ TODO
 7. priority
 8. task
 
-<b>Beschreibung der Tabellen:</b>
-1. Die Tabelle <ins>"employee"</ins> ist eine Tabelle zum Speichern von Mitarbeiterdaten (Credentials Daten). Die Daten in der Tabelle werden manuell von Mitarbeitern/Administrator ausgefüllt. Die Tabelledaten dienen sowohl für Präsentation als auch für Modifikation.
-2. Die Tabelle <ins>"stat"</ins> zeigt Statistik von allen abgeschlossenen und fehlgeschlagenen Aufgaben (Tasks) für jeden Mitarbeiter.
-3. Die Tabelle <ins>"activity"</ins> zeigt die Registrierungsdaten eines Mitarbeiters an. Die Tabellen "stat" und "activity" steuern Mitarbeiterdaten wie die Tabelle "employee" und stehen zur Tabelle "employee" in einer 1:1-Beziehung. Die Daten der Tabellen "stat" und "activity" sind von einem SQL Trigger gesteuert. Die Tabellendaten ("stat" und "activity") dienen nur für Präsentation und nicht für Modifikation.
-4. Die Tabelle <ins>"powers"</ins> ist eine Tabelle, die Befugnisse eines Mitarbeiters enthält. Standardmäßig hat die Tabelle die folgenden Berechtigungen: 
+<b><h3>Beschreibung der Tabellen:</h3></b>
+1. Die Tabelle <b><ins>"employee"</ins></b> ist eine Tabelle zum Speichern von Mitarbeiterdaten (Credentials Daten). Die Daten in der Tabelle werden manuell von Mitarbeitern/Administrator ausgefüllt. Die Tabelledaten dienen sowohl für Präsentation als auch für Modifikation.
+2. Die Tabelle <b><ins>"stat"</ins></b> zeigt Statistik von allen abgeschlossenen und fehlgeschlagenen Aufgaben (Tasks) für jeden Mitarbeiter.
+3. Die Tabelle <b><ins>"activity"</ins></b> zeigt die Registrierungsdaten eines Mitarbeiters an. Die Tabellen "stat" und "activity" steuern Mitarbeiterdaten wie die Tabelle "employee" und stehen zur Tabelle "employee" in einer 1:1-Beziehung. Die Daten der Tabellen "stat" und "activity" sind von einem SQL Trigger gesteuert. Die Tabellendaten ("stat" und "activity") dienen nur für Präsentation und nicht für Modifikation.
+4. Die Tabelle <b><ins>"powers"</ins></b> ist eine Tabelle, die Befugnisse eines Mitarbeiters enthält. Standardmäßig hat die Tabelle die folgenden Berechtigungen: 
   a. Berechtigungen eines Mitarbeiters (User) 
   b. Berechtigungen eines Administrators (Admin). 
 Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
-5. Die Tabelle <ins>"employee_powers"</ins> ist eine Tabelle eines Mitarbeiters und seiner Befugnisse. Die Befugnissdaten werden aus der Tabelle "powers" entnommen. Dementsprechend sind die Tabellen "employee" und "powers" mit einer N-zu-N-Beziehung durch die Tabelle "employee_powers" verbunden. Ein Mitarbeiter kann mehrere Befugnisse haben. Die Daten der Tabelle "employee_powers" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Bei der Registrierung eines neuen Mitarbeiters im System werden diesem Mitarbeiter standardmäßig nur die Rechte eines Mitarbeiters (User) zugewiesen. Die Daten in der Tabelle „employee_powers“ dienen nur für Präsentation und nicht für Änderung. Gleichzeitig dürfen einige Mitarbeiter ausnahmsweise Administratorrechte haben. Dazu muss der Datenbank Administrator einen entsprechenden Eintrag in die Tabelle "employee_powers" einfügen.
-6. Tabelle <ins>"category"</ins> ist eine Tabelle, die Aufgabenkategorien enthält. Die Standarddaten der Tabelle "category" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten der Tabelle werden hauptsächlich nur für Präsentation verwendet. Dies bedeutet natürlich nicht, dass keine neue Datensätze in die Tabelle "category" hinzugefügt werden können. Man muss aber dabei auf statistische Daten achten (sie werden anhand eines SQL Triggers gesteuert), dass sie nicht geändert werden. In diesem Fall gibt es einige Begrenzungen in Backend (Z.b "insertable = false" und "updatable = false" Parameter)
-7. Tabelle <ins>"priority"</ins> ist eine Tabelle, die Aufgabenprioritäten enthält. Die Standarddaten der Tabelle "priority" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten in der Tabelle können später ergänzt und geändert werden.
-8. Tabelle <ins>"task"</ins> ist eine Tabelle, die Aufgaben eines Mitarbeiters enthält. Aufgaben haben Beschreibung, Kategorien und Prioritäten. Eine Aufgabe ist zu einem Mitarbeiter zugeordnet. Die Daten der Tabelle "task" werden anhand eines SQL Triggers ausgefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten (außer Statistik) der Tabelle können später ergänzt und geändert werden.
+5. Die Tabelle <b><ins>"employee_powers"</ins></b> ist eine Tabelle eines Mitarbeiters und seiner Befugnisse. Die Befugnissdaten werden aus der Tabelle "powers" entnommen. Dementsprechend sind die Tabellen "employee" und "powers" mit einer N-zu-N-Beziehung durch die Tabelle "employee_powers" verbunden. Ein Mitarbeiter kann mehrere Befugnisse haben. Die Daten der Tabelle "employee_powers" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Bei der Registrierung eines neuen Mitarbeiters im System werden diesem Mitarbeiter standardmäßig nur die Rechte eines Mitarbeiters (User) zugewiesen. Die Daten in der Tabelle „employee_powers“ dienen nur für Präsentation und nicht für Änderung. Gleichzeitig dürfen einige Mitarbeiter ausnahmsweise Administratorrechte haben. Dazu muss der Datenbank Administrator einen entsprechenden Eintrag in die Tabelle "employee_powers" einfügen.
+6. Tabelle <b><ins>"category"</ins></b> ist eine Tabelle, die Aufgabenkategorien enthält. Die Standarddaten der Tabelle "category" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten der Tabelle werden hauptsächlich nur für Präsentation verwendet. Dies bedeutet natürlich nicht, dass keine neue Datensätze in die Tabelle "category" hinzugefügt werden können. Man muss aber dabei auf statistische Daten achten (sie werden anhand eines SQL Triggers gesteuert), dass sie nicht geändert werden. In diesem Fall gibt es einige Begrenzungen in Backend (Z.b "insertable = false" und "updatable = false" Parameter)
+7. Tabelle <b><ins>"priority"</ins></b> ist eine Tabelle, die Aufgabenprioritäten enthält. Die Standarddaten der Tabelle "priority" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten in der Tabelle können später ergänzt und geändert werden.
+8. Tabelle <b><ins>"task"</ins></b> ist eine Tabelle, die Aufgaben eines Mitarbeiters enthält. Aufgaben haben Beschreibung, Kategorien und Prioritäten. Eine Aufgabe ist zu einem Mitarbeiter zugeordnet. Die Daten der Tabelle "task" werden anhand eines SQL Triggers ausgefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten (außer Statistik) der Tabelle können später ergänzt und geändert werden.
 
 <b>Beschreibung des Projektes (aus Datenbank Sicht) finden Sie auch in meinem Video:</b>
 <p>
 TODO
 <p>
-
-<b>Beschreibung des Projektes (Backend) finden Sie in meinem Video:</b>
+<b><h2>Beschreibung des Projektes (Backend):</h2><b>
 <p>
 TODO
 <p>
-
+<b>Beschreibung des Projektes (Backend) finden Sie auch in meinem Video:</b>
+<p>
+TODO
+<p>
+ <b><h2>Beschreibung des Projektes (Frontend):</h2><b>
+<p>
+TODO
+<p>
 <b>Beschreibung des Projektes (Frontend) finden Sie in meinem Video:</b>
 <p>
 TODO
