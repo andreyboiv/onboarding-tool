@@ -73,8 +73,10 @@ public class AuthController {
 
         //Password braucht man für authentication nur ein mal
         //und dann nicht mehr. Damit Password nirgendwo
-        //zufällig auftaucht, kann man den als NULL setzen
-        userDetails.getEmployee().setPassword(null);
+        //zufällig auftaucht, kann man den als NULL setzen.
+        // Das betrifft z.B. E-mail auch
+        userDetails.getEmployee().setPassword("");
+        userDetails.getEmployee().setEmail("");
 
         String jwt = this.jwtUtils.createAccessToken(userDetails.getEmployee());
 

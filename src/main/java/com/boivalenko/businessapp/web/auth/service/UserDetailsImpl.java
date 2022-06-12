@@ -28,8 +28,10 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Powers> powers = this.employee.getPowers();
         Set<SimpleGrantedAuthority> retVal = new HashSet<>();
-        for (Powers power : powers) {
-            retVal.add(new SimpleGrantedAuthority(power.getName()));
+        if (powers != null) {
+            for (Powers power : powers) {
+                retVal.add(new SimpleGrantedAuthority(power.getName()));
+            }
         }
         return retVal;
     }
