@@ -34,11 +34,8 @@ Die Aufgaben der Mitarbeiter haben ihre eigenen Kategorien der Komplexität, Pri
 Für alle Aufgaben von Mitarbeitern kann man die allgemeine Statistik von abgeschlossenen und nicht abgeschlossenen Aufgaben betrachten und damit sowohl die Arbeit jedes einzelnen Mitarbeiters als auch die Arbeit des gesamten Teams als Ganzes auswerten. Mitarbeiter unterscheiden sich in Bezug auf Befugnisse. Ein Mitarbeiter kann viele verschiedene Befugnisse haben. 
 Im System gibt es einen Registrierungsbestätigungsprozess und einen Mitarbeiterautorisierungsprozess.
 <p>
-  
-<b>Allgemeine Beschreibung des Projektes finden Sie auch in meinem Video:</b>
 <p>
-TODO
-
+  
 <b><h2>Beschreibung des Projektes (aus Datenbank Sicht):</h2></b>
 
 ![alt text](https://boivalenko.com/img/java_ep/spring/projekt_2/db_sicht.jpg?raw=true)
@@ -67,23 +64,29 @@ Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
 7. Tabelle <b><ins>"priority"</ins></b> ist eine Tabelle, die Aufgabenprioritäten enthält. Die Standarddaten der Tabelle "priority" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten in der Tabelle können später ergänzt und geändert werden.
 8. Tabelle <b><ins>"task"</ins></b> ist eine Tabelle, die Aufgaben eines Mitarbeiters enthält. Aufgaben haben Beschreibung, Kategorien und Prioritäten. Eine Aufgabe ist zu einem Mitarbeiter zugeordnet. Die Daten der Tabelle "task" werden anhand eines SQL Triggers ausgefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten (außer Statistik) der Tabelle können später ergänzt und geändert werden.
 
-<b>Beschreibung des Projektes (aus Datenbank Sicht) finden Sie auch in meinem Video:</b>
-<p>
-TODO
-<p>
-<b><h2>Beschreibung des Projektes (Backend):</h2><b>
-<p>
-TODO
-<p>
-<b>Beschreibung des Projektes (Backend) finden Sie auch in meinem Video:</b>
-<p>
-TODO
-<p>
- <b><h2>Beschreibung des Projektes (Frontend):</h2><b>
-<p>
-TODO
-<p>
-<b>Beschreibung des Projektes (Frontend) finden Sie in meinem Video:</b>
-<p>
-TODO
-<p>
+<b><h2>Beschreibung des Projektes (Backend):</h2></b>
+
+  1. Eine Datenbank mit Geschäftslogik (Triggers) wurde entworfen
+  2. Erstellen und Konfigurieren eines Spring Boot-Projekts
+  3. Datenbank-Mapping wurde realisiert (entsprechende Entity-Klassen wurden erstellt). 
+  Dabei wurden Beziehungen (One-to-One, One-to-Many, Many-to-One, Many-to-Many) 
+  mit entsprechenden Annotationen aufgebaut.
+  4. SSL-Authentifizierung wurde implementiert (lokal)
+  5. Entsprechde Repositories, Services und Controller wurden implementiert
+  6. AOP für Controllers Methods  wurde implementiert
+  7. Die Mitarbeiter-Authentifizierung wurde mit JWT-Token implementiert
+  
+  Das sind die Enttry-Points für das Projekt (Restful Services) :
+  <p>
+    
+  ![alt text](https://boivalenko.com/img/java_ep/spring/projekt_2/postman.jpg?raw=true)
+    
+  Das Screenshot wurde in Postman gemacht. Dabei ist es wichtig, dass Z.b. Mitarbeiter mit USER Rechte beschränkten Zugriff auf Services haben. 
+  Das kann in Backend z.B.mit dieser Annotatotion: "@PreAuthorize("hasAuthority('USER')")" einstellen. 
+  Damit werden Mitarbeiter nach dieser Authority validiert.
+  <p>
+  <p>
+      <b>Beschreibung des Projektes (Alg. Beschreibung + Beschreibung aus Datenbank Sicht) finden Sie in meinem Video:</b>
+  <p>
+  TODO
+  <p>
