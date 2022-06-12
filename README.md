@@ -86,7 +86,3 @@ Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
   Damit werden Mitarbeiter nach dieser Authority validiert.
   <p>
   <p>
-      <b>Beschreibung des Projektes (Alg. Beschreibung + Beschreibung aus Datenbank Sicht) finden Sie in meinem Video:</b>
-  <p>
-  TODO
-  <p>
