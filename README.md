@@ -86,3 +86,9 @@ Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
   Damit werden Mitarbeiter nach dieser Authority validiert.
   <p>
   <p>
+  <p>
+<b><h2>TODO zum Projekt:</h2></b>
+    
+    1. Frontend (Angular) realisieren
+    2. Frontend mit Backend verknüpfen
+    2. Das ganzes Projekt (Backend und Frontend) auf Heroku deployen
