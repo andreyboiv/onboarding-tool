@@ -75,6 +75,7 @@ Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
   5. Entsprechde Repositories, Services und Controller wurden implementiert
   6. AOP für Controllers Methods  wurde implementiert
   7. Die Mitarbeiter-Authentifizierung wurde mit JWT-Token implementiert
+  8. Die Mitarbeiter-Autorisierung wurde eingestellt
   
   Das sind die Enttry-Points für das Projekt (Restful Services) :
   <p>
