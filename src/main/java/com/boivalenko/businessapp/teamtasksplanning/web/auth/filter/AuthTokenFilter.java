@@ -32,10 +32,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     // URL's, die keine Autorisation brauchen
     // Da werden keine Cookies und JWT validierung benötigt
     private final static List<String> permitURL = Arrays.asList(
-            "deactivate-account",
             "register",
             "activate-account",
-            "login"
+            "login",
+            "deactivate-account"
     );
 
     //Dieser Method wird jedes Mal automatisch bei jedem Request ausgeführt
@@ -53,7 +53,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         if (isRequestToPublicAPI == false
             //   && SecurityContextHolder.getContext().getAuthentication() == null
         ) {
-            {
                 String jwt = this.cookieUtils.getCookieAccessToken(request);
 
                 if (jwt != null) {
@@ -84,7 +83,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                     throw new AuthenticationCredentialsNotFoundException("Token nicht gefunden");
                 }
             }
-        }
 
         filterChain.doFilter(request, response);
     }

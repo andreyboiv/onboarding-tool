@@ -1,6 +1,7 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.utils;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
+
 import java.util.regex.Pattern;
 
 public final class EmployeeValid {
@@ -47,5 +48,22 @@ public final class EmployeeValid {
         return Pattern.compile(regexPattern)
                 .matcher(email)
                 .matches();
+    }
+
+    public static String isEmployeeValidWithOutEmail(Employee employee) {
+        String error = "";
+        if (employee.getId() != null) {
+            error = "ID wird automatisch generiert. Man muss da nichts eingeben";
+        }
+
+        if (employee.getLogin() == null || employee.getLogin().isEmpty() || employee.getLogin().toLowerCase().contains("null")) {
+            error = "LOGIN darf weder NULL noch leer sein";
+        }
+
+        if (employee.getPassword() == null || employee.getPassword().isEmpty() || employee.getPassword().toLowerCase().contains("null")) {
+            error = "PASSWORD darf weder NULL noch leer sein";
+        }
+
+        return error;
     }
 }

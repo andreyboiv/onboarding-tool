@@ -124,7 +124,7 @@ public class EmployeeService {
 
     public ResponseEntity logIn(Employee employee) {
 
-        String employeeValid = EmployeeValid.isEmployeeValid(employee);
+        String employeeValid = EmployeeValid.isEmployeeValidWithOutEmail(employee);
         if (!employeeValid.equals("")) {
             return new ResponseEntity(employeeValid, HttpStatus.NOT_ACCEPTABLE);
         }
