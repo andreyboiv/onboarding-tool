@@ -31,7 +31,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     // Das ist Open API -
     // URL's, die keine Autorisation brauchen
     // Da werden keine Cookies und JWT validierung benötigt
-    private final static List<String> permitURL = Arrays.asList(
+    private static final List<String> permitURL = Arrays.asList(
             "register",
             "activate-account",
             "login",
@@ -43,15 +43,18 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         boolean isRequestToPublicAPI = false;
-        for (String url : this.permitURL) {
+        for (String url : permitURL) {
             if (request.getRequestURI().toLowerCase().contains(url)) {
                 isRequestToPublicAPI = true;
                 break;
             }
         }
 
+        // es kam eine Request nicht von Open API. Daher braucht eine Authentication...
         if (isRequestToPublicAPI == false
-            //   && SecurityContextHolder.getContext().getAuthentication() == null
+                //&&
+        // falls der User keine Authentication durchgeführt wurde. Daher braucht eine Authentication...
+           //     SecurityContextHolder.getContext().getAuthentication() == null
         ) {
                 String jwt = this.cookieUtils.getCookieAccessToken(request);
 

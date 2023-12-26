@@ -64,6 +64,10 @@ public class EmployeeService {
 
     public ResponseEntity activateEmployee(String uuid){
 
+        if (uuid == null || uuid.isEmpty()) {
+            return new ResponseEntity("UUID darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+        }
+
         // UUID Prüfung
         Activity activity = this.activityRepository.findActivityByUuid(uuid).get();
         if (activity == null) {
@@ -88,6 +92,10 @@ public class EmployeeService {
 
     public ResponseEntity deActivateEmployee(String uuid){
 
+        if (uuid == null || uuid.isEmpty()) {
+            return new ResponseEntity("UUID darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+        }
+
         // UUID Prüfung
         Activity activity = this.activityRepository.findActivityByUuid(uuid).get();
         if (activity == null) {
@@ -110,6 +118,11 @@ public class EmployeeService {
     }
 
     public ResponseEntity updatePassword(String password) {
+
+        if (password == null || password.isEmpty()) {
+            return new ResponseEntity("Password darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) authentication.getPrincipal();
 
