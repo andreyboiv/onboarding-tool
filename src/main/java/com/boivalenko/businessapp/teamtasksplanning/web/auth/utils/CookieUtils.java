@@ -5,12 +5,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class CookieUtils {
+
+    private static final String BEARER_PREFIX = "Bearer ";
 
     @Value("${cookie.jwt.name}")
     private String cookieJwtName;
@@ -48,6 +51,17 @@ public class CookieUtils {
             }
         }
         return retVal;
+    }
+
+    public String getJwtFromHeader(HttpServletRequest request) {
+        String retVal = null;
+        String headerAuth = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(BEARER_PREFIX)) {
+            retVal = headerAuth.substring(7); // man macht prefix weg, um jwt zu bekommen
+        }
+
+        return retVal; //jwt ist nicht gefunden
     }
 
 

@@ -24,4 +24,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     int deActivate(@Param("uuid") String uuid); // gibt int zurück (wie viele Datensätze aktualisiert) - sollte immer 1 zurückgegeben werden
 
     Optional<Activity> findActivityByUuid(String uuid);
+
+    Optional<Activity> findActivityById(Long id);
+
 }

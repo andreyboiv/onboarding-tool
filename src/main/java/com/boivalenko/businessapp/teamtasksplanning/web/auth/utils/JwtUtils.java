@@ -23,13 +23,24 @@ public class JwtUtils {
 
     //JWT Name "access_token" (hat mit OAuth2 nichts zu tun).
     // Dauer vom Token für automatische Loging (1 Tag = 86400000 ms)
-    // Alle Request werden automatisch durch
+    // alle Request werden automatisch durch
     // Authentication durchgeführt.
     @Value("${jwt.access_token-expiration}")
     private int accessTokenExpiration;
 
+    @Value("${jwt.resetPasswordTokenExpiration}")
+    private int resetPasswordTokenExpiration;
 
     public String createAccessToken(Employee employee) {
+        return createToken(employee, accessTokenExpiration);
+    }
+
+    //es wird JWT für Password Reset generiert
+    public String createEmailResetToken(Employee employee) {
+        return createToken(employee, resetPasswordTokenExpiration);
+    }
+
+    private String createToken(Employee employee, int duration) {
         Date currentDate = new Date();
 
         Map claims = new HashMap<String, Object>();
@@ -39,7 +50,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(currentDate)
-                .setExpiration(new Date(currentDate.getTime() + accessTokenExpiration)) // Gültigkeit vom Token
+                .setExpiration(new Date(currentDate.getTime() + duration)) // Gültigkeit vom Token
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact(); //wird in Base64 Format konvertiert
     }

@@ -56,6 +56,18 @@ public class AuthController {
         return this.employeeService.deActivateEmployee(uuid);
     }
 
+    //resend E-Mail für account aktivation
+    @PostMapping("/resend-activate-email")
+    public ResponseEntity resendActivateEmail(@RequestBody String usernameOrEmail) {
+        return this.employeeService.resendActivateEmail(usernameOrEmail);
+    }
+
+    //send E-Mail für password reset, um dann später "update-password" verwenden zu können
+    @PostMapping("/send-reset-password-email")
+    public ResponseEntity sendResetPasswordEmail(@RequestBody String email) {
+        return this.employeeService.sendResetPasswordEmail(email);
+    }
+
     /*
     Einige Exceptions, die bearbeitet werden könnten:
 UserAlreadyActivatedException - Employee ist schon aktiviert

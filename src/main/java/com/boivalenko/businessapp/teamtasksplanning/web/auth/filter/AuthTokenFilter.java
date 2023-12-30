@@ -34,8 +34,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private static final List<String> permitURL = Arrays.asList(
             "register",
             "activate-account",
+            "resend-activate-email",
             "login",
-            "deactivate-account"
+            "deactivate-account",
+            "send-reset-password-email"
     );
 
     //Dieser Method wird jedes Mal automatisch bei jedem Request ausgeführt
@@ -56,7 +58,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         // falls der User keine Authentication durchgeführt wurde. Daher braucht eine Authentication...
            //     SecurityContextHolder.getContext().getAuthentication() == null
         ) {
-                String jwt = this.cookieUtils.getCookieAccessToken(request);
+            String jwt = null;
+
+            if (request.getRequestURI().contains("update-password")) {
+                //man kriegt Token aus dem Header
+                jwt = this.cookieUtils.getJwtFromHeader(request);
+            } else {
+                jwt = this.cookieUtils.getCookieAccessToken(request);
+            }
 
                 if (jwt != null) {
 

@@ -27,6 +27,9 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class EmployeeService {
 
+    private final EmailService emailService;
+    private final EmployeeDetailsServiceImpl employeeDetailsService;
+
     private final EmployeeRepository employeeRepository;
     private final ActivityRepository activityRepository;
 
@@ -40,7 +43,7 @@ public class EmployeeService {
 
 
         String employeeValid = EmployeeValid.isEmployeeValid(employee);
-        if (!employeeValid.equals("")) {
+        if (!employeeValid.isEmpty()) {
             return new ResponseEntity(employeeValid, HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -58,6 +61,14 @@ public class EmployeeService {
         employee.setPassword(this.passwordEncoder.encode(employee.getPassword()));
 
         this.employeeRepository.save(employee);
+
+        Activity activity = this.activityRepository.findActivityById(employee.getId()).get();
+        if (activity == null) {
+            return new ResponseEntity("Activity nicht gefunden. EmployeeID:" + employee.getId(), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        //es wird eine E-Mail mit Account Aktivierung Benachrichtigung herausgeschickt
+        this.emailService.sendActivationEmail(employee.getEmail(), employee.getLogin(), activity.getUuid());
 
         return new ResponseEntity("Employee ist erfolgreich registriert", HttpStatus.OK);
     }
@@ -178,4 +189,38 @@ public class EmployeeService {
 
         return new ResponseEntity("Employee hat sich erfolgreich ausgeloggt", httpHeaders, HttpStatus.OK);
     }
+
+    public ResponseEntity resendActivateEmail(String usernameOrEmail) {
+        if (usernameOrEmail == null || usernameOrEmail.isEmpty()) {
+            return new ResponseEntity("Weder Login noch E-mail dürfen leer sein", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(usernameOrEmail);
+        Employee employee = employeeDetails.getEmployee();
+
+        if (employee.getActivity().getActivated() == true) {
+            return new ResponseEntity("Employee ist schon aktiviert", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        this.emailService.sendActivationEmail(employee.getEmail(), employee.getLogin(), employee.getActivity().getUuid());
+
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity sendResetPasswordEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return new ResponseEntity("E-mail darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(email);
+        Employee employee = employeeDetails.getEmployee();
+
+        if (employeeDetails != null) {
+            emailService.sendResetPassword(employee.getEmail(), jwtUtils.createEmailResetToken(employee));
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+
 }
