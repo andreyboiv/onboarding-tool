@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class JsonException {
+public class JsonExcept {
     private String exception;
 }

@@ -2,6 +2,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.service;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Activity;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.repository.ActivityRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.repository.EmployeeRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.CookieUtils;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -39,82 +41,116 @@ public class EmployeeService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public ResponseEntity register(Employee employee) {
+    public ResponseEntity<String> register(EmployeeVm employeeVm) {
 
-
-        String employeeValid = EmployeeValid.isEmployeeValid(employee);
+        String employeeValid = EmployeeValid.isEmployeeValid(employeeVm);
         if (!employeeValid.isEmpty()) {
-            return new ResponseEntity(employeeValid, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(employeeValid, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.employeeRepository.existsEmployeeByLogin(employee.getLogin())) {
+        if (this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())) {
             String error = "Es existiert schon ein Employee mit dem Login";
-            return new ResponseEntity(error, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employee.getEmail())) {
+        if (this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())) {
             String error = "Es existiert schon ein Employee mit der E-mail";
-            return new ResponseEntity(error, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //Einweg-Hash-Passwort-Encoder: Bcrypt
-        employee.setPassword(this.passwordEncoder.encode(employee.getPassword()));
+        employeeVm.setPassword(this.passwordEncoder.encode(employeeVm.getPassword()));
 
+        Employee employee = this.getEmployeeFromEmployeePojo(employeeVm);
         this.employeeRepository.save(employee);
 
-        Activity activity = this.activityRepository.findActivityById(employee.getId()).get();
+        Activity activity = null;
+
+        Optional<Activity> activityById = this.activityRepository.findActivityById(employee.getId());
+
+        if (activityById.isPresent()) {
+            activity = activityById.get();
+        }
+
         if (activity == null) {
-            return new ResponseEntity("Activity nicht gefunden. EmployeeID:" + employee.getId(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Activity nicht gefunden. EmployeeID:" + employee.getId(), HttpStatus.NOT_ACCEPTABLE);
         }
 
         //es wird eine E-Mail mit Account Aktivierung Benachrichtigung herausgeschickt
-        this.emailService.sendActivationEmail(employee.getEmail(), employee.getLogin(), activity.getUuid());
+        this.emailService.sendActivationEmail(employeeVm.getEmail(), employeeVm.getLogin(), activity.getUuid());
 
-        return new ResponseEntity("Employee ist erfolgreich registriert", HttpStatus.OK);
+        return new ResponseEntity<>("Employee ist erfolgreich registriert", HttpStatus.OK);
     }
 
-    public ResponseEntity activateEmployee(String uuid){
+    private Employee getEmployeeFromEmployeePojo(EmployeeVm employeeVm) {
+        Employee employee = new Employee();
+
+        employee.setId(employeeVm.getId());
+        employee.setLogin(employeeVm.getLogin());
+        employee.setPassword(employeeVm.getPassword());
+        employee.setEmail(employeeVm.getEmail());
+        employee.setPowers(employeeVm.getPowers());
+        employee.setActivity(employeeVm.getActivity());
+
+        return employee;
+    }
+
+    public ResponseEntity<String> activateEmployee(String uuid){
 
         if (uuid == null || uuid.isEmpty()) {
-            return new ResponseEntity("UUID darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("UUID darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // UUID Prüfung
-        Activity activity = this.activityRepository.findActivityByUuid(uuid).get();
+        Activity activity = null;
+
+        Optional<Activity> activityById = this.activityRepository.findActivityByUuid(uuid);
+
+        if (activityById.isPresent()) {
+            activity = activityById.get();
+        }
+
         if (activity == null) {
-            return new ResponseEntity("Activity nicht gefunden. UUID:" + uuid, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Activity nicht gefunden. UUID:" + uuid, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //wenn der Employee bereits zuvor aktiviert wurde
-        if (activity.getActivated() == true) {
-            return new ResponseEntity("Employee ist schon aktiviert", HttpStatus.NOT_ACCEPTABLE);
+        if (Boolean.TRUE.equals(activity.getActivated())) {
+            return new ResponseEntity<>("Employee ist schon aktiviert", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // gibt die Anzahl der aktualisierten Datensätze zurück (sollte 1 sein)
         int updatedCount = this.activityRepository.activate(uuid);
 
         if (updatedCount != 1) {
-            return new ResponseEntity("Aktivierung des Employee ist nicht geklappt", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Aktivierung des Employee ist nicht geklappt", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity("Employee ist erfolgreich aktiviert", HttpStatus.OK);
+        return new ResponseEntity<>("Employee ist erfolgreich aktiviert", HttpStatus.OK);
     }
 
 
-    public ResponseEntity deActivateEmployee(String uuid){
+    public ResponseEntity<Boolean> deActivateEmployee(String uuid){
 
         if (uuid == null || uuid.isEmpty()) {
             return new ResponseEntity("UUID darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
         }
 
         // UUID Prüfung
-        Activity activity = this.activityRepository.findActivityByUuid(uuid).get();
+        Activity activity = null;
+
+        Optional<Activity> activityById = this.activityRepository.findActivityByUuid(uuid);
+
+        if (activityById.isPresent()) {
+            activity = activityById.get();
+        }
+
         if (activity == null) {
             return new ResponseEntity("Activity nicht gefunden. UUID:" + uuid, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // Wenn der Employee bereits zuvor deaktiviert wurde
-        if (activity.getActivated() == false) {
+        if (Boolean.FALSE.equals(activity.getActivated())) {
             return new ResponseEntity("Employee ist schon deaktiviert", HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -146,23 +182,23 @@ public class EmployeeService {
         }
     }
 
-    public ResponseEntity logIn(Employee employee) {
+    public ResponseEntity logIn(EmployeeVm employeeVm) {
 
-        String employeeValid = EmployeeValid.isEmployeeValidWithOutEmail(employee);
+        String employeeValid = EmployeeValid.isEmployeeValidWithOutEmail(employeeVm);
         if (!employeeValid.equals("")) {
             return new ResponseEntity(employeeValid, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //authentication des Employees (es wird nachgeprüft, ob Login und Password korrekt sind)
         Authentication authentication = this.authenticationManager.
-                authenticate(new UsernamePasswordAuthenticationToken(employee.getLogin(), employee.getPassword()));
+                authenticate(new UsernamePasswordAuthenticationToken(employeeVm.getLogin(), employeeVm.getPassword()));
 
         //add authentication Employees Data in Spring Container
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) authentication.getPrincipal();
 
-        if (employeeDetails.isActivated() == false) {
+        if (Boolean.FALSE.equals(employeeDetails.isActivated())) {
             throw new DisabledException("Employee ist nicht aktiviert");
         }
 
@@ -196,9 +232,9 @@ public class EmployeeService {
         }
 
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(usernameOrEmail);
-        Employee employee = employeeDetails.getEmployee();
+        EmployeeVm employee = employeeDetails.getEmployee();
 
-        if (employee.getActivity().getActivated() == true) {
+        if (Boolean.TRUE.equals(employee.getActivity().getActivated())) {
             return new ResponseEntity("Employee ist schon aktiviert", HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -213,11 +249,9 @@ public class EmployeeService {
         }
 
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(email);
-        Employee employee = employeeDetails.getEmployee();
+        EmployeeVm employee = employeeDetails.getEmployee();
 
-        if (employeeDetails != null) {
-            emailService.sendResetPassword(employee.getEmail(), jwtUtils.createEmailResetToken(employee));
-        }
+        emailService.sendResetPassword(employee.getEmail(), jwtUtils.createEmailResetToken(employee));
 
         return ResponseEntity.ok().build();
     }

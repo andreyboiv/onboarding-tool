@@ -22,6 +22,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class TaskService implements IBaseService<Task> {
+    public static final String ID_NICHT_GEFUNDEN = "ID %d nicht gefunden";
     public static final String SORT_COLUMN_DEFAULT = "id";
     public static final String ZWEITES_SORTIERUNGS_FELD = "title";
 
@@ -30,6 +31,7 @@ public class TaskService implements IBaseService<Task> {
 
     //Wie viel Elementen muss eine Seite enthalten
     public static final Integer PAGE_SIZE_DEFAULT_VALUE = 5;
+    public static final String KEIN_TASK_GEFUNDEN_EMAIL = "kein Task gefunden. Email:";
     private final TaskRepository taskRepository;
 
     @Override
@@ -59,8 +61,8 @@ public class TaskService implements IBaseService<Task> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.taskRepository.existsById(task.getId()) == false) {
-            return new ResponseEntity("ID=" + task.getId() + " nicht gefunden",
+        if (!this.taskRepository.existsById(task.getId())) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, task.getId()),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -74,8 +76,8 @@ public class TaskService implements IBaseService<Task> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.taskRepository.existsById(id) == false) {
-            return new ResponseEntity("ID=" + id + " nicht gefunden",
+        if (!this.taskRepository.existsById(id)) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -90,8 +92,8 @@ public class TaskService implements IBaseService<Task> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.taskRepository.existsById(id) == false) {
-            return new ResponseEntity("ID=" + id + " nicht gefunden",
+        if (!this.taskRepository.existsById(id)) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -115,7 +117,7 @@ public class TaskService implements IBaseService<Task> {
         }
         List<Task> allByEmail = this.taskRepository.findByEmployeesToTaskEmailOrderByTitleAsc(email);
         if (allByEmail == null || allByEmail.isEmpty()) {
-            return new ResponseEntity("kein Task gefunden. Email:" + email,
+            return new ResponseEntity(KEIN_TASK_GEFUNDEN_EMAIL + email,
                     HttpStatus.OK);
         }
         return ResponseEntity.ok(allByEmail);
@@ -127,7 +129,7 @@ public class TaskService implements IBaseService<Task> {
         }
         List<Task> allByEmailQuery = this.taskRepository.findAllByEmailQuery(title, email);
         if (allByEmailQuery == null || allByEmailQuery.isEmpty()) {
-            return new ResponseEntity("kein Task gefunden. Email:" + email + " .Title:" + title,
+            return new ResponseEntity(KEIN_TASK_GEFUNDEN_EMAIL + email + " .Title:" + title,
                     HttpStatus.OK);
         }
         return ResponseEntity.ok(allByEmailQuery);
@@ -136,13 +138,13 @@ public class TaskService implements IBaseService<Task> {
     public ResponseEntity<Page<Task>> findByParams(TaskSearchValues taskSearchValues) {
         String email = taskSearchValues.getEmail() != null ? taskSearchValues.getEmail() : null;
 
-        // Email muss unbedingt vorhanden sein
+        // E-Mail muss unbedingt vorhanden sein
         if (email == null || email.trim().length() == 0) {
             return new ResponseEntity("EMAIL fehlt", HttpStatus.NOT_ACCEPTABLE);
         }
 
         String title = taskSearchValues.getTitle() != null && !taskSearchValues.getTitle().equals("") ? taskSearchValues.getTitle() : null;
-        Boolean completed = taskSearchValues.getCompleted() != null && !taskSearchValues.getCompleted().equals("") && taskSearchValues.getCompleted() == 1 ? true : false;
+        Boolean completed = taskSearchValues.getCompleted() != null && !taskSearchValues.getCompleted().equals("") && taskSearchValues.getCompleted() == 1;
         Long priorityId = taskSearchValues.getPriorityId() != null && !taskSearchValues.getPriorityId().equals("") ? taskSearchValues.getPriorityId() : null;
         Long categoryId = taskSearchValues.getCategoryId() != null && !taskSearchValues.getCategoryId().equals("") ? taskSearchValues.getCategoryId() : null;
 
@@ -220,7 +222,7 @@ public class TaskService implements IBaseService<Task> {
                 pageRequest);
 
         if (result.isEmpty()) {
-            return new ResponseEntity("kein Task gefunden. Email:" + email,
+            return new ResponseEntity(KEIN_TASK_GEFUNDEN_EMAIL + email,
                     HttpStatus.OK);
         }
 

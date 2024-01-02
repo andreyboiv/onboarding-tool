@@ -3,10 +3,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.entity;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -24,6 +21,7 @@ Kategorie von Tasks eines Employees
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)
@@ -46,7 +44,7 @@ public class Category extends BaseEntity {
     @Column(name = "uncompleted_count", insertable = false, updatable = false, nullable = true)
     private Long uncompletedCount = 0L;
 
-
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id",referencedColumnName = "id", nullable = false, updatable = false)
     @JsonBackReference
@@ -56,5 +54,4 @@ public class Category extends BaseEntity {
     public String toString() {
         return this.title;
     }
-
 }

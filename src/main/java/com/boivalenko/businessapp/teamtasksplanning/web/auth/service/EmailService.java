@@ -29,6 +29,9 @@ public class EmailService {
     @Value("${email.from}")
     private String emailFrom;
 
+    @Value("${jwt.resetPasswordTokenExpiration}")
+    private int resetPasswordTokenExpiration;
+
     private final JavaMailSender sender;
 
     @Async
@@ -43,7 +46,8 @@ public class EmailService {
             // das ist tatsächlich ein entry point beim Frontend....
             String url = clientURL + "/activate-account/" + uuid;
 
-            String htmlMsg = String.format("Hi username:%s. url:%s", username, url);
+            String htmlMsg = String.format("Herzlich willkommen. Sie sind als %s registriert. Klicken Sie bitte die URL, " +
+                    "um ihren Account zu aktivieren:%s . Ohne Aktivieren dürfen Sie sich nicht einloggen. MfG", username, url);
 
             return this.sendMessage(email, mimeMessage, message, htmlMsg, "Activation erforderlich");
 
@@ -65,7 +69,9 @@ public class EmailService {
             // das ist tatsächlich ein entry point beim Frontend....
             String url = clientURL + "/update-password/" + token;
 
-            String htmlMsg = String.format("Hi url:%s", url);
+            String htmlMsg = String.format("Hallo, falls Sie keine Password Änderung angefordert haben, wenden Sie sich an Admin. " +
+                    "Weil es eine Gefahr für Ihren Account bestehen kann." +
+                    "Ansonsten klicken Sie bitte den Link innerhalb %d min, um den Password zu ändern. URL:%s", this.resetPasswordTokenExpiration/1000/60, url);
 
             return this.sendMessage(email, mimeMessage, message, htmlMsg, "Abfrage für Password Änderung");
 

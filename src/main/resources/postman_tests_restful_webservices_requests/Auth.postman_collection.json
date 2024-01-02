@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "f67dfba4-9229-4497-9175-53ed32850bf6",
+		"name": "Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24058287"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"login\": \"andrey13\",\r\n\"password\": \"dron\",\r\n\"email\": \"andrey.boiv13@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/register"
+			},
+			"response": []
+		},
+		{
+			"name": "activate-account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "8916072e-8f5c-4081-a979-6d16fd0e0cdd",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/activate-account"
+			},
+			"response": []
+		},
+		{
+			"name": "resend-activate-email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "andrey.boiv@gmail.com",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/resend-activate-email"
+			},
+			"response": []
+		},
+		{
+			"name": "send-reset-password-email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "andrey.boiv@gmail.com",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/send-reset-password-email"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"login\": \"andrey13\",\r\n\"password\": \"dron1\",\r\n\"email\": \"andrey.boiv13@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "deactivate-account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "a7870c35-986a-4549-a6b3-d44b1c38edb0",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/deactivate-account"
+			},
+			"response": []
+		},
+		{
+			"name": "updatePassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "dron1",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/update-password"
+			},
+			"response": []
+		}
+	]
+}

@@ -2,10 +2,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.entity;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -14,7 +11,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 /*
-Alle Rechte, die zu einem Employee zugewiesen werden können
+Alle Rechte, die zu einem EmployeeVm zugewiesen werden können
 */
 
 @Entity
@@ -23,6 +20,7 @@ Alle Rechte, die zu einem Employee zugewiesen werden können
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)
@@ -33,6 +31,7 @@ public class Powers extends BaseEntity {
     @Column(name = "name", nullable = false, length = -1, updatable = false)
     private String name;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "employee_powers",
             joinColumns = @JoinColumn(name = "power_id"),

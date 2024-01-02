@@ -1,17 +1,13 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.entity;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /*
@@ -27,6 +23,7 @@ Die credentials eines Employees
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)
@@ -45,12 +42,11 @@ public class Employee extends BaseEntity {
     @Column(name = "email", nullable = true, length = -1)
     private String email;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "employeesToPowers", fetch = FetchType.EAGER)
     private Set<Powers> powers = new HashSet<>();
 
     /*
-
-
     @OneToMany(mappedBy = "employeesToTask", fetch = FetchType.LAZY)
     private List<Task> tasks;
 
@@ -60,31 +56,17 @@ public class Employee extends BaseEntity {
     @OneToMany(mappedBy = "employeesToPriority",fetch = FetchType.LAZY)
     private List<Priority> priorities;
 
-
     @OneToOne(mappedBy = "employeeToStat",fetch = FetchType.LAZY, optional = false)
     private Stat stat;
 */
 
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "employeeToActivity",fetch = FetchType.LAZY, optional = false)
     private Activity activity;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(getLogin(), employee.getLogin()) && Objects.equals(getEmail(), employee.getEmail());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getLogin(), getEmail());
-    }
-
-    @Override
     public String toString() {
-        return "Employee{" +
+        return "EmployeeVm{" +
                 "login='" + this.login + '\'' +
                 '}';
     }

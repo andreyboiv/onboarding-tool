@@ -1,8 +1,8 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 
+import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.CategoryRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.IBaseService;
-import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CategoryService implements IBaseService<Category> {
+    public static final String ID_NICHT_GEFUNDEN = "ID %d nicht gefunden";
     private final CategoryRepository categoryRepository;
 
     @Override
@@ -44,8 +46,8 @@ public class CategoryService implements IBaseService<Category> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.categoryRepository.existsById(category.getId()) == false) {
-            return new ResponseEntity("ID=" + category.getId() + " nicht gefunden",
+        if (!this.categoryRepository.existsById(category.getId())) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, category.getId()),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -59,8 +61,8 @@ public class CategoryService implements IBaseService<Category> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.categoryRepository.existsById(id) == false) {
-            return new ResponseEntity("ID=" + id + " nicht gefunden",
+        if (!this.categoryRepository.existsById(id)) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -76,19 +78,25 @@ public class CategoryService implements IBaseService<Category> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.categoryRepository.existsById(id) == false) {
-            return new ResponseEntity("ID=" + id + " nicht gefunden",
+        if (!this.categoryRepository.existsById(id)) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Category category = this.categoryRepository.findById(id).get();
+        Category category = null;
+
+        Optional<Category> byId = this.categoryRepository.findById(id);
+        if (byId.isPresent()) {
+            category = byId.get();
+        }
+
         return ResponseEntity.ok(category);
     }
 
     @Override
     public ResponseEntity<List<Category>> findAll() {
         List<Category> all = this.categoryRepository.findAll();
-        if (all == null || all.isEmpty()) {
+        if (all.isEmpty()) {
             return new ResponseEntity("gar keine Category vorhanden",
                     HttpStatus.OK);
         }

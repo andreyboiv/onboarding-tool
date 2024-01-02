@@ -12,5 +12,4 @@ import lombok.Setter;
 public class CategorySearchValues {
     private String title;
     private String email;
-
 }

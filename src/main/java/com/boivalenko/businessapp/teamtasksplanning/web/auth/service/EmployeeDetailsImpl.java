@@ -1,7 +1,7 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.service;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Powers;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,14 +14,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-// Für Behalten von Employee
-// (Wrapper für Employee, der Spring Container versteht)
+// Für Behalten von EmployeeVm
+// (Wrapper für EmployeeVm, der Spring Container versteht)
 @Setter
 @Getter
 @RequiredArgsConstructor
 public class EmployeeDetailsImpl implements UserDetails {
 
-    private final Employee employee;
+    private final EmployeeVm employee;
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override

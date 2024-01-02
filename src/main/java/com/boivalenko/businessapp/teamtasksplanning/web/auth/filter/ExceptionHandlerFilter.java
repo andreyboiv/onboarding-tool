@@ -1,6 +1,6 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.filter;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.obj.JsonException;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.obj.JsonExcept;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         try {
             filterChain.doFilter(request, response);
         } catch (RuntimeException e) {
-            JsonException exception = new JsonException(e.getClass().getSimpleName());
+            JsonExcept exception = new JsonExcept(e.getClass().getSimpleName());
 
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write(convertOjectToJson(exception));

@@ -1,8 +1,8 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 
+import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Priority;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.PriorityRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.IBaseService;
-import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Priority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PriorityService implements IBaseService<Priority> {
+    public static final String ID_NICHT_GEFUNDEN = "ID %d nicht gefunden";
     private final PriorityRepository priorityRepository;
 
     @Override
@@ -44,8 +46,8 @@ public class PriorityService implements IBaseService<Priority> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.priorityRepository.existsById(priority.getId()) == false) {
-            return new ResponseEntity("ID=" + priority.getId() + " nicht gefunden",
+        if (!this.priorityRepository.existsById(priority.getId())) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, priority.getId()),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -59,8 +61,8 @@ public class PriorityService implements IBaseService<Priority> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.priorityRepository.existsById(id) == false) {
-            return new ResponseEntity("ID=" + id + " nicht gefunden",
+        if (!this.priorityRepository.existsById(id)) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -75,19 +77,25 @@ public class PriorityService implements IBaseService<Priority> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.priorityRepository.existsById(id) == false) {
-            return new ResponseEntity("ID=" + id + " nicht gefunden",
+        if (!this.priorityRepository.existsById(id)) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        Priority priority = this.priorityRepository.findById(id).get();
+        Priority priority = null;
+
+        Optional<Priority> byId = this.priorityRepository.findById(id);
+        if (byId.isPresent()) {
+            priority = byId.get();
+        }
+
         return ResponseEntity.ok(priority);
     }
 
     @Override
     public ResponseEntity<List<Priority>> findAll() {
         List<Priority> all = this.priorityRepository.findAll();
-        if (all == null || all.isEmpty()) {
+        if (all.isEmpty()) {
             return new ResponseEntity("keine Priority vorhanden",
                     HttpStatus.OK);
         }

@@ -29,5 +29,4 @@ public class TaskSearchValues {
     // Für Sortierung
     private String sortColumn;
     private String sortDirection;
-
 }

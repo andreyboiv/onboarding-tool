@@ -3,10 +3,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.entity;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -27,6 +24,7 @@ mit denen alle andere Klassen verbunden sind
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)
@@ -52,6 +50,7 @@ public class Task extends BaseEntity {
     // (andererseits kann dieselbe Kategorie
     // in mehreren Tasks verwendet werden)
     // Default - EAGER
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id")
     @JsonBackReference(value = "categoryBackReference")
@@ -61,6 +60,7 @@ public class Task extends BaseEntity {
     // (andererseits kann dieselbe Priorität
     // in mehreren Tasks verwendet werden)
     // Default - EAGER
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
     @JsonBackReference(value = "priorityBackReference")
@@ -68,6 +68,7 @@ public class Task extends BaseEntity {
 
     // Foreign Key
     // Default - EAGER
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false, updatable = false)
     @JsonBackReference(value = "employeesToTaskBackReference")
@@ -77,5 +78,4 @@ public class Task extends BaseEntity {
     public String toString() {
         return this.title;
     }
-
 }

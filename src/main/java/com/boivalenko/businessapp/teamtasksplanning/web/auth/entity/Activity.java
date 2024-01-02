@@ -3,10 +3,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.entity;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -26,6 +23,7 @@ Aktionen nach Bedarf)
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)
@@ -48,9 +46,10 @@ public class Activity extends BaseEntity {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean activated;
 
-    // Daten von der Tabelle Employee braucht man
+    // Daten von der Tabelle EmployeeVm braucht man
     // an dieser Stelle nicht immer,
     // deswegen - LAZY
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "employee_id", referencedColumnName = "id", nullable = false, updatable = false)

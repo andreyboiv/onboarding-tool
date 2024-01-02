@@ -1,6 +1,6 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.filter;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeDetailsImpl;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.JwtUtils;
@@ -53,7 +53,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         // es kam eine Request nicht von Open API. Daher braucht eine Authentication...
-        if (isRequestToPublicAPI == false
+        if (!isRequestToPublicAPI
                 //&&
         // falls der User keine Authentication durchgeführt wurde. Daher braucht eine Authentication...
            //     SecurityContextHolder.getContext().getAuthentication() == null
@@ -71,8 +71,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                     if (this.jwtUtils.validate(jwt)) {
 
-                        //Employee kommt aus dem Token
-                        Employee employee = this.jwtUtils.getEmployee(jwt);
+                        //EmployeeVm kommt aus dem Token
+                        EmployeeVm employee = this.jwtUtils.getEmployee(jwt);
 
                         EmployeeDetailsImpl userDetails = new EmployeeDetailsImpl(employee);
 
@@ -84,7 +84,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                         // Objet Authentification wird in Spring Container hinzugefügt.
-                        // Damit Spring versteht, dass der Employee sich erfolgreich eingeloggt hat
+                        // Damit Spring versteht, dass der EmployeeVm sich erfolgreich eingeloggt hat
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                     } else {

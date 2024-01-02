@@ -1,6 +1,6 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.utils;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import lombok.extern.java.Log;
@@ -31,21 +31,26 @@ public class JwtUtils {
     @Value("${jwt.resetPasswordTokenExpiration}")
     private int resetPasswordTokenExpiration;
 
-    public String createAccessToken(Employee employee) {
-        return createToken(employee, accessTokenExpiration);
+    public String createAccessToken(EmployeeVm employee) {
+        return this.createToken(employee, accessTokenExpiration);
     }
 
     //es wird JWT für Password Reset generiert
-    public String createEmailResetToken(Employee employee) {
-        return createToken(employee, resetPasswordTokenExpiration);
+    public String createEmailResetToken(EmployeeVm employee) {
+        return this.createToken(employee, resetPasswordTokenExpiration);
     }
 
-    private String createToken(Employee employee, int duration) {
+    private String createToken(EmployeeVm employee, int duration) {
         Date currentDate = new Date();
+
+        employee.setId(null);
+        employee.setPassword(null);
+        employee.setEmail(null);
+        employee.setActivity(null);
 
         Map claims = new HashMap<String, Object>();
         claims.put(CLAIM_EMPLOYEE_KEY, employee);
-        claims.put(Claims.SUBJECT, employee.getId());
+        //claims.put(Claims.SUBJECT, employee.getId());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -75,13 +80,11 @@ public class JwtUtils {
         return false;
     }
 
-    public Employee getEmployee(String jwt) {
+    public EmployeeVm getEmployee(String jwt) {
         Map map = (Map)Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().get(CLAIM_EMPLOYEE_KEY);
 
         ObjectMapper mapper = new ObjectMapper();
-        Employee employee = mapper.convertValue(map, Employee.class);
-
-        return employee;
+        return mapper.convertValue(map, EmployeeVm.class);
     }
 
 

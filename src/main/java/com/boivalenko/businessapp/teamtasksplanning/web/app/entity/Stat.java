@@ -3,10 +3,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.entity;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -24,6 +21,7 @@ Dabei ist es nicht wichtig welche Kategorien die Tasks haben.
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Cacheable(value = true)
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Stat extends BaseEntity {
@@ -41,10 +39,10 @@ public class Stat extends BaseEntity {
     private Long uncompletedTotal = 0L;
 
     // Default - EAGER
+    @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "employee_id", nullable = false, updatable = false)
     @JsonBackReference
     private Employee employeeToStat;
-
 }

@@ -1,6 +1,6 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.utils;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 
 import java.util.regex.Pattern;
 
@@ -13,7 +13,7 @@ public final class EmployeeValid {
         throw new AssertionError("Es dürfen keine Objekte des Klasses erzeugt werden");
     }
 
-    public static String isEmployeeValid(Employee employee) {
+    public static String isEmployeeValid(EmployeeVm employee) {
 
         String error = "";
         if (employee.getId() != null) {
@@ -33,7 +33,7 @@ public final class EmployeeValid {
         }
 
         //E-mail Validation
-        if (isValidEmailAddress(employee.getEmail()) == false) {
+        if (!isValidEmailAddress(employee.getEmail())) {
             error = "EMAIL Format ist unkorrekt";
         }
 
@@ -50,17 +50,17 @@ public final class EmployeeValid {
                 .matches();
     }
 
-    public static String isEmployeeValidWithOutEmail(Employee employee) {
+    public static String isEmployeeValidWithOutEmail(EmployeeVm employeeVm) {
         String error = "";
-        if (employee.getId() != null) {
+        if (employeeVm.getId() != null) {
             error = "ID wird automatisch generiert. Man muss da nichts eingeben";
         }
 
-        if (employee.getLogin() == null || employee.getLogin().isEmpty() || employee.getLogin().toLowerCase().contains("null")) {
+        if (employeeVm.getLogin() == null || employeeVm.getLogin().isEmpty() || employeeVm.getLogin().toLowerCase().contains("null")) {
             error = "LOGIN darf weder NULL noch leer sein";
         }
 
-        if (employee.getPassword() == null || employee.getPassword().isEmpty() || employee.getPassword().toLowerCase().contains("null")) {
+        if (employeeVm.getPassword() == null || employeeVm.getPassword().isEmpty() || employeeVm.getPassword().toLowerCase().contains("null")) {
             error = "PASSWORD darf weder NULL noch leer sein";
         }
 
