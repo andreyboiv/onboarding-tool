@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"login\": \"andrey13\",\r\n\"password\": \"dron\",\r\n\"email\": \"andrey.boiv13@gmail.com\"\r\n}",
+					"raw": "{\r\n\"login\": \"gfhdfhgf\",\r\n\"password\": \"drrhhhon\",\r\n\"email\": \"andrey.boivalenko@e-mndo.de\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -31,7 +31,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "8916072e-8f5c-4081-a979-6d16fd0e0cdd",
+					"raw": "8c67963a-a4a7-46e2-997b-464dbbf96a84",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -43,49 +43,13 @@
 			"response": []
 		},
 		{
-			"name": "resend-activate-email",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "andrey.boiv@gmail.com",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "https://localhost:8083/auth/resend-activate-email"
-			},
-			"response": []
-		},
-		{
-			"name": "send-reset-password-email",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "andrey.boiv@gmail.com",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "https://localhost:8083/auth/send-reset-password-email"
-			},
-			"response": []
-		},
-		{
 			"name": "login",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"login\": \"andrey13\",\r\n\"password\": \"dron1\",\r\n\"email\": \"andrey.boiv13@gmail.com\"\r\n}",
+					"raw": "{\r\n\"login\": \"andrey20\",    \r\n\"password\": \"drondron1ffsdfsdf\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -115,31 +79,19 @@
 			"response": []
 		},
 		{
-			"name": "deactivate-account",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "a7870c35-986a-4549-a6b3-d44b1c38edb0",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "https://localhost:8083/auth/deactivate-account"
-			},
-			"response": []
-		},
-		{
 			"name": "updatePassword",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJlbXBsb3llZSI6eyJpZCI6bnVsbCwibG9naW4iOiJhbmRyZXkyMCIsInBhc3N3b3JkIjpudWxsLCJlbWFpbCI6bnVsbCwicG93ZXJzIjpbeyJpZCI6MiwibmFtZSI6IkFETUlOIn1dLCJhY3Rpdml0eSI6bnVsbH0sImV4cCI6MTcwNDQ4MDAyMCwiaWF0IjoxNzA0NDc5NzIwfQ.PmqOtZRB3Cqj8WW8qE4-_yliERKVSx0GCm9yEH0tfEMJ2cgZuZFqpmjEwq1c0CPEyk0xIQqeMRs3TSBVpgBiGA"
+					}
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "dron1",
+					"raw": "drondron1ffsdfsdf",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -147,6 +99,60 @@
 					}
 				},
 				"url": "https://localhost:8083/auth/update-password"
+			},
+			"response": []
+		},
+		{
+			"name": "account-deactivate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "8c67963a-a4a7-46e2-997b-464dbbf96a84",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/account-deactivate"
+			},
+			"response": []
+		},
+		{
+			"name": "resend-activate-email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "andrey.boivalenko@e-mundo.de",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/resend-activate-email"
+			},
+			"response": []
+		},
+		{
+			"name": "send-reset-password-email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "andrey20",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8083/auth/send-reset-password-email"
 			},
 			"response": []
 		}
