@@ -1,12 +1,11 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.entity;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +22,7 @@ Die credentials eines Employees
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)

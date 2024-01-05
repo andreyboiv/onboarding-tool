@@ -1,10 +1,9 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.base;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
@@ -14,7 +13,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 public class BaseEntity implements Serializable {
     @Id
     @Column(name = "id", nullable = false)

@@ -2,12 +2,13 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.service;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Activity;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.repository.ActivityRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.repository.EmployeeRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.EmployeeValid;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.JwtUtils;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -243,12 +243,12 @@ public class EmployeeService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity sendResetPasswordEmail(String email) {
-        if (email == null || email.isEmpty()) {
+    public ResponseEntity sendResetPasswordEmail(String userDetails) {
+        if (userDetails == null || userDetails.isEmpty()) {
             return new ResponseEntity("E-mail darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(email);
+        EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(userDetails);
         EmployeeVm employee = employeeDetails.getEmployee();
 
         emailService.sendResetPassword(employee.getEmail(), jwtUtils.createEmailResetToken(employee));

@@ -3,13 +3,12 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.entity;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /*
@@ -24,7 +23,7 @@ mit denen alle andere Klassen verbunden sind
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)
@@ -38,7 +37,7 @@ public class Task extends BaseEntity {
     // wird konvertiert
     // von boolean to numeric (true = 1, false = 0)
     @Basic
-    @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
     private Boolean completed;
 
     @Basic

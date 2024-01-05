@@ -3,6 +3,8 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.service;
 //Es werden verschiedene E-Mails an Employee versendet.
 //E-Mails werden async versendet. @Async. @EnableAsync wurde in SpringConfig hinzugefügt.
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +14,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.util.concurrent.Future;
 
 @Service

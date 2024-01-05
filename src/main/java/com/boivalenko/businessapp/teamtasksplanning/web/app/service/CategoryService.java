@@ -3,12 +3,12 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.CategoryRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.IBaseService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

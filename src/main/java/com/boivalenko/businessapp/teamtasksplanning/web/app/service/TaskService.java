@@ -1,9 +1,10 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 
+import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Task;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.TaskRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.search.TaskSearchValues;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.IBaseService;
-import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Task;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

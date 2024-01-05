@@ -1,5 +1,7 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.utils;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
@@ -7,8 +9,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+
 
 @Component
 public class CookieUtils {

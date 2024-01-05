@@ -2,9 +2,9 @@
 
 Spring Boot Projekt
 
-Spring Boot Version: 2.7.0
+Spring Boot Version: 3.2.0
 <p>
-Java Version: 11
+Java Version: 16
 <p>
 Datenbank: PostgreSQL
 <p>
@@ -16,22 +16,107 @@ Datenbank: PostgreSQL
 4. Spring Security
 5. Spring AOP
 6. Spring Validation
-7. PostgreSQL Driver
-8. JWT (JSON Web Token) Library
-9. Lombok
-10. Maven
+7. Spring Mail
+8. Maven
+9. PostgreSQL Driver. Version 42.6.0
+10. JWT (JSON Web Token) Library. Version 0.12.3 
+11. Lombok. Version 1.18.30
   
 <b>Frontend Components (Dependencies):</b>
 <p>
 Frontend ist noch nicht realisiert und befindet sich in der Entwicklungsphase
 <p>
 <p>
+<p><b><h2>Beschreibung des Projektes (Backend Controller Entry-Points Sicht. Siehe AuthController Klasse):</h2></b>
+<p>
+
+1. <b>Registrierung. (auth/register)</b>
+
+Es wird einen neuen Employee registriert. Das Password wird mit
+BCryptPasswordEncoder (BCrypt - https://ru.bitcoinwiki.org/wiki/Bcrypt) kodiert und im kodierten Form in der DB abgespeichert. 
+Nach der erfolgreichen Registrierung wird ein Link 
+zum Aktivieren des Accounts 
+von einem Employee an die 
+angegebene E-Mail (bei der Registrierung) abgeschickt.
+
+2.  <b>Aktivierung. (auth/activate-account)</b>
+
+Es wird einen neuen Employee aktiviert.
+<p>
+
+3. <b>LogIn. (auth/login)</b>
+
+Ein Employee kann sich nach seinem Account Aktivieren anmelden bzw. 
+einloggen im System. 
+Damit wird ein gültiges JWT-Token auf dem Server erstellt. 
+Das JWT-Token wird vom 1 Tag Dauer gültig. 
+Es wird keine relevante Information in dem JWT-Token abgespeichert 
+(außer Login und Role eines Employees). 
+Das Aktivieren darf 
+nur ein mal durchgeführt werden. 
+Wenn der Link (zum Aktivieren) warum auch immer verloren geht, kann man 
+anhand <b>"auth/resend-activate-email"</b> 
+eine neue E-Mail für die Aktivierung anfordern. 
+Da muss man dafür entweder ein Login oder E-Mail eingeben.
+<p>
+
+4. <b>LogOut. (auth/logout)</b>
+
+<ins>Der Request Ersteller muss die Role "User" haben.</ins>
+
+Ein Employee kann sich abmelden bzw. 
+ausloggen aus dem System.
+Damit wird zunächst eine JWT Validierung von dem existierenden JWT-Token
+durchgeführt (siehe AuthTokenFilter) 
+und dann wird ein Cookie bzw. JWT-Token 
+(das in dem Cookie abgespeichert wird) erstellt. Der neue Token 
+wird dann vom Browser automatisch entfernt/gelöscht, 
+weil da in diesem neuen JWT-Token eine Parameter "maxAge(0)"
+eingesetzt wird.
+<p>
+
+5. <b>Password Ändern. (auth/update-password)</b>
+
+<ins>Der Request Ersteller muss die Role "User" haben.</ins>
+
+Dabei wird es zunächst eine JWT Validierung von dem existierenden JWT-Token
+durchgeführt (siehe AuthTokenFilter)
+
+Bei einem Employee kann das Password geändert werden.
+Vor allem braucht man aber für eine Password Änderung ein Bearer Token, 
+das anhand <b>"auth/send-reset-password-email"</b> zu erhalten ist.
+<p>
+
+6. <b>Account Deaktivieren. (auth/deactivate-account)</b>
+
+Bei einem Employee kann das Account deaktiviert werden.
+
+<ins>Der Request Ersteller muss die Role "Admin" haben.</ins>
+
+Dabei wird es zunächst eine JWT Validierung von dem existierenden JWT-Token
+durchgeführt (siehe AuthTokenFilter)
+
+<p>
+<p>
+<p>
+
+<b>
+Siehe Screenshot von Postman.
+</b>
+
+![alt text](https://boivalenko.com/img/java_ep/spring/projekt_2/postman.jpg?raw=true)
+
+Der Screenshot zeigt, welche Backend Controller da sind. Die entsprechende Requests 
+für Postman kann man unter "\resources\postman_tests_restful_webservices_requests" im Projekt finden.
+
+<p>
 <p>
 <b><h2>Allgemeine Beschreibung des Projektes:</h2></b>
 <p>
 <ins>Die Hauptfunktionalität besteht darin, dass die Mitarbeiter eines Unternehmens ihre individuellen Arbeitsaufgaben (Tasks) verwalten und planen können.</ins>
 Die Aufgaben der Mitarbeiter haben ihre eigenen Kategorien der Komplexität, Prioritäten und können von Mitarbeitern entweder erledigt oder nicht erledigt werden. 
-Für alle Aufgaben von Mitarbeitern kann man die allgemeine Statistik von abgeschlossenen und nicht abgeschlossenen Aufgaben betrachten und damit sowohl die Arbeit jedes einzelnen Mitarbeiters als auch die Arbeit des gesamten Teams als Ganzes auswerten. Mitarbeiter unterscheiden sich in Bezug auf Befugnisse. Ein Mitarbeiter kann viele verschiedene Befugnisse haben. 
+Für alle Aufgaben von Mitarbeitern kann man die allgemeine Statistik von abgeschlossenen und nicht abgeschlossenen Aufgaben betrachten und damit sowohl die Arbeit 
+jedes einzelnen Mitarbeiters als auch die Arbeit des gesamten Teams als Ganzes auswerten. Mitarbeiter unterscheiden sich in Bezug auf Befugnisse. Ein Mitarbeiter kann viele verschiedene Befugnisse haben. 
 Im System gibt es einen Registrierungsbestätigungsprozess und einen Mitarbeiterautorisierungsprozess.
 <p>
 <p>
@@ -52,7 +137,9 @@ Im System gibt es einen Registrierungsbestätigungsprozess und einen Mitarbeiter
 8. task
 
 <b><h3>Beschreibung der Tabellen:</h3></b>
-1. Die Tabelle <b><ins>"employee"</ins></b> ist eine Tabelle zum Speichern von Mitarbeiterdaten (Credentials Daten). Die Daten in der Tabelle werden manuell von Mitarbeitern/Administrator ausgefüllt. Die Tabelledaten dienen sowohl für Präsentation als auch für Modifikation.
+1. Die Tabelle <b><ins>"employee"</ins></b> ist eine Tabelle zum Speichern von Mitarbeiterdaten (Credentials Daten). 
+Die Daten in der Tabelle werden manuell von Mitarbeitern/Administrator ausgefüllt. 
+Die Tabelledaten dienen sowohl für Präsentation als auch für Modifikation.
 2. Die Tabelle <b><ins>"stat"</ins></b> zeigt Statistik von allen abgeschlossenen und fehlgeschlagenen Aufgaben (Tasks) für jeden Mitarbeiter.
 3. Die Tabelle <b><ins>"activity"</ins></b> zeigt die Registrierungsdaten eines Mitarbeiters an. Die Tabellen "stat" und "activity" steuern Mitarbeiterdaten wie die Tabelle "employee" und stehen zur Tabelle "employee" in einer 1:1-Beziehung. Die Daten der Tabellen "stat" und "activity" sind von einem SQL Trigger gesteuert. Die Tabellendaten ("stat" und "activity") dienen nur für Präsentation und nicht für Modifikation.
 4. Die Tabelle <b><ins>"powers"</ins></b> ist eine Tabelle, die Befugnisse eines Mitarbeiters enthält. Standardmäßig hat die Tabelle die folgenden Berechtigungen:
@@ -66,30 +153,20 @@ Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
 7. Tabelle <b><ins>"priority"</ins></b> ist eine Tabelle, die Aufgabenprioritäten enthält. Die Standarddaten der Tabelle "priority" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten in der Tabelle können später ergänzt und geändert werden.
 8. Tabelle <b><ins>"task"</ins></b> ist eine Tabelle, die Aufgaben eines Mitarbeiters enthält. Aufgaben haben Beschreibung, Kategorien und Prioritäten. Eine Aufgabe ist zu einem Mitarbeiter zugeordnet. Die Daten der Tabelle "task" werden anhand eines SQL Triggers ausgefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten (außer Statistik) der Tabelle können später ergänzt und geändert werden.
 
-<b><h2>Beschreibung des Projektes (Backend):</h2></b>
+<b><h2>Kurze Beschreibung des Projektes (Backend):</h2></b>
 
-  1. Eine Datenbank mit Geschäftslogik (Triggers) wurde entworfen
-  2. Erstellen und Konfigurieren eines Spring Boot-Projekts
-  3. Datenbank-Mapping wurde realisiert (entsprechende Entity-Klassen wurden erstellt). 
-  Dabei wurden Beziehungen (One-to-One, One-to-Many, Many-to-One, Many-to-Many) 
-  mit entsprechenden Annotationen aufgebaut.
-  4. SSL-Authentifizierung wurde implementiert (lokal)
-  5. Entsprechde Repositories, Services und Controller wurden implementiert
-  6. AOP für Controllers Methods  wurde implementiert
-  7. Die Mitarbeiter-Authentifizierung wurde mit JWT-Token implementiert
-  8. Die Mitarbeiter-Autorisierung wurde eingestellt
-  
-  Das sind die Enttry-Points für das Projekt (Restful Services) :
-  <p>
-    
-  ![alt text](https://boivalenko.com/img/java_ep/spring/projekt_2/postman.jpg?raw=true)
-    
-  Das Screenshot wurde in Postman gemacht. Dabei ist es wichtig, dass Z.b. Mitarbeiter mit USER Rechte beschränkten Zugriff auf Services haben. 
-  Das kann in Backend z.B.mit dieser Annotatotion: "@PreAuthorize("hasAuthority('USER')")" einstellen. 
-  Damit werden Mitarbeiter nach dieser Authority validiert.
-  <p>
-  <p>
-  <p>
+1. Eine Datenbank mit Geschäftslogik (Triggers) wurde entworfen
+2. Erstellen und Konfigurieren eines Spring Boot-Projekts
+3. Datenbank-Mapping wurde realisiert (entsprechende Entity-Klassen wurden erstellt). 
+Dabei wurden Beziehungen (One-to-One, One-to-Many und Many-to-Many) 
+mit entsprechenden Annotationen aufgebaut.
+4. SSL-Authentifizierung wurde implementiert (lokal)
+5. Entsprechde Repositories, Services und Controller wurden implementiert
+6. AOP für Controllers Methods wurde implementiert
+7. Die Mitarbeiter-Authentifizierung wurde mit JWT-Token implementiert
+8. Die Mitarbeiter-Autorisierung wurde eingestellt
+9. Mail Services werden erstellt.
+
 <b><h2>TODO zum Projekt:</h2></b>
     
     1. Frontend (Angular) realisieren

@@ -1,15 +1,14 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.controller;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.obj.JsonExcept;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -65,8 +64,8 @@ public class AuthController {
 
     //send E-Mail für password reset, um dann später "update-password" verwenden zu können
     @PostMapping("/send-reset-password-email")
-    public ResponseEntity<String> sendResetPasswordEmail(@RequestBody String email) {
-        return this.employeeService.sendResetPasswordEmail(email);
+    public ResponseEntity<String> sendResetPasswordEmail(@RequestBody String userDetails) {
+        return this.employeeService.sendResetPasswordEmail(userDetails);
     }
 
     /*

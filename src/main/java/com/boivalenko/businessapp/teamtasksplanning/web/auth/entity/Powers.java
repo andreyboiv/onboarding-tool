@@ -2,12 +2,11 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.entity;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
 import java.util.Set;
 
 /*
@@ -20,7 +19,7 @@ Alle Rechte, die zu einem EmployeeVm zugewiesen werden können
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)

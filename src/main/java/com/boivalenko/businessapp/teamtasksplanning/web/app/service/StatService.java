@@ -1,13 +1,13 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.StatRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Stat;
+import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.StatRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 
 @Service
 @Transactional

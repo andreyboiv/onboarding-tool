@@ -3,10 +3,13 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.utils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +18,8 @@ import java.util.logging.Level;
 @Log
 @Component
 public class JwtUtils {
+
+    private EmployeeVm employeeVm;
 
     public static final String CLAIM_EMPLOYEE_KEY = "employee";
     //Secret Key für JWT Token Erzeugen
@@ -52,40 +57,43 @@ public class JwtUtils {
         claims.put(CLAIM_EMPLOYEE_KEY, employee);
         //claims.put(Claims.SUBJECT, employee.getId());
 
+        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(currentDate)
                 .setExpiration(new Date(currentDate.getTime() + duration)) // Gültigkeit vom Token
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, key)
                 .compact(); //wird in Base64 Format konvertiert
     }
 
     public boolean validate(String jwt) {
         try {
-            Jwts.
-                    parser(). //jwt format validierung
-                    setSigningKey(jwtSecret). //jwt validierung aufgrund jwtSecret Key
-                    parseClaimsJws(jwt); //jwt signature validierung
+            // https://github.com/jwtk/jjwt
+
+            Map map = (Map)Jwts.parser()
+                    .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8)).
+                            parseClaimsJws(jwt).getBody().
+                            get(CLAIM_EMPLOYEE_KEY);
+
+            ObjectMapper mapper = new ObjectMapper();
+            this.employeeVm = mapper.convertValue(map, EmployeeVm.class);
+
             return true;
         } catch (MalformedJwtException e) {
-            log.log(Level.SEVERE, "Ungültiger JWT Token:", jwt);
+            log.log(Level.SEVERE, "Invalid JWT token:", jwt);
         } catch (ExpiredJwtException e) {
-            log.log(Level.SEVERE, "JWT Token abgelaufen:", jwt);
+            log.log(Level.SEVERE, "JWT token is expired:", jwt);
         } catch (UnsupportedJwtException e) {
-            log.log(Level.SEVERE, "JWT Token wird nicht unterstützt:", jwt);
+            log.log(Level.SEVERE, "JWT token is unsupported:", jwt);
         } catch (IllegalArgumentException e) {
-            log.log(Level.SEVERE, "JWT unkorrekt", jwt);
+            log.log(Level.SEVERE, "JWT claims string is empty:", jwt);
         }
 
         return false;
     }
 
     public EmployeeVm getEmployee(String jwt) {
-        Map map = (Map)Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().get(CLAIM_EMPLOYEE_KEY);
-
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(map, EmployeeVm.class);
+        return employeeVm;
     }
-
-
 }

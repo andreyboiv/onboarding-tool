@@ -3,13 +3,11 @@ package com.boivalenko.businessapp.teamtasksplanning.web.auth.entity;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
 
 /*
 Alle Benutzeraktivitäten
@@ -23,7 +21,7 @@ Aktionen nach Bedarf)
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper=false)
 @DynamicInsert
 @DynamicUpdate
 @Cacheable(value = true)
@@ -43,7 +41,7 @@ public class Activity extends BaseEntity {
     // den Benutzer als "true" eingesetzt
     @Basic
     @Column(name = "activated", nullable = true)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
     private Boolean activated;
 
     // Daten von der Tabelle EmployeeVm braucht man
