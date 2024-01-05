@@ -35,7 +35,7 @@ public class TaskService implements IBaseService<Task> {
     private final TaskRepository taskRepository;
 
     @Override
-    public ResponseEntity<Task> save(Task task) {
+    public ResponseEntity save(Task task) {
         if (task.getId() != null) {
             return new ResponseEntity("ID wird automatisch generiert. Man muss das nicht eingeben",
                     HttpStatus.NOT_ACCEPTABLE);
@@ -46,11 +46,14 @@ public class TaskService implements IBaseService<Task> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(this.taskRepository.save(task));
+        this.taskRepository.save(task);
+
+        return new ResponseEntity("Task ist erfolgreich abgespeichert", HttpStatus.OK);
+
     }
 
     @Override
-    public ResponseEntity<Task> update(Task task) {
+    public ResponseEntity update(Task task) {
         if (task.getId() == null || task.getId() == 0) {
             return new ResponseEntity("ID darf weder NULL noch 0 sein",
                     HttpStatus.NOT_ACCEPTABLE);
@@ -66,11 +69,13 @@ public class TaskService implements IBaseService<Task> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(this.taskRepository.save(task));
+        this.taskRepository.save(task);
+
+        return new ResponseEntity("Task ist erfolgreich updated", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Task> deleteById(Long id) {
+    public ResponseEntity deleteById(Long id) {
         if (id == 0) {
             return new ResponseEntity("ID darf nicht 0 sein",
                     HttpStatus.NOT_ACCEPTABLE);

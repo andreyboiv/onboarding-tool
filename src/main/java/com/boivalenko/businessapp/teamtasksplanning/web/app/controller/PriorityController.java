@@ -19,17 +19,17 @@ public class PriorityController {
     private final PriorityService priorityService;
 
     @PostMapping("/save")
-    public ResponseEntity<Priority> save(@RequestBody Priority priority) {
+    public ResponseEntity<String> save(@RequestBody Priority priority) {
         return this.priorityService.save(priority);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Priority> update(@RequestBody Priority priority) {
+    public ResponseEntity<String> update(@RequestBody Priority priority) {
         return this.priorityService.update(priority);
     }
 
     @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Priority> deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
         return this.priorityService.deleteById(id);
     }
 

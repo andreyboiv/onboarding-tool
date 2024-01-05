@@ -1,5 +1,7 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.filter;
 
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.repository.EmployeeRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeDetailsImpl;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.JwtUtils;
@@ -10,7 +12,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -20,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +32,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private final CookieUtils cookieUtils;
     private final JwtUtils jwtUtils;
+
+    private final EmployeeRepository employeeRepository;
 
     // Das ist Open API -
     // URL's, die keine Autorisation brauchen
@@ -52,7 +59,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         // es kam eine Request nicht von Open API. Daher braucht eine Authentication...
-        if (!isRequestToPublicAPI
+        if (!isRequestToPublicAPI &&
+
+        //https://stackoverflow.com/questions/36353532/angular2-options-method-sent-when-asking-for-http-get
+        //https://medium.com/@theflyingmantis/cors-csrf-91ba8487c5fd
+        !request.getMethod().equals(HttpMethod.OPTIONS.toString())
                 //&&
         // falls der User keine Authentication durchgeführt wurde. Daher braucht eine Authentication...
            //     SecurityContextHolder.getContext().getAuthentication() == null
@@ -71,9 +82,27 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                     if (this.jwtUtils.validate(jwt)) {
 
                         //EmployeeVm kommt aus dem Token
-                        EmployeeVm employee = this.jwtUtils.getEmployee(jwt);
+                        EmployeeVm employeeVm = this.jwtUtils.getEmployee(jwt);
 
-                        EmployeeDetailsImpl userDetails = new EmployeeDetailsImpl(employee);
+                        EmployeeDetailsImpl userDetails = new EmployeeDetailsImpl(employeeVm);
+
+                        Employee employee = null;
+
+                        String login = userDetails.getEmployee().getLogin();
+
+                        Optional<Employee> employeeByLogin = this.employeeRepository.findEmployeeByLogin(login);
+
+                        if (employeeByLogin.isPresent()) {
+                            employee = employeeByLogin.get();
+                        }
+
+                        if (employee == null) {
+                            throw new DisabledException("Employee nicht gefunden. Employee Login:" + login);
+                        }
+
+                        if (Boolean.FALSE.equals(employee.getActivity().getActivated())) {
+                            throw new DisabledException("Employee ist nicht aktiviert");
+                        }
 
                         UsernamePasswordAuthenticationToken authenticationToken =
                                 new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());

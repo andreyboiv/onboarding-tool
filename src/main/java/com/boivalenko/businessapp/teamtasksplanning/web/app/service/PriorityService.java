@@ -20,7 +20,7 @@ public class PriorityService implements IBaseService<Priority> {
     private final PriorityRepository priorityRepository;
 
     @Override
-    public ResponseEntity<Priority> save(Priority priority) {
+    public ResponseEntity save(Priority priority) {
         if (priority.getId() != null) {
             return new ResponseEntity("ID wird automatisch generiert. Man muss das nicht eingeben",
                     HttpStatus.NOT_ACCEPTABLE);
@@ -31,11 +31,13 @@ public class PriorityService implements IBaseService<Priority> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(this.priorityRepository.save(priority));
+        this.priorityRepository.save(priority);
+
+        return new ResponseEntity("Priority ist erfolgreich abgespeichert", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Priority> update(Priority priority) {
+    public ResponseEntity update(Priority priority) {
         if (priority.getId() == null || priority.getId() == 0) {
             return new ResponseEntity("ID darf weder NULL noch 0 sein",
                     HttpStatus.NOT_ACCEPTABLE);
@@ -51,11 +53,13 @@ public class PriorityService implements IBaseService<Priority> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(this.priorityRepository.save(priority));
+        this.priorityRepository.save(priority);
+
+        return new ResponseEntity("Priority ist erfolgreich updated", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Priority> deleteById(Long id) {
+    public ResponseEntity deleteById(Long id) {
         if (id == 0) {
             return new ResponseEntity("ID darf nicht 0 sein",
                     HttpStatus.NOT_ACCEPTABLE);
@@ -67,6 +71,7 @@ public class PriorityService implements IBaseService<Priority> {
         }
 
         this.priorityRepository.deleteById(id);
+
         return new ResponseEntity("Priority mit ID=" + id + " erfolgreich gelöscht", HttpStatus.OK);
     }
 

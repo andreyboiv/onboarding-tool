@@ -20,17 +20,17 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/save")
-    public ResponseEntity<Task> save(@RequestBody Task task) {
+    public ResponseEntity<String> save(@RequestBody Task task) {
         return this.taskService.save(task);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Task> update(@RequestBody Task task) {
+    public ResponseEntity<String> update(@RequestBody Task task) {
         return this.taskService.update(task);
     }
 
     @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Task> deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
         return this.taskService.deleteById(id);
     }
 

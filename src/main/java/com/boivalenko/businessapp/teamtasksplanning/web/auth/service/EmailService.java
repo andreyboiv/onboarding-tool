@@ -81,6 +81,57 @@ public class EmailService {
         return new AsyncResult<>(false);
     }
 
+    //Eine "Hallo" E-Mail wird geschickt.
+    @Async
+    public Future<Boolean> sendAktivierungsEmail(String email, String login){
+        try {
+            MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
+
+            String htmlMsg = String.format("Hallo Liebe(-r) %s. Willkommen beim Team. " +
+                    "Nun dürfen Sie sich einloggen/ausloggen. Außerdem können Sie ihr Password ändern", login);
+
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Willkomen beim Team. Ein Team mit Teamtaskplanning!!!");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new AsyncResult<>(false);
+    }
+    @Async
+    public Future<Boolean> sendDeaktivierungsEmail(String email, String login) {
+        try {
+            MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
+
+            String htmlMsg = String.format("Hallo Liebe(-r) %s. Wir müssen Ihnen mitteilen, " +
+                    "Ihr Account ist deaktiviert.", login);
+
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Account Deaktivierung");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new AsyncResult<>(false);
+    }
+
+    @Async
+    public Future<Boolean> sendPasswordGeandertEmail(String email, String login) {
+        try {
+            MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
+
+            String htmlMsg = String.format("Hallo Liebe(-r) %s. Ihr Password wurde erfolgreich geändert. " +
+                    "Wenden Sie sich bitte zügig an Admin, falls Sie Ihr Password nicht geändert haben. ", login);
+
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Password erfolgreich geändert");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new AsyncResult<>(false);
+    }
+
     private Future<Boolean> sendMessage(String email, MimeMessage mimeMessage, MimeMessageHelper message, String htmlMsg, String s) throws MessagingException {
         mimeMessage.setContent(htmlMsg, "text/html");
 

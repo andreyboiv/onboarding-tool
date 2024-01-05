@@ -20,54 +20,58 @@ public class CategoryService implements IBaseService<Category> {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public ResponseEntity<Category> save(Category category) {
+    public ResponseEntity save(Category category) {
         if (category.getId() != null) {
-            return new ResponseEntity("ID wird automatisch generiert. Man muss das nicht eingeben",
+            return new ResponseEntity<>("ID wird automatisch generiert. Man muss das nicht eingeben",
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (category.getTitle().isEmpty() || category.getTitle().toLowerCase().contains("null")) {
-            return new ResponseEntity("TITLE darf weder NULL noch leer sein",
+            return new ResponseEntity<>("TITLE darf weder NULL noch leer sein",
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(this.categoryRepository.save(category));
+        this.categoryRepository.save(category);
+
+        return new ResponseEntity<>("Category ist erfolgreich abgespeichert", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Category> update(Category category) {
+    public ResponseEntity update(Category category) {
         if (category.getId() == null || category.getId() == 0) {
-            return new ResponseEntity("ID darf weder NULL noch 0 sein",
+            return new ResponseEntity<>("ID darf weder NULL noch 0 sein",
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (category.getTitle().isEmpty() || category.getTitle().toLowerCase().contains("null")) {
-            return new ResponseEntity("TITLE darf weder NULL noch leer sein",
+            return new ResponseEntity<>("TITLE darf weder NULL noch leer sein",
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (!this.categoryRepository.existsById(category.getId())) {
-            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, category.getId()),
+            return new ResponseEntity<>(String.format(ID_NICHT_GEFUNDEN, category.getId()),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(this.categoryRepository.save(category));
+        this.categoryRepository.save(category);
+
+        return new ResponseEntity<>("Category ist erfolgreich updated", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Category> deleteById(Long id) {
+    public ResponseEntity deleteById(Long id) {
         if (id == 0) {
-            return new ResponseEntity("ID darf nicht 0 sein",
+            return new ResponseEntity<>("ID darf nicht 0 sein",
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (!this.categoryRepository.existsById(id)) {
-            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
+            return new ResponseEntity<>(String.format(ID_NICHT_GEFUNDEN, id),
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
         this.categoryRepository.deleteById(id);
-        return new ResponseEntity("Category mit ID=" + id + " erfolgreich gelöscht", HttpStatus.OK);
+        return new ResponseEntity<>("Category mit ID=" + id + " erfolgreich gelöscht", HttpStatus.OK);
 
     }
 

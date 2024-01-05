@@ -20,6 +20,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findEmployeeByEmail(String email);
 
+    Optional<Employee> findEmployeeByActivity_Uuid(String uuid);
+
     //Es wird die Anzahl von geänderten Datensätzen zurückgegeben. Es muss 1 gegeben werden
     @Modifying
     @Transactional

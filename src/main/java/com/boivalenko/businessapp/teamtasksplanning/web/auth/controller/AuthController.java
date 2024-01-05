@@ -38,21 +38,21 @@ public class AuthController {
     //Log Out aus dem System. Es wird Cookie mit 0 Age erstellt,
     // dabei wird alte Cookie überschrieben und im Endeffekt vom Browser entfernt
     @PostMapping("/logout")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<String> logOut() {
         return this.employeeService.logOut();
     }
 
     @PostMapping("/update-password")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<String> updatePassword(@RequestBody String password) {
         return this.employeeService.updatePassword(password);
     }
 
     // Employee Deaktivierung
-    @PostMapping("/deactivate-account")
+    @PostMapping("/account-deactivate")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Boolean> deActivateEmployee(@RequestBody String uuid) {
+    public ResponseEntity<String> deActivateEmployee(@RequestBody String uuid) {
         return this.employeeService.deActivateEmployee(uuid);
     }
 
