@@ -1,8 +1,8 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.app.controller;
 
+import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.search.CategorySearchValues;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.service.CategoryService;
-import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,7 +1,5 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.filter;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
-import com.boivalenko.businessapp.teamtasksplanning.web.auth.repository.EmployeeRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeDetailsImpl;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.JwtUtils;
@@ -14,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -24,7 +21,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -33,7 +29,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private final CookieUtils cookieUtils;
     private final JwtUtils jwtUtils;
 
-    private final EmployeeRepository employeeRepository;
+    //private final EmployeeRepository employeeRepository;
 
     // Das ist Open API -
     // URL's, die keine Autorisation brauchen
@@ -43,7 +39,16 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             "activate-account",
             "login",
             "resend-activate-email",
-            "send-reset-password-email"
+            "send-reset-password-email",
+
+            // Category Controller
+            "category/save",
+            "category/update",
+            "category/deleteById",
+            "category/findById",
+            "category/findAll",
+            "category/findAllByEmail",
+            "category/findAllByEmailQuery"
     );
 
     //Dieser Method wird jedes Mal automatisch bei jedem Request ausgeführt
@@ -52,7 +57,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         boolean isRequestToPublicAPI = false;
         for (String url : permitURL) {
-            if (request.getRequestURI().toLowerCase().contains(url)) {
+            if (request.getRequestURI().toLowerCase().contains(url.toLowerCase())) {
                 isRequestToPublicAPI = true;
                 break;
             }
@@ -86,6 +91,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                         EmployeeDetailsImpl userDetails = new EmployeeDetailsImpl(employeeVm);
 
+
+                        /*
+                        Falls extra Validierung benötigt wird, um eine Aktivierung eines Employees zu checken.
+                        Ansonsten ist das ein unnötiger Request zur Datenbank
+
                         Employee employee = null;
 
                         String login = userDetails.getEmployee().getLogin();
@@ -103,6 +113,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                         if (Boolean.FALSE.equals(employee.getActivity().getActivated())) {
                             throw new DisabledException("Employee ist nicht aktiviert");
                         }
+                         */
 
                         UsernamePasswordAuthenticationToken authenticationToken =
                                 new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
