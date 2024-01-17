@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.repository;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ class CategoryRepositoryTest {
     // findByEmployeesToCategoryEmailOrderByTitleAsc
     // Negative Tests
     @Test
+    @Transactional
     void findByEmployeesToCategoryEmailOrderByTitleAsc_email_null() {
         String email = null;
         List<Category> list = this.categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email);
@@ -40,6 +42,7 @@ class CategoryRepositoryTest {
     }
 
     @Test
+    @Transactional
     void findByEmployeesToCategoryEmailOrderByTitleAsc_email_leer() {
         String email = "";
         List<Category> list = this.categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email);
@@ -50,6 +53,7 @@ class CategoryRepositoryTest {
     // findByEmployeesToCategoryEmailOrderByTitleAsc
     // Positive Tests
     @Test
+    @Transactional
     void findByEmployeesToCategoryEmailOrderByTitleAsc() {
         List<Category> list = this.categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(EMAIL_MUSTER_REPOSITORY_TEST);
         Assertions.assertFalse(list.isEmpty());

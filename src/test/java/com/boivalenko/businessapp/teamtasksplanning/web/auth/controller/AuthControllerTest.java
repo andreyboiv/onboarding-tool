@@ -1,11 +1,10 @@
-package com.boivalenko.businessapp.teamtasksplanning.web.app.controller;
+package com.boivalenko.businessapp.teamtasksplanning.web.auth.controller;
 
-import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
-import com.boivalenko.businessapp.teamtasksplanning.web.app.search.CategorySearchValues;
-import com.boivalenko.businessapp.teamtasksplanning.web.app.service.CategoryService;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Activity;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.JwtUtils;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,15 +24,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 //To exclude security
 // filters in your MockMvc tests,
@@ -42,10 +40,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = CategoryController.class,
+@WebMvcTest(controllers = AuthController.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc(addFilters = false)
-class CategoryControllerTest {
+class AuthControllerTest {
 
     @MockBean
     CookieUtils cookieUtils;
@@ -54,26 +52,29 @@ class CategoryControllerTest {
     JwtUtils jwtUtils;
 
     @MockBean
-    CategoryService categoryService;
+    EmployeeService employeeService;
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
-    @DisplayName("Category can be saved")
-    void save() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
+    @DisplayName("Employee can be register")
+    void register() throws Exception {
+        EmployeeVm employeeVm = new EmployeeVm();
+        employeeVm.setLogin("musterLogin");
+        employeeVm.setPassword("musterPassword");
+        employeeVm.setEmail("musteremail@email.de");
         HttpStatus httpStatus = HttpStatus.OK;
 
-        ResponseEntity<Category> response = new ResponseEntity<>(category, httpStatus);
-        when(this.categoryService.save(any(Category.class)))
+        ResponseEntity response = new ResponseEntity<>(employeeVm, httpStatus);
+        when(this.employeeService.register(any(EmployeeVm.class)))
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
 
-        String contentRequestResponse = mapper.writeValueAsString(category);
+        String contentRequestResponse = mapper.writeValueAsString(employeeVm);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/save")
+                MockMvcRequestBuilders.put("/auth/register")
                         .content(contentRequestResponse)
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,33 +90,77 @@ class CategoryControllerTest {
                 ).andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        Category categoryJson = mapper.readValue(contentAsString, Category.class);
+        EmployeeVm employeeOutput = mapper.readValue(contentAsString, EmployeeVm.class);
 
-        assertEquals(categoryJson.getTitle(), category.getTitle());
-        assertEquals(categoryJson.getCompletedCount(), category.getCompletedCount());
-        assertEquals(categoryJson.getUncompletedCount(), category.getUncompletedCount());
+        assertEquals(employeeOutput.getLogin(), employeeVm.getLogin());
+        assertEquals(employeeOutput.getEmail(), employeeVm.getEmail());
+        assertEquals(employeeOutput.getPassword(), employeeVm.getPassword());
 
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).save(any(Category.class));
+        verify(this.employeeService, times(1)).register(any(EmployeeVm.class));
     }
 
 
     @Test
-    @DisplayName("Category can be updated")
-    void update() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
+    @DisplayName("Account von einem Employee can be activate")
+    void activateEmployee() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        Activity activity = new Activity(uuid, false, null);
         HttpStatus httpStatus = HttpStatus.OK;
 
-        ResponseEntity<Category> response = new ResponseEntity<>(category, httpStatus);
-        when(this.categoryService.update(any(Category.class)))
+        ResponseEntity response = new ResponseEntity<>(activity, httpStatus);
+        when(this.employeeService.activateEmployee(uuid))
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
 
-        String contentRequestResponse = mapper.writeValueAsString(category);
+        String contentRequestResponse = mapper.writeValueAsString(activity);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.put("/category/update")
+                MockMvcRequestBuilders.post("/auth/activate-account")
+                        .content(uuid)
+                        .characterEncoding(Encoding.DEFAULT_CHARSET)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult mvcResult = this.mockMvc.perform(mockHttpServletRequestBuilder)
+                .andDo(print())
+                .andExpectAll(
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
+                        content().json(contentRequestResponse),
+                        status().isOk()
+                ).andReturn();
+
+        String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
+        Activity activityOutput = mapper.readValue(contentAsString, Activity.class);
+
+        assertEquals(HttpStatus.OK, httpStatus);
+        assertEquals(activityOutput.getUuid(), activity.getUuid());
+
+
+        verify(this.employeeService, times(1)).activateEmployee(uuid);
+    }
+
+
+    @Test
+    @DisplayName("Employee kann sich einloggen")
+    void logIn() throws Exception {
+        EmployeeVm employeeVm = new EmployeeVm();
+        employeeVm.setLogin("musterLogin");
+        employeeVm.setPassword("musterPassword");
+        employeeVm.setEmail("musteremail@email.de");
+        HttpStatus httpStatus = HttpStatus.OK;
+
+        ResponseEntity response = new ResponseEntity<>(employeeVm, httpStatus);
+        when(this.employeeService.logIn(any(EmployeeVm.class)))
+                .thenReturn(response);
+        ObjectMapper mapper = new ObjectMapper();
+
+        String contentRequestResponse = mapper.writeValueAsString(employeeVm);
+
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
+                MockMvcRequestBuilders.post("/auth/login")
                         .content(contentRequestResponse)
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -131,34 +176,36 @@ class CategoryControllerTest {
                 ).andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        Category categoryJson = mapper.readValue(contentAsString, Category.class);
+        EmployeeVm employeeOutput = mapper.readValue(contentAsString, EmployeeVm.class);
 
-        assertEquals(categoryJson.getTitle(), category.getTitle());
-        assertEquals(categoryJson.getCompletedCount(), category.getCompletedCount());
-        assertEquals(categoryJson.getUncompletedCount(), category.getUncompletedCount());
+        assertEquals(employeeOutput.getLogin(), employeeVm.getLogin());
+        assertEquals(employeeOutput.getEmail(), employeeVm.getEmail());
+        assertEquals(employeeOutput.getPassword(), employeeVm.getPassword());
 
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).update(any(Category.class));
+        verify(this.employeeService, times(1)).logIn(any(EmployeeVm.class));
     }
 
+
     @Test
-    @DisplayName("Category can be deleted")
-    void deleteById() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
-        Long id = 1L;
-        category.setId(id);
+    @DisplayName("Employee kann sich auslogen")
+    void logOut() throws Exception {
+        EmployeeVm employeeVm = new EmployeeVm();
+        employeeVm.setLogin("musterLogin");
+        employeeVm.setPassword("musterPassword");
+        employeeVm.setEmail("musteremail@email.de");
         HttpStatus httpStatus = HttpStatus.OK;
 
-        ResponseEntity<Category> response = new ResponseEntity<>(category, httpStatus);
-        when(this.categoryService.deleteById(any(Long.class)))
+        ResponseEntity response = new ResponseEntity<>(employeeVm, httpStatus);
+        when(this.employeeService.logOut())
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
 
-        String contentResponse = mapper.writeValueAsString(category);
+        String contentResponse = mapper.writeValueAsString(employeeVm);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.delete("/category/deleteById/" + id)
+                MockMvcRequestBuilders.post("/auth/logout")
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON);
@@ -173,37 +220,36 @@ class CategoryControllerTest {
                 ).andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        Category categoryJson = mapper.readValue(contentAsString, Category.class);
+        EmployeeVm employeeOutput = mapper.readValue(contentAsString, EmployeeVm.class);
 
-        assertEquals(categoryJson.getTitle(), category.getTitle());
-        assertEquals(categoryJson.getCompletedCount(), category.getCompletedCount());
-        assertEquals(categoryJson.getUncompletedCount(), category.getUncompletedCount());
+        assertEquals(employeeOutput.getLogin(), employeeVm.getLogin());
+        assertEquals(employeeOutput.getEmail(), employeeVm.getEmail());
+        assertEquals(employeeOutput.getPassword(), employeeVm.getPassword());
 
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).deleteById(any(Long.class));
+        verify(this.employeeService, times(1)).logOut();
     }
 
     @Test
-    @DisplayName("Category can be found")
-    void findById() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
-        Long id = 1L;
-        category.setId(id);
+    @DisplayName("Employee kann sein password ändern")
+    void updatePassword() throws Exception {
+        EmployeeVm employeeVm = new EmployeeVm();
+        employeeVm.setLogin("musterLogin");
+        employeeVm.setPassword("musterPassword");
+        employeeVm.setEmail("musteremail@email.de");
         HttpStatus httpStatus = HttpStatus.OK;
 
-        ResponseEntity<Category> response = new ResponseEntity<>(category, httpStatus);
-        when(this.categoryService.findById(any(Long.class)))
+        ResponseEntity response = new ResponseEntity<>(employeeVm, httpStatus);
+        when(this.employeeService.updatePassword(employeeVm.getPassword()))
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
 
-        String contentRequest = String.valueOf(id);
-        String contentResponse = mapper.writeValueAsString(category);
-
+        String contentResponse = mapper.writeValueAsString(employeeVm);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/findById")
-                        .content(contentRequest)
+                MockMvcRequestBuilders.post("/auth/update-password")
+                        .content(employeeVm.getPassword())
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON);
@@ -218,34 +264,35 @@ class CategoryControllerTest {
                 ).andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        Category categoryJson = mapper.readValue(contentAsString, Category.class);
+        EmployeeVm employeeOutput = mapper.readValue(contentAsString, EmployeeVm.class);
 
-        assertEquals(categoryJson.getTitle(), category.getTitle());
-        assertEquals(categoryJson.getCompletedCount(), category.getCompletedCount());
-        assertEquals(categoryJson.getUncompletedCount(), category.getUncompletedCount());
+        assertEquals(employeeOutput.getLogin(), employeeVm.getLogin());
+        assertEquals(employeeOutput.getEmail(), employeeVm.getEmail());
+        assertEquals(employeeOutput.getPassword(), employeeVm.getPassword());
 
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).findById(any(Long.class));
+        verify(this.employeeService, times(1)).updatePassword(employeeVm.getPassword());
     }
 
-    @Test
-    @DisplayName("Find all Categories")
-    void findAll() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
-        Category category2 = new Category("musterTitle2", 9999L, 9999L, null);
-        List<Category> categories = List.of(category, category2);
 
+    @Test
+    @DisplayName("Employee kann deaktiviert werden")
+    void deActivateEmployee() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        Activity activity = new Activity(uuid, false, null);
         HttpStatus httpStatus = HttpStatus.OK;
 
-        ResponseEntity<List<Category>> response = new ResponseEntity<>(categories, httpStatus);
-        when(this.categoryService.findAll())
+        ResponseEntity response = new ResponseEntity<>(activity, httpStatus);
+        when(this.employeeService.deActivateEmployee(activity.getUuid()))
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
-        String contentResponse = mapper.writeValueAsString(categories);
+
+        String contentResponse = mapper.writeValueAsString(activity);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/findAll")
+                MockMvcRequestBuilders.post("/auth/account-deactivate")
+                        .content(activity.getUuid())
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON);
@@ -260,39 +307,34 @@ class CategoryControllerTest {
                 ).andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        List<Category> categoriesOutput = mapper.readValue(contentAsString, new TypeReference<>() {
-        });
+        Activity activityOutput = mapper.readValue(contentAsString, Activity.class);
 
-        assertFalse(categoriesOutput.isEmpty());
-        assertEquals(categoriesOutput.size(), categories.size());
-
+        assertEquals(activity.getUuid(), activityOutput.getUuid());
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).findAll();
+        verify(this.employeeService, times(1)).deActivateEmployee(activity.getUuid());
     }
 
-    @Test
-    @DisplayName("Find all Categories by Email")
-    void findAllByEmail() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
-        Category category2 = new Category("musterTitle2", 9999L, 9999L, null);
-        Category category3 = new Category("musterTitle3", 99999L, 99999L, null);
-        List<Category> categories = List.of(category, category2, category3);
 
+    @Test
+    @DisplayName("Es kann eine E-mail mit der Aktivierung an einen Employee gesendet werden")
+    void resendActivateEmail() throws Exception {
+        EmployeeVm employeeVm = new EmployeeVm();
+        employeeVm.setLogin("musterLogin");
+        employeeVm.setPassword("musterPassword");
+        employeeVm.setEmail("musteremail@email.de");
         HttpStatus httpStatus = HttpStatus.OK;
 
-        ResponseEntity<List<Category>> response = new ResponseEntity<>(categories, httpStatus);
-
-        when(this.categoryService.findAllByEmail(any(String.class)))
+        ResponseEntity response = new ResponseEntity<>(employeeVm, httpStatus);
+        when(this.employeeService.resendActivateEmail(employeeVm.getEmail()))
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
 
-        String contentRequest = "musteremail@muster.de";
-        String contentResponse = mapper.writeValueAsString(categories);
+        String contentResponse = mapper.writeValueAsString(employeeVm);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/findAllByEmail")
-                        .content(contentRequest)
+                MockMvcRequestBuilders.post("/auth/resend-activate-email")
+                        .content(employeeVm.getEmail())
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON);
@@ -307,42 +349,33 @@ class CategoryControllerTest {
                 ).andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        List<Category> categoriesOutput = mapper.readValue(contentAsString, new TypeReference<>() {
-        });
+        EmployeeVm employeeOutput = mapper.readValue(contentAsString, EmployeeVm.class);
 
-        assertFalse(categoriesOutput.isEmpty());
-        assertEquals(categoriesOutput.size(), categories.size());
-
+        assertEquals(employeeOutput.getEmail(), employeeVm.getEmail());
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).findAllByEmail(any(String.class));
+        verify(this.employeeService, times(1)).resendActivateEmail(employeeOutput.getEmail());
     }
 
-
     @Test
-    @DisplayName("Find all Categories by EmailQuery")
-    void findAllByEmailQuery() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
-        Category category2 = new Category("musterTitle2", 9999L, 9999L, null);
-        Category category3 = new Category("musterTitle3", 99999L, 99999L, null);
-        List<Category> categories = List.of(category, category2, category3);
-
-        CategorySearchValues categorySearchValues = new CategorySearchValues("musterTitle","email");
-
+    @DisplayName("Es kann eine E-mail mit dem ResetPassword an einen Employee gesendet werden")
+    void sendResetPasswordEmail() throws Exception {
+        EmployeeVm employeeVm = new EmployeeVm();
+        employeeVm.setLogin("musterLogin");
+        employeeVm.setPassword("musterPassword");
+        employeeVm.setEmail("musteremail@email.de");
         HttpStatus httpStatus = HttpStatus.OK;
 
-        ResponseEntity<List<Category>> response = new ResponseEntity<>(categories, httpStatus);
-
-        when(this.categoryService.findAllByEmailQuery(any(String.class), any(String.class)))
+        ResponseEntity response = new ResponseEntity<>(employeeVm, httpStatus);
+        when(this.employeeService.sendResetPasswordEmail(employeeVm.getEmail()))
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
 
-        String contentRequest = mapper.writeValueAsString(categorySearchValues);
-        String contentResponse = mapper.writeValueAsString(categories);
+        String contentResponse = mapper.writeValueAsString(employeeVm);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/findAllByEmailQuery")
-                        .content(contentRequest)
+                MockMvcRequestBuilders.post("/auth/send-reset-password-email")
+                        .content(employeeVm.getEmail())
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON);
@@ -357,15 +390,11 @@ class CategoryControllerTest {
                 ).andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        List<Category> categoriesOutput = mapper.readValue(contentAsString, new TypeReference<>() {
-        });
+        EmployeeVm employeeOutput = mapper.readValue(contentAsString, EmployeeVm.class);
 
-        assertFalse(categoriesOutput.isEmpty());
-        assertEquals(categoriesOutput.size(), categories.size());
-
+        assertEquals(employeeOutput.getEmail(), employeeVm.getEmail());
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).findAllByEmailQuery(any(String.class), any(String.class));
+        verify(this.employeeService, times(1)).sendResetPasswordEmail(employeeOutput.getEmail());
     }
-
 }

@@ -130,8 +130,8 @@ class CategoryServiceTest {
         Category category = new Category("Title", null,
                 null, new Employee());
         category.setId(1L);
-        ResponseEntity<Category> categoryResponseEntity = this.categoryService.update(category);
         when(categoryRepository.existsById(category.getId())).thenReturn(Boolean.FALSE);
+        ResponseEntity<Category> categoryResponseEntity = this.categoryService.update(category);
 
         Assertions.assertEquals(String.format(CategoryService.ID_NICHT_GEFUNDEN, category.getId()), categoryResponseEntity.getBody());
         verify(this.categoryRepository, times(0)).save(any(Category.class));

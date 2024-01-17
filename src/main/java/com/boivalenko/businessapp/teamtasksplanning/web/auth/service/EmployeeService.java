@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +29,36 @@ import static com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.Employ
 @Transactional
 @RequiredArgsConstructor
 public class EmployeeService {
+
+    public static final String ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN = "Es existiert schon ein Employee mit dem Login";
+    public static final String ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL = "Es existiert schon ein Employee mit der E-mail";
+    public static final String ACTIVITY_NICHT_GEFUNDEN_EMPLOYEE_ID = "Activity nicht gefunden. EmployeeID:";
+    public static final String EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT = "Employee ist erfolgreich registriert. Die E-mail mit einem Aktivierungslink ist abgeschickt";
+    public static final String UUID_DARF_NICHT_LEER_SEIN = "UUID darf nicht leer sein";
+    public static final String ACTIVITY_NICHT_GEFUNDEN_UUID = "Activity nicht gefunden. UUID:";
+    public static final String EMPLOYEE_IST_SCHON_AKTIVIERT = "Employee ist schon aktiviert";
+    public static final String AKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT = "Aktivierung des Employee ist nicht geklappt";
+    public static final String EMPLOYEE_NICHT_GEFUNDEN_UUID = "Employee nicht gefunden. UUID:";
+    public static final String EMPLOYEE_IST_ERFOLGREICH_AKTIVIERT_SIE_ERHALTEN_BALD_EINE_E_MAIL_MIT_BEGR_UESS_UNG = "Employee ist erfolgreich aktiviert. Sie erhalten bald eine E-mail mit Begrüßung";
+    public static final String EMPLOYEE_IST_SCHON_DEAKTIVIERT = "Employee ist schon deaktiviert";
+    public static final String DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT = "Deaktivierung des Employee ist nicht geklappt";
+    public static final String DER_EMPLOYEE_UUID = "Der Employee (uuid:";
+    public static final String IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL = ") ist erfolgreich deaktiviert. Dabei erhält er eine Benachrichtigung per E-mail";
+    public static final String PASSWORD_DARF_NICHT_LEER_SEIN = "Password darf nicht leer sein";
+    public static final String PASSWORD_MUSS_MINDESTENS = "PASSWORD muss mindestens ";
+    public static final String SYMBOLE_ENTHALTEN = " Symbole enthalten";
+    public static final String PASSWORD_WURDE_NICHT_GEAENDERT = "Password wurde nicht geändert";
+    public static final String PASSWORD_WURDE_ERFOLGREICH_GEAENDERT = "Password wurde erfolgreich geändert";
+    public static final String EMPLOYEE_HAT_SICH_ERFOLGREICH_EINGELOGGT = "Employee hat sich erfolgreich eingeloggt";
+    public static final String EMPLOYEE_HAT_SICH_ERFOLGREICH_AUSGELOGGT = "Employee hat sich erfolgreich ausgeloggt";
+    public static final String WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN = "Weder Login noch E-mail dürfen leer sein";
+    public static final String EMPLOYEE_IST_SCHON_AKTIVIERT_SIE_BRAUCHEN_KEINE_REAKTIVIERUNG = "Employee ist schon aktiviert. Sie brauchen keine Reaktivierung";
+    public static final String EMAIL_MIT_AKTIVIERUNGSLINK = "Die E-mail mit dem Aktivierungslink " +
+            "erhalten Sie bald wieder. Schauen Sie bitte außerdem Ihren Spam-Ordner an";
+    public static final String E_MAIL_DARF_NICHT_LEER_SEIN = "E-mail darf nicht leer sein";
+    public static final String RESET_PASSWORD_EMAIL = "Die E-mail mit dem entsprenden Link (mit Token Bearer), um das Password für Ihr Account zu ändern," +
+            " erhalten Sie bald wieder. Schauen Sie bitte außerdem Ihren Spam-Ordner an";
+    public static final String EMPLOYEE_IST_NICHT_AKTIVIERT = "Employee ist nicht aktiviert";
 
     private final EmailService emailService;
     private final EmployeeDetailsServiceImpl employeeDetailsService;
@@ -50,12 +79,12 @@ public class EmployeeService {
         }
 
         if (this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())) {
-            String error = "Es existiert schon ein Employee mit dem Login";
+            String error = ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN;
             return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())) {
-            String error = "Es existiert schon ein Employee mit der E-mail";
+            String error = ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL;
             return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -74,13 +103,13 @@ public class EmployeeService {
         }
 
         if (activity == null) {
-            return new ResponseEntity<>("Activity nicht gefunden. EmployeeID:" + employee.getId(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_EMPLOYEE_ID + employee.getId(), HttpStatus.NOT_ACCEPTABLE);
         }
 
         //es wird eine E-Mail mit Account Aktivierung Benachrichtigung herausgeschickt
         this.emailService.sendActivationEmail(employeeVm.getEmail(), employeeVm.getLogin(), activity.getUuid());
 
-        return new ResponseEntity<>("Employee ist erfolgreich registriert. Die E-mail mit einem Aktivierungslink ist abgeschickt", HttpStatus.OK);
+        return new ResponseEntity<>(EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT, HttpStatus.OK);
     }
 
     private Employee getEmployeeFromEmployeePojo(EmployeeVm employeeVm) {
@@ -99,7 +128,7 @@ public class EmployeeService {
     public ResponseEntity<String> activateEmployee(String uuid){
 
         if (uuid == null || uuid.isEmpty()) {
-            return new ResponseEntity("UUID darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(UUID_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // UUID Prüfung
@@ -112,35 +141,37 @@ public class EmployeeService {
         }
 
         if (activity == null) {
-            return new ResponseEntity<>("Activity nicht gefunden. UUID:" + uuid, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //wenn der Employee bereits zuvor aktiviert wurde
         if (Boolean.TRUE.equals(activity.getActivated())) {
-            return new ResponseEntity<>("Employee ist schon aktiviert", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(EMPLOYEE_IST_SCHON_AKTIVIERT, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // gibt die Anzahl der aktualisierten Datensätze zurück (sollte 1 sein)
         int updatedCount = this.activityRepository.activate(uuid);
 
         if (updatedCount != 1) {
-            return new ResponseEntity<>("Aktivierung des Employee ist nicht geklappt", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(AKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, HttpStatus.NOT_ACCEPTABLE);
         }
 
         Optional<Employee> employee = this.employeeRepository.findEmployeeByActivity_Uuid(uuid);
 
-        if (employee.isPresent()) {
-            //es wird eine E-Mail mit weiteren Hinweisen nach der erfolgreichen Aktivierung abgeschickt.
-            this.emailService.sendAktivierungsEmail(employee.get().getEmail(), employee.get().getLogin());
+        if (!employee.isPresent()) {
+            return new ResponseEntity<>(EMPLOYEE_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<>("Employee ist erfolgreich aktiviert. Sie erhalten bald eine E-mail mit Begrüßung", HttpStatus.OK);
+        //es wird eine E-Mail mit weiteren Hinweisen nach der erfolgreichen Aktivierung abgeschickt.
+        this.emailService.sendAktivierungsEmail(employee.get().getEmail(), employee.get().getLogin());
+
+        return new ResponseEntity<>(EMPLOYEE_IST_ERFOLGREICH_AKTIVIERT_SIE_ERHALTEN_BALD_EINE_E_MAIL_MIT_BEGR_UESS_UNG, HttpStatus.OK);
     }
 
     public ResponseEntity<String> deActivateEmployee(String uuid) {
 
         if (uuid == null || uuid.isEmpty()) {
-            return new ResponseEntity("UUID darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(UUID_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // UUID Prüfung
@@ -153,35 +184,35 @@ public class EmployeeService {
         }
 
         if (activity == null) {
-            return new ResponseEntity<>("Activity nicht gefunden. UUID:" + uuid, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // Wenn der Employee bereits zuvor deaktiviert wurde
         if (Boolean.FALSE.equals(activity.getActivated())) {
-            return new ResponseEntity<>("Employee ist schon deaktiviert", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(EMPLOYEE_IST_SCHON_DEAKTIVIERT, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // Gibt die Anzahl der aktualisierten Datensätze zurück (sollte 1 sein)
         int updatedCount = this.activityRepository.deActivate(uuid);
 
         if (updatedCount != 1) {
-            return new ResponseEntity<>("Deaktivierung des Employee ist nicht geklappt", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //es wird eine E-Mail mit weiteren Hinweisen nach der erfolgreichen Deaktivierung abgeschickt.
         this.emailService.sendDeaktivierungsEmail(activity.getEmployeeToActivity().getEmail(), activity.getEmployeeToActivity().getLogin());
 
-        return new ResponseEntity<>("Der Employee (uuid:" + uuid + ") ist erfolgreich deaktiviert. Dabei erhält er eine Benachrichtigung per E-mail", HttpStatus.OK);
+        return new ResponseEntity<>(DER_EMPLOYEE_UUID + uuid + IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL, HttpStatus.OK);
     }
 
     public ResponseEntity<String> updatePassword(String password) {
 
         if (password == null || password.isEmpty()) {
-            return new ResponseEntity<>("Password darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(PASSWORD_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (password.length() < MIN_PASSWORD_LENGTH) {
-            return new ResponseEntity<>("PASSWORD muss mindestens " + MIN_PASSWORD_LENGTH + " Symbole enthalten", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(PASSWORD_MUSS_MINDESTENS + MIN_PASSWORD_LENGTH + SYMBOLE_ENTHALTEN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -189,17 +220,17 @@ public class EmployeeService {
 
         int updateCount = this.employeeRepository.updatePassword(employeeDetails.getUsername(), this.passwordEncoder.encode(password));
 
-        if (updateCount == 1) {
-            this.emailService.sendPasswordGeandertEmail(employeeDetails.getEmail(), employeeDetails.getUsername());
-            return new ResponseEntity<>("Password wurde erfolgreich geändert", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Password wurde nicht geändert", HttpStatus.NOT_ACCEPTABLE);
+        if (updateCount != 1) {
+            return new ResponseEntity<>(PASSWORD_WURDE_NICHT_GEAENDERT, HttpStatus.NOT_ACCEPTABLE);
         }
+
+        this.emailService.sendPasswordGeandertEmail(employeeDetails.getEmail(), employeeDetails.getUsername());
+        return new ResponseEntity<>(PASSWORD_WURDE_ERFOLGREICH_GEAENDERT, HttpStatus.OK);
     }
 
     public ResponseEntity<String> logIn(EmployeeVm employeeVm) {
 
-        String employeeValid = EmployeeValid.isEmployeeValidWithOutEmail(employeeVm);
+        String employeeValid = EmployeeValid.isValidLoginAndPassword(employeeVm);
         if (!employeeValid.equals("")) {
             return new ResponseEntity<>(employeeValid, HttpStatus.NOT_ACCEPTABLE);
         }
@@ -214,7 +245,7 @@ public class EmployeeService {
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) authentication.getPrincipal();
 
         if (Boolean.FALSE.equals(employeeDetails.isActivated())) {
-            throw new DisabledException("Employee ist nicht aktiviert");
+            return new ResponseEntity<>(EMPLOYEE_IST_NICHT_AKTIVIERT, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //Employee hat sich erfolgreich eingeloggt
@@ -229,7 +260,7 @@ public class EmployeeService {
         // SET_COOKIE sagt, dass es um eine Server Side Cookie geht
         httpHeaders.add(HttpHeaders.SET_COOKIE, httpCookie.toString());
 
-        return new ResponseEntity<>("Employee hat sich erfolgreich eingeloggt", httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(EMPLOYEE_HAT_SICH_ERFOLGREICH_EINGELOGGT, httpHeaders, HttpStatus.OK);
     }
 
     public ResponseEntity<String> logOut() {
@@ -238,30 +269,29 @@ public class EmployeeService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return new ResponseEntity<>("Employee hat sich erfolgreich ausgeloggt", httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(EMPLOYEE_HAT_SICH_ERFOLGREICH_AUSGELOGGT, httpHeaders, HttpStatus.OK);
     }
 
     public ResponseEntity<String> resendActivateEmail(String usernameOrEmail) {
         if (usernameOrEmail == null || usernameOrEmail.isEmpty()) {
-            return new ResponseEntity<>("Weder Login noch E-mail dürfen leer sein", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(usernameOrEmail);
         EmployeeVm employee = employeeDetails.getEmployee();
 
         if (Boolean.TRUE.equals(employee.getActivity().getActivated())) {
-            return new ResponseEntity<>("Employee ist schon aktiviert. Sie brauchen keine Reaktivierung", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(EMPLOYEE_IST_SCHON_AKTIVIERT_SIE_BRAUCHEN_KEINE_REAKTIVIERUNG, HttpStatus.NOT_ACCEPTABLE);
         }
 
         this.emailService.sendActivationEmail(employee.getEmail(), employee.getLogin(), employee.getActivity().getUuid());
 
-        return new ResponseEntity<>("Die E-mail mit dem Aktivierungslink " +
-                "erhalten Sie bald wieder. Schauen Sie bitte außerdem Ihren Spam-Ordner an", HttpStatus.OK);
+        return new ResponseEntity<>(EMAIL_MIT_AKTIVIERUNGSLINK, HttpStatus.OK);
     }
 
     public ResponseEntity<String> sendResetPasswordEmail(String userDetails) {
         if (userDetails == null || userDetails.isEmpty()) {
-            return new ResponseEntity<>("E-mail darf nicht leer sein", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(E_MAIL_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(userDetails);
@@ -269,7 +299,6 @@ public class EmployeeService {
 
         emailService.sendResetPassword(employee.getEmail(), jwtUtils.createEmailResetToken(employee));
 
-        return new ResponseEntity<>("Die E-mail mit dem entsprenden Link (mit Token Bearer), um das Password für Ihr Account zu ändern," +
-                " erhalten Sie bald wieder. Schauen Sie bitte außerdem Ihren Spam-Ordner an", HttpStatus.OK);
+        return new ResponseEntity<>(RESET_PASSWORD_EMAIL, HttpStatus.OK);
     }
 }

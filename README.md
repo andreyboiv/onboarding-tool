@@ -17,10 +17,11 @@ Datenbank: PostgreSQL
 5. Spring AOP
 6. Spring Validation
 7. Spring Mail
-8. Maven
-9. PostgreSQL Driver. Version 42.6.0
-10. JWT (JSON Web Token) Library. Version 0.12.3 
-11. Lombok. Version 1.18.30
+8. Spring Test
+9. Maven
+10. PostgreSQL Driver. Version 42.6.0
+11. JWT (JSON Web Token) Library. Version 0.12.3 
+12. Lombok. Version 1.18.30
   
 <b>Frontend Components (Dependencies):</b>
 <p>
@@ -177,7 +178,18 @@ mit entsprechenden Annotationen aufgebaut.
 6. AOP für Controllers Methods wurde implementiert
 7. Die Mitarbeiter-Authentifizierung wurde mit JWT-Token implementiert
 8. Die Mitarbeiter-Autorisierung wurde eingestellt
-9. Mail Services werden erstellt.
+9. Mail Services wurden erstellt.
+10. JUnit Tests wurden an einigen Stellen erstellt*.
+<p>
+<p>
+* - Alle Controllers, Services und Repositories wurden manuell grundsätzlich getestet. 
+Deshalb war die JUnit Testing nur ja an wichtigen Stellen nötig. 
+Außerdem sind z.B. CategoryController, PriorityController, 
+StatController und TaskController momentan von außen nicht erreichbar geworden. 
+Wichtig zu testen sind die Klassen, die mit der Authentifizierung (Anmeldedaten) 
+und mit der Autorisierung (Rechten) zu tun sind.Das sind die entsprechenden JUnit Tests 
+dafür: AuthControllerTest, EmployeeServiceTest und 
+EmployeeRepositoryTest.
 <p>
 <p>
 <b><h2>Kurze Beschreibung des Projektes (Frontend):</h2></b>

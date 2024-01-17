@@ -39,16 +39,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             "activate-account",
             "login",
             "resend-activate-email",
-            "send-reset-password-email",
-
-            // Category Controller
-            "category/save",
-            "category/update",
-            "category/deleteById",
-            "category/findById",
-            "category/findAll",
-            "category/findAllByEmail",
-            "category/findAllByEmailQuery"
+            "send-reset-password-email"
     );
 
     //Dieser Method wird jedes Mal automatisch bei jedem Request ausgeführt
