@@ -1,4 +1,4 @@
-# Team Tasks Planning Projekt
+# Team Tasks Planning Projekt (Backend)
 
 Spring Boot Projekt
 
@@ -9,7 +9,7 @@ Java Version: 16
 Datenbank: PostgreSQL
 <p>
 
-<b>Backend Components (Dependencies):</b>
+<b>Components (Dependencies):</b>
 1. Spring Boot DevTools
 2. Spring Web
 3. Spring Data JPA
@@ -25,7 +25,7 @@ Datenbank: PostgreSQL
   
 <p>
 <p>
-<p><b><h2>Beschreibung des Projektes (Backend Controller Entry-Points Sicht. Siehe AuthController Klasse):</h2></b>
+<p><b><h2>Beschreibung des Projektes (Controller Entry-Points Sicht. Siehe AuthController Klasse):</h2></b>
 <p>
 
 1. <b>Registrierung. (auth/register)</b>
@@ -108,7 +108,7 @@ Siehe Screenshot von Postman.
 
 ![alt text](https://boivalenko.com/img/java_ep/spring/projekt_2/postman.jpg?raw=true)
 
-Der Screenshot zeigt, welche Backend Controller da sind. Die entsprechende Requests 
+Der Screenshot zeigt, welche Controller da sind. Die entsprechende Requests 
 für Postman kann man unter "\resources\postman_tests_restful_webservices_requests" im Projekt finden.
 
 <p>
@@ -157,13 +157,13 @@ Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
 <p>
 5. Die Tabelle <b><ins>"employee_powers"</ins></b> ist eine Tabelle eines Mitarbeiters und seiner Befugnisse. Die Befugnissdaten werden aus der Tabelle "powers" entnommen. Dementsprechend sind die Tabellen "employee" und "powers" mit einer N-zu-N-Beziehung durch die Tabelle "employee_powers" verbunden. Ein Mitarbeiter kann mehrere Befugnisse haben. Die Daten der Tabelle "employee_powers" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Bei der Registrierung eines neuen Mitarbeiters im System werden diesem Mitarbeiter standardmäßig nur die Rechte eines Mitarbeiters (USER) zugewiesen. Die Daten in der Tabelle „employee_powers“ dienen nur für Präsentation und nicht für Änderung. Gleichzeitig dürfen einige Mitarbeiter ausnahmsweise Administratorrechte haben. Dazu muss der Datenbank Administrator einen entsprechenden Eintrag in die Tabelle "employee_powers" einfügen.
 <p>
-6. Tabelle <b><ins>"category"</ins></b> ist eine Tabelle, die Aufgabenkategorien enthält. Die Standarddaten der Tabelle "category" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten der Tabelle werden hauptsächlich nur für Präsentation verwendet. Dies bedeutet natürlich nicht, dass keine neue Datensätze in die Tabelle "category" hinzugefügt werden können. Man muss aber dabei auf statistische Daten achten (sie werden anhand eines SQL Triggers gesteuert), dass sie nicht geändert werden. In diesem Fall gibt es einige Begrenzungen in Backend (Z.b "insertable = false" und "updatable = false" Parameter)
+6. Tabelle <b><ins>"category"</ins></b> ist eine Tabelle, die Aufgabenkategorien enthält. Die Standarddaten der Tabelle "category" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten der Tabelle werden hauptsächlich nur für Präsentation verwendet. Dies bedeutet natürlich nicht, dass keine neue Datensätze in die Tabelle "category" hinzugefügt werden können. Man muss aber dabei auf statistische Daten achten (sie werden anhand eines SQL Triggers gesteuert), dass sie nicht geändert werden. In diesem Fall gibt es einige Begrenzungen (z. B. "insertable = false" und "updatable = false" Parameter)
 <p>
 7. Tabelle <b><ins>"priority"</ins></b> ist eine Tabelle, die Aufgabenprioritäten enthält. Die Standarddaten der Tabelle "priority" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten in der Tabelle können später ergänzt und geändert werden.
 <p>
 8. Tabelle <b><ins>"task"</ins></b> ist eine Tabelle, die Aufgaben eines Mitarbeiters enthält. Aufgaben haben Beschreibung, Kategorien und Prioritäten. Eine Aufgabe ist zu einem Mitarbeiter zugeordnet. Die Daten der Tabelle "task" werden anhand eines SQL Triggers ausgefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten (außer Statistik) der Tabelle können später ergänzt und geändert werden.
 
-<b><h2>Kurze Beschreibung des Projektes (Backend):</h2></b>
+<b><h2>Kurze Beschreibung des Projektes:</h2></b>
 
 1. Eine Datenbank mit Geschäftslogik (Triggers) wurde entworfen
 2. Erstellen und Konfigurieren eines Spring Boot-Projekts
