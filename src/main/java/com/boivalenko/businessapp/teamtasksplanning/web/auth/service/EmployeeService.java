@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.EmployeeValid.MIN_PASSWORD_LENGTH;
 
@@ -32,7 +33,6 @@ public class EmployeeService {
 
     public static final String ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN = "Es existiert schon ein Employee mit dem Login";
     public static final String ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL = "Es existiert schon ein Employee mit der E-mail";
-    public static final String ACTIVITY_NICHT_GEFUNDEN_EMPLOYEE_ID = "Activity nicht gefunden. EmployeeID:";
     public static final String EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT = "Employee ist erfolgreich registriert. Die E-mail mit einem Aktivierungslink ist abgeschickt";
     public static final String UUID_DARF_NICHT_LEER_SEIN = "UUID darf nicht leer sein";
     public static final String ACTIVITY_NICHT_GEFUNDEN_UUID = "Activity nicht gefunden. UUID:";
@@ -94,17 +94,10 @@ public class EmployeeService {
         Employee employee = this.getEmployeeFromEmployeePojo(employeeVm);
         this.employeeRepository.save(employee);
 
-        Activity activity = null;
-
-        Optional<Activity> activityById = this.activityRepository.findActivityById(employee.getId());
-
-        if (activityById.isPresent()) {
-            activity = activityById.get();
-        }
-
-        if (activity == null) {
-            return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_EMPLOYEE_ID + employee.getId(), HttpStatus.NOT_ACCEPTABLE);
-        }
+        Activity activity = new Activity();
+        activity.setEmployeeToActivity(employee);
+        activity.setUuid(UUID.randomUUID().toString());
+        this.activityRepository.save(activity);
 
         //es wird eine E-Mail mit Account Aktivierung Benachrichtigung herausgeschickt
         this.emailService.sendActivationEmail(employeeVm.getEmail(), employeeVm.getLogin(), activity.getUuid());
@@ -128,7 +121,7 @@ public class EmployeeService {
     public ResponseEntity<String> activateEmployee(String uuid){
 
         if (uuid == null || uuid.isEmpty()) {
-            return new ResponseEntity(UUID_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(UUID_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // UUID Prüfung
@@ -171,7 +164,7 @@ public class EmployeeService {
     public ResponseEntity<String> deActivateEmployee(String uuid) {
 
         if (uuid == null || uuid.isEmpty()) {
-            return new ResponseEntity(UUID_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(UUID_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // UUID Prüfung

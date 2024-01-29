@@ -8,7 +8,6 @@ import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.CookieUtils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.EmployeeValid;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.utils.JwtUtils;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +27,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -72,7 +73,7 @@ class EmployeeServiceTest {
         EmployeeVm employeeVm = null;
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMPLOYEE_DARF_NICHT_NULL_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMPLOYEE_DARF_NICHT_NULL_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -87,7 +88,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.ID_WIRD_AUTOMATISCH_GENERIERT_MAN_MUSS_DA_NICHTS_EINGEBEN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.ID_WIRD_AUTOMATISCH_GENERIERT_MAN_MUSS_DA_NICHTS_EINGEBEN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -101,10 +102,10 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
-        org.assertj.core.api.Assertions.assertThatNoException();
+        assertThatNoException();
     }
 
     @Test
@@ -115,7 +116,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -129,7 +130,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -143,7 +144,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_MUSS_MINDESTENS +
+        assertEquals(EmployeeValid.LOGIN_MUSS_MINDESTENS +
                 EmployeeValid.MIN_LOGIN_LENGTH +
                 EmployeeValid.SYMBOLE_ENTHALTEN, employeeResponseEntity.getBody());
 
@@ -159,10 +160,10 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
-        org.assertj.core.api.Assertions.assertThatNoException();
+        assertThatNoException();
     }
 
     @Test
@@ -173,7 +174,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -187,7 +188,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -201,7 +202,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_MUSS_MINDESTENS + EmployeeValid.MIN_PASSWORD_LENGTH + EmployeeValid.SYMBOLE_ENTHALTEN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.PASSWORD_MUSS_MINDESTENS + EmployeeValid.MIN_PASSWORD_LENGTH + EmployeeValid.SYMBOLE_ENTHALTEN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -215,10 +216,10 @@ class EmployeeServiceTest {
         employeeVm.setEmail(null);
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
-        org.assertj.core.api.Assertions.assertThatNoException();
+        assertThatNoException();
     }
 
     @Test
@@ -229,10 +230,10 @@ class EmployeeServiceTest {
         employeeVm.setEmail("");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
-        org.assertj.core.api.Assertions.assertThatNoException();
+        assertThatNoException();
     }
 
     @Test
@@ -243,7 +244,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremailnullmus@muster.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -257,7 +258,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremailmus@musternull.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -271,10 +272,10 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremailmusmuster.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMAIL_FORMAT_IST_UNKORREKT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMAIL_FORMAT_IST_UNKORREKT, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
-        org.assertj.core.api.Assertions.assertThatNoException();
+        assertThatNoException();
     }
 
     @Test
@@ -285,7 +286,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremailmus@muster@sdf.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMAIL_FORMAT_IST_UNKORREKT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMAIL_FORMAT_IST_UNKORREKT, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -299,7 +300,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremailmus@mustersdf.de@");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMAIL_FORMAT_IST_UNKORREKT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMAIL_FORMAT_IST_UNKORREKT, employeeResponseEntity.getBody());
 
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -315,7 +316,7 @@ class EmployeeServiceTest {
         when(this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())).thenReturn(true);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
 
-        Assertions.assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN, employeeResponseEntity.getBody());
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -331,31 +332,8 @@ class EmployeeServiceTest {
         when(this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())).thenReturn(true);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
 
-        Assertions.assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL, employeeResponseEntity.getBody());
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
-        org.assertj.core.api.Assertions.assertThatNoException();
-    }
-
-    @Test
-    void register_employee_aktivity_equals_null() {
-        EmployeeVm employeeVm = new EmployeeVm();
-        employeeVm.setLogin("StringLogin");
-        employeeVm.setPassword("StringPassword");
-        employeeVm.setEmail("muster@muster.de");
-
-        when(this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())).thenReturn(false);
-        when(this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())).thenReturn(false);
-
-        Optional<Activity> activityById = Optional.empty();
-
-        when(this.activityRepository.findActivityById(employeeVm.getId())).thenReturn(activityById);
-
-        ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-
-        verify(this.employeeRepository, times(1)).save(any(Employee.class));
-
-        Assertions.assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_EMPLOYEE_ID + employeeVm.getId(), employeeResponseEntity.getBody());
-
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -381,7 +359,7 @@ class EmployeeServiceTest {
 
         verify(this.employeeRepository, times(1)).save(any(Employee.class));
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -395,7 +373,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(0)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -407,7 +385,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(0)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -424,7 +402,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -443,7 +421,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_IST_SCHON_AKTIVIERT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMPLOYEE_IST_SCHON_AKTIVIERT, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -463,7 +441,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.AKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.AKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -485,7 +463,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMPLOYEE_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -509,7 +487,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_IST_ERFOLGREICH_AKTIVIERT_SIE_ERHALTEN_BALD_EINE_E_MAIL_MIT_BEGR_UESS_UNG, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMPLOYEE_IST_ERFOLGREICH_AKTIVIERT_SIE_ERHALTEN_BALD_EINE_E_MAIL_MIT_BEGR_UESS_UNG, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -522,7 +500,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(0)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -533,7 +511,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(0)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -549,7 +527,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -567,7 +545,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_IST_SCHON_DEAKTIVIERT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMPLOYEE_IST_SCHON_DEAKTIVIERT, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -586,7 +564,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -607,7 +585,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        Assertions.assertEquals(EmployeeService.DER_EMPLOYEE_UUID + someUUID + EmployeeService.IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.DER_EMPLOYEE_UUID + someUUID + EmployeeService.IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -621,7 +599,7 @@ class EmployeeServiceTest {
 
         verify(this.employeeRepository, times(0)).updatePassword(any(String.class), any(String.class));
 
-        Assertions.assertEquals(EmployeeService.PASSWORD_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.PASSWORD_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -633,7 +611,7 @@ class EmployeeServiceTest {
 
         verify(this.employeeRepository, times(0)).updatePassword(any(String.class), any(String.class));
 
-        Assertions.assertEquals(EmployeeService.PASSWORD_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.PASSWORD_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -645,7 +623,7 @@ class EmployeeServiceTest {
 
         verify(this.employeeRepository, times(0)).updatePassword(any(String.class), any(String.class));
 
-        Assertions.assertEquals(EmployeeService.PASSWORD_MUSS_MINDESTENS + EmployeeValid.MIN_PASSWORD_LENGTH + EmployeeService.SYMBOLE_ENTHALTEN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.PASSWORD_MUSS_MINDESTENS + EmployeeValid.MIN_PASSWORD_LENGTH + EmployeeService.SYMBOLE_ENTHALTEN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -669,7 +647,7 @@ class EmployeeServiceTest {
 
         verify(this.employeeRepository, times(1)).updatePassword(any(String.class), any(String.class));
 
-        Assertions.assertEquals(EmployeeService.PASSWORD_WURDE_NICHT_GEAENDERT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.PASSWORD_WURDE_NICHT_GEAENDERT, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -695,7 +673,7 @@ class EmployeeServiceTest {
 
         verify(this.employeeRepository, times(1)).updatePassword(any(String.class), any(String.class));
 
-        Assertions.assertEquals(EmployeeService.PASSWORD_WURDE_ERFOLGREICH_GEAENDERT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.PASSWORD_WURDE_ERFOLGREICH_GEAENDERT, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -706,7 +684,7 @@ class EmployeeServiceTest {
     void logIn_employee_null() {
         EmployeeVm employeeVm = null;
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.EMPLOYEE_DARF_NICHT_NULL_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.EMPLOYEE_DARF_NICHT_NULL_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -719,7 +697,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.ID_WIRD_AUTOMATISCH_GENERIERT_MAN_MUSS_DA_NICHTS_EINGEBEN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.ID_WIRD_AUTOMATISCH_GENERIERT_MAN_MUSS_DA_NICHTS_EINGEBEN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -731,8 +709,8 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
-        org.assertj.core.api.Assertions.assertThatNoException();
+        assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertThatNoException();
     }
 
     @Test
@@ -743,7 +721,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -756,7 +734,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -768,7 +746,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.LOGIN_MUSS_MINDESTENS +
+        assertEquals(EmployeeValid.LOGIN_MUSS_MINDESTENS +
                 EmployeeValid.MIN_LOGIN_LENGTH +
                 EmployeeValid.SYMBOLE_ENTHALTEN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -782,8 +760,8 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
-        org.assertj.core.api.Assertions.assertThatNoException();
+        assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertThatNoException();
     }
 
     @Test
@@ -794,7 +772,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -806,7 +784,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeValid.PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -818,7 +796,7 @@ class EmployeeServiceTest {
         employeeVm.setEmail("musteremail@email.de");
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
-        Assertions.assertEquals(EmployeeValid.PASSWORD_MUSS_MINDESTENS + EmployeeValid.MIN_PASSWORD_LENGTH +
+        assertEquals(EmployeeValid.PASSWORD_MUSS_MINDESTENS + EmployeeValid.MIN_PASSWORD_LENGTH +
                 EmployeeValid.SYMBOLE_ENTHALTEN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -843,7 +821,7 @@ class EmployeeServiceTest {
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_IST_NICHT_AKTIVIERT, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMPLOYEE_IST_NICHT_AKTIVIERT, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -874,8 +852,8 @@ class EmployeeServiceTest {
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_HAT_SICH_ERFOLGREICH_EINGELOGGT, employeeResponseEntity.getBody());
-        Assertions.assertEquals(httpCookie.toString(), employeeResponseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
+        assertEquals(EmployeeService.EMPLOYEE_HAT_SICH_ERFOLGREICH_EINGELOGGT, employeeResponseEntity.getBody());
+        assertEquals(httpCookie.toString(), employeeResponseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -887,8 +865,8 @@ class EmployeeServiceTest {
 
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logOut();
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_HAT_SICH_ERFOLGREICH_AUSGELOGGT, employeeResponseEntity.getBody());
-        Assertions.assertEquals(cookie.toString(), employeeResponseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
+        assertEquals(EmployeeService.EMPLOYEE_HAT_SICH_ERFOLGREICH_AUSGELOGGT, employeeResponseEntity.getBody());
+        assertEquals(cookie.toString(), employeeResponseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -898,7 +876,7 @@ class EmployeeServiceTest {
     void resendActivateEmail_usernameOrEmail_null() {
         ResponseEntity<String> employeeResponseEntity = this.employeeService.resendActivateEmail(null);
 
-        Assertions.assertEquals(EmployeeService.WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -906,7 +884,7 @@ class EmployeeServiceTest {
     void resendActivateEmail_usernameOrEmail_empty() {
         ResponseEntity<String> employeeResponseEntity = this.employeeService.resendActivateEmail("");
 
-        Assertions.assertEquals(EmployeeService.WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -922,7 +900,7 @@ class EmployeeServiceTest {
         when(this.employeeDetailsService.loadUserByUsername(usernameMuster)).thenReturn(employeeDetails);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.resendActivateEmail(usernameMuster);
 
-        Assertions.assertEquals(EmployeeService.EMPLOYEE_IST_SCHON_AKTIVIERT_SIE_BRAUCHEN_KEINE_REAKTIVIERUNG, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMPLOYEE_IST_SCHON_AKTIVIERT_SIE_BRAUCHEN_KEINE_REAKTIVIERUNG, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -940,7 +918,7 @@ class EmployeeServiceTest {
         when(this.employeeDetailsService.loadUserByUsername(usernameMuster)).thenReturn(employeeDetails);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.resendActivateEmail(usernameMuster);
 
-        Assertions.assertEquals(EmployeeService.EMAIL_MIT_AKTIVIERUNGSLINK, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.EMAIL_MIT_AKTIVIERUNGSLINK, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -950,7 +928,7 @@ class EmployeeServiceTest {
     void sendResetPasswordEmail_userdetails_null() {
         ResponseEntity<String> employeeResponseEntity = this.employeeService.sendResetPasswordEmail(null);
 
-        Assertions.assertEquals(EmployeeService.E_MAIL_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.E_MAIL_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -958,7 +936,7 @@ class EmployeeServiceTest {
     void sendResetPasswordEmail_userdetails_empty() {
         ResponseEntity<String> employeeResponseEntity = this.employeeService.sendResetPasswordEmail("");
 
-        Assertions.assertEquals(EmployeeService.E_MAIL_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.E_MAIL_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
@@ -972,7 +950,7 @@ class EmployeeServiceTest {
         when(this.employeeDetailsService.loadUserByUsername(userDetails)).thenReturn(employeeDetails);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.sendResetPasswordEmail(userDetails);
 
-        Assertions.assertEquals(EmployeeService.RESET_PASSWORD_EMAIL, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.RESET_PASSWORD_EMAIL, employeeResponseEntity.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 }
