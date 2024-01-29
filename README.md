@@ -192,12 +192,3 @@ dafür: AuthControllerTest, EmployeeServiceTest und
 EmployeeRepositoryTest.
 <p>
 <p>
-<b><h2>Kurze Beschreibung des Projektes (Frontend):</h2></b>
-TODO
-<p>
-<p>
-<b><h2>TODO zum Projekt:</h2></b>
-    
-1. Frontend (Angular) realisieren
-2. Frontend mit Backend verknüpfen
-3. Das ganze Projekt (Backend und Frontend) auf Heroku deployen
