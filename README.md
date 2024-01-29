@@ -23,9 +23,6 @@ Datenbank: PostgreSQL
 11. JWT (JSON Web Token) Library. Version 0.12.3 
 12. Lombok. Version 1.18.30
   
-<b>Frontend Components (Dependencies):</b>
-<p>
-Frontend ist noch nicht realisiert und befindet sich in der Entwicklungsphase
 <p>
 <p>
 <p><b><h2>Beschreibung des Projektes (Backend Controller Entry-Points Sicht. Siehe AuthController Klasse):</h2></b>
