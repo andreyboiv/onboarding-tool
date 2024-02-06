@@ -46,8 +46,14 @@ public class EmailService {
             // das ist tatsächlich ein entry point beim Frontend....
             String url = clientURL + "/activate-account/" + uuid;
 
-            String htmlMsg = String.format("Herzlich willkommen. Sie sind als %s registriert. Klicken Sie bitte die URL, " +
-                    "um ihren Account zu aktivieren:%s . Ohne Aktivieren dürfen Sie sich nicht einloggen. MfG", username, url);
+            String htmlMsg = String.format(
+                    "Hallo und Herzlich willkommen<br/><br/>" +
+                            "Sie haben ein Account für WebApp \"Teamtaskplanning\" erstellt : %s <br/><br/>" +
+                            "<a href='%s'>%s</a><br/><br/>",  username, url, "Für Bestätigung ihrer " +
+                            "Registration klicken Sie bitte den Link. <br/><br/> ");
+
+            htmlMsg = htmlMsg + "Ohne diese Bestätigung dürfen Sie sich nicht einloggen bzw. die WebApp weiter verwenden. <br/><br/>" +
+                    " Mit freundlichen Grüßen <br/><br/> Andrey B.";
 
             return this.sendMessage(email, mimeMessage, message, htmlMsg, "Activation erforderlich");
 
