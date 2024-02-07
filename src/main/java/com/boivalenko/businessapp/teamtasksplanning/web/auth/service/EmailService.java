@@ -47,13 +47,16 @@ public class EmailService {
             String url = clientURL + "/activate-account/" + uuid;
 
             String htmlMsg = String.format(
-                    "Hallo und Herzlich willkommen<br/><br/>" +
-                            "Sie haben ein Account für WebApp \"Teamtaskplanning\" erstellt : %s <br/><br/>" +
-                            "<a href='%s'>%s</a><br/><br/>",  username, url, "Für Bestätigung ihrer " +
-                            "Registration klicken Sie bitte den Link. <br/><br/> ");
+                    "Hallo und Herzlich willkommen,<br/><br/><br/><br/>" +
+                            "Sie haben erfolgreich ein Account für WebApp \"Team Tasks Planning\" " +
+                            "erstellt. Login :<b> %s </b> <p/><p/>" +
+                            "Für Bestätigung Ihrer Registrierung klicken Sie bitte " +
+                            "<a href='%s'>%s</a><br/><br/>",  username, url, "den Link.");
 
-            htmlMsg = htmlMsg + "Ohne diese Bestätigung dürfen Sie sich nicht einloggen bzw. die WebApp weiter verwenden. <br/><br/>" +
-                    " Mit freundlichen Grüßen <br/><br/> Andrey B.";
+            htmlMsg = htmlMsg + "<br/><br/><b>Bitte achten Sie darauf. " +
+                    "<p/><p/> Ohne diese Bestätigung dürfen Sie die WebApp \"Team Tasks Planning\" " +
+                    "nicht weiter verwenden.</b> <br/><br/><br/><br/>" +
+                    " Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
 
             return this.sendMessage(email, mimeMessage, message, htmlMsg, "Activation erforderlich");
 
