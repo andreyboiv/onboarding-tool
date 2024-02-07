@@ -79,12 +79,12 @@ public class EmployeeService {
         }
 
         if (this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())) {
-            String error = ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN;
+            String error = ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN + " \"" + employeeVm.getLogin() +"\"";
             return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())) {
-            String error = ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL;
+            String error = ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL + " \"" + employeeVm.getEmail() +"\"";
             return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }
 
