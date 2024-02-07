@@ -64,8 +64,8 @@ public class AuthController {
 
     //send E-Mail für password reset, um dann später "update-password" verwenden zu können
     @PostMapping("/send-reset-password-email")
-    public ResponseEntity<String> sendResetPasswordEmail(@RequestBody String userDetails) {
-        return this.employeeService.sendResetPasswordEmail(userDetails);
+    public ResponseEntity<String> sendResetPasswordEmail(@RequestBody String email) {
+        return this.employeeService.sendResetPasswordEmail(email);
     }
 
     /*

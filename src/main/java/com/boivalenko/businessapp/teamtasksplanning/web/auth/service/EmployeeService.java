@@ -282,12 +282,12 @@ public class EmployeeService {
         return new ResponseEntity<>(EMAIL_MIT_AKTIVIERUNGSLINK, HttpStatus.OK);
     }
 
-    public ResponseEntity<String> sendResetPasswordEmail(String userDetails) {
-        if (userDetails == null || userDetails.isEmpty()) {
+    public ResponseEntity<String> sendResetPasswordEmail(String email) {
+        if (email == null || email.isEmpty()) {
             return new ResponseEntity<>(E_MAIL_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(userDetails);
+        EmployeeDetailsImpl employeeDetails = (EmployeeDetailsImpl) employeeDetailsService.loadUserByUsername(email);
         EmployeeVm employee = employeeDetails.getEmployee();
 
         emailService.sendResetPassword(employee.getEmail(), jwtUtils.createEmailResetToken(employee));
