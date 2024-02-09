@@ -78,11 +78,15 @@ public class EmailService {
             // das ist tatsächlich ein entry point beim Frontend....
             String url = clientURL + "/update-password/" + token;
 
-            String htmlMsg = String.format("Hallo, falls Sie keine Password Änderung angefordert haben, wenden Sie sich an Admin. " +
-                    "Weil es eine Gefahr für Ihren Account bestehen kann." +
-                    "Ansonsten klicken Sie bitte den Link innerhalb %d min, um den Password zu ändern. URL:%s", this.resetPasswordTokenExpiration/1000/60, url);
+            String htmlMsg = String.format("Hallo, <p/><p/> <b> falls Sie keine Password Änderung " +
+                    "für Ihr Account bei der \"Team Tasks Planning\" WebApp angefordert haben, " +
+                    "können Sie diese E-mail ignorieren. </b> <p/><p/>" +
+                    "Ansonsten klicken Sie bitte den Link innerhalb %d min, um den Password ändern zu können. <br/><br/>" +
+                    "<a href='%s'>%s</a>", this.resetPasswordTokenExpiration/1000/60, url, "PASSWORD RESET");
 
-            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Abfrage für Password Änderung");
+            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
+
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "PASSWORD RESET");
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -97,10 +101,12 @@ public class EmailService {
             MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String htmlMsg = String.format("Hallo Liebe(-r) %s. Willkommen beim Team. " +
-                    "Nun dürfen Sie sich einloggen/ausloggen. Außerdem können Sie ihr Password ändern", login);
+            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s</b> . <p/><p/>Willkommen beim Team. <p/><p/>" +
+                    "Nun dürfen Sie sich einloggen/ausloggen. <p/><p/> Außerdem können Sie ihr Password ändern", login);
 
-            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Willkomen beim Team. Ein Team mit Teamtaskplanning!!!");
+            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
+
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Willkomen beim Team! Ein Team mit Teamtaskplanning!!!");
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -113,8 +119,10 @@ public class EmailService {
             MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String htmlMsg = String.format("Hallo Liebe(-r) %s. Wir müssen Ihnen mitteilen, " +
-                    "Ihr Account ist deaktiviert.", login);
+            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s </b>. <p/><p/>Wir müssen Ihnen mitteilen, " +
+                    "Ihr Account ist deaktiviert. <p/><p/>Bei Fragen wenden Sie sich bitte an Administrator.", login);
+
+            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
 
             return this.sendMessage(email, mimeMessage, message, htmlMsg, "Account Deaktivierung");
 
@@ -130,8 +138,10 @@ public class EmailService {
             MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String htmlMsg = String.format("Hallo Liebe(-r) %s. Ihr Password wurde erfolgreich geändert. " +
-                    "Wenden Sie sich bitte zügig an Admin, falls Sie Ihr Password nicht geändert haben. ", login);
+            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s </b>. <p/><p/>Ihr Password wurde erfolgreich geändert. <p/><p/>" +
+                    "Wenden Sie sich bitte zügig an Admin, falls Sie Ihr Password doch nicht geändert haben. ", login);
+
+            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
 
             return this.sendMessage(email, mimeMessage, message, htmlMsg, "Password erfolgreich geändert");
 
