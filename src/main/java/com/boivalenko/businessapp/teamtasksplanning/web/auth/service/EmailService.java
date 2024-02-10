@@ -138,8 +138,8 @@ public class EmailService {
             MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s </b>. <p/><p/>Ihr Password wurde erfolgreich geändert. <p/><p/>" +
-                    "Wenden Sie sich bitte zügig an Admin, falls Sie Ihr Password doch nicht geändert haben. ", login);
+            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s </b>. <p/><p/><p/><p/>Ihr Password wurde erfolgreich geändert. <p/><p/><p/><p/>" +
+                    "<p/><p/> <b>Wenden Sie sich bitte zügig an Administrator, falls Sie Ihr Password doch nicht geändert haben.</b> <p/><p/>", login);
 
             htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
 

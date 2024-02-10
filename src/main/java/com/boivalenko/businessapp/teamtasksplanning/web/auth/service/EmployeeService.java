@@ -217,7 +217,14 @@ public class EmployeeService {
             return new ResponseEntity<>(PASSWORD_WURDE_NICHT_GEAENDERT, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        this.emailService.sendPasswordGeandertEmail(employeeDetails.getEmail(), employeeDetails.getUsername());
+        Optional<Employee> employeeByLogin = this.employeeRepository.findEmployeeByLogin(employeeDetails.getUsername());
+
+        Employee employee = null;
+        if (employeeByLogin.isPresent()) {
+            employee = employeeByLogin.get();
+        }
+
+        this.emailService.sendPasswordGeandertEmail(employee.getEmail(), employeeDetails.getUsername());
         return new ResponseEntity<>(PASSWORD_WURDE_ERFOLGREICH_GEAENDERT, HttpStatus.OK);
     }
 
