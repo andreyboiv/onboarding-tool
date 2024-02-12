@@ -134,7 +134,9 @@ public class EmployeeService {
         }
 
         if (activity == null) {
-            return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Es ist ein Fehler während Aktivation aufgetreten. Probieren Sie, eine" +
+                    " aktivierungs E-mail noch mal generieren zu lassen", HttpStatus.NOT_ACCEPTABLE);
+            //   return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //wenn der Employee bereits zuvor aktiviert wurde

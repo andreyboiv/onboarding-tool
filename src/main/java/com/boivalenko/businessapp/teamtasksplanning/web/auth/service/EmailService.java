@@ -102,11 +102,11 @@ public class EmailService {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
             String htmlMsg = String.format("Hallo Liebe(-r) <b>%s</b> . <p/><p/>Willkommen beim Team. <p/><p/>" +
-                    "Nun dürfen Sie sich einloggen/ausloggen. <p/><p/> Außerdem können Sie ihr Password ändern", login);
+                    "Nun dürfen Sie sich einloggen/ausloggen. <p/><p/> Außerdem können Sie ihr Password in beliebiger Zeit ändern", login);
 
             htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
 
-            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Willkomen beim Team! Ein Team mit Teamtaskplanning!!!");
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "IHR ACCOUNT IST AKTIVIERT! Willkomen beim Team! Ein Team mit Teamtaskplanning!!!");
 
         } catch (MessagingException e) {
             e.printStackTrace();
