@@ -27,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService.ES_IST_EIN_FEHLER_WAEHREND_AKTIVATION_AUFGETRETEN_PROBIEREN_SIE_EINE_AKTIVIERUNGS_E_MAIL_NOCH_MAL_GENERIEREN_ZU_LASSEN;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +36,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class EmployeeServiceTest {
-
     @Mock
     private EmployeeRepository employeeRepository;
 
@@ -316,7 +316,7 @@ class EmployeeServiceTest {
         when(this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())).thenReturn(true);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
 
-        assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN + " \"" + employeeVm.getLogin()+"\"", employeeResponseEntity.getBody());
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -332,7 +332,7 @@ class EmployeeServiceTest {
         when(this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())).thenReturn(true);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
 
-        assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL + " \"" + employeeVm.getEmail()+"\"", employeeResponseEntity.getBody());
         verify(this.employeeRepository, times(0)).save(any(Employee.class));
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -402,7 +402,7 @@ class EmployeeServiceTest {
 
         verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
 
-        assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
+        assertEquals(ES_IST_EIN_FEHLER_WAEHREND_AKTIVATION_AUFGETRETEN_PROBIEREN_SIE_EINE_AKTIVIERUNGS_E_MAIL_NOCH_MAL_GENERIEREN_ZU_LASSEN, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -661,6 +661,7 @@ class EmployeeServiceTest {
         EmployeeVm employee = new EmployeeVm();
         employee.setLogin("login");
         employee.setPassword("password");
+        employee.setEmail("musteremail@muster.de");
         EmployeeDetailsImpl employeeDetails = new EmployeeDetailsImpl(employee);
 
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -669,6 +670,14 @@ class EmployeeServiceTest {
 
         when(this.passwordEncoder.encode(password)).thenReturn("encodePassword");
         when(this.employeeRepository.updatePassword(any(String.class), any(String.class))).thenReturn(1);
+
+        Employee employeeOp = new Employee();
+        employeeOp.setEmail("musteremail@email.de");
+        employeeOp.setLogin("loginmuster_");
+        Optional<Employee> employeeByLogin = Optional.of(employeeOp);
+
+        when(this.employeeRepository.findEmployeeByLogin(any(String.class))).thenReturn(employeeByLogin);
+
         ResponseEntity<String> employeeResponseEntity = this.employeeService.updatePassword(password);
 
         verify(this.employeeRepository, times(1)).updatePassword(any(String.class), any(String.class));

@@ -5,22 +5,35 @@ import com.boivalenko.businessapp.teamtasksplanning.web.app.search.PrioritySearc
 import com.boivalenko.businessapp.teamtasksplanning.web.app.service.PriorityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/priority")
-@PreAuthorize("hasAuthority('ADMIN')")
 @RequiredArgsConstructor
 public class PriorityController {
 
     private final PriorityService priorityService;
 
-    @PostMapping("/save")
+    @PostMapping("/add")
     public ResponseEntity<String> save(@RequestBody Priority priority) {
         return this.priorityService.save(priority);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+        return this.priorityService.deleteById(id);
+    }
+
+    @PostMapping("/id")
+    public ResponseEntity<Priority> findById(@RequestBody Long id) {
+        return this.priorityService.findById(id);
+    }
+
+    @PostMapping("/all")
+    public ResponseEntity<List<Priority>> findAllByEmail(@RequestBody String email) {
+        return this.priorityService.findAllByEmail(email);
     }
 
     @PutMapping("/update")
@@ -28,29 +41,8 @@ public class PriorityController {
         return this.priorityService.update(priority);
     }
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
-        return this.priorityService.deleteById(id);
-    }
-
-    @PostMapping("/findById")
-    public ResponseEntity<Priority> findById(@RequestBody Long id) {
-        return this.priorityService.findById(id);
-    }
-
-    @PostMapping("/findAll")
-    public ResponseEntity<List<Priority>> findAll() {
-        return this.priorityService.findAll();
-    }
-
-    @PostMapping("/findAllByEmail")
-    public ResponseEntity<List<Priority>> findAllByEmail(@RequestBody String email) {
-        return this.priorityService.findAllByEmail(email);
-    }
-
     @PostMapping("/findAllByEmailQuery")
     public ResponseEntity<List<Priority>> findAllByEmailQuery(@RequestBody PrioritySearchValues prioritySearchValues) {
         return this.priorityService.findAllByEmailQuery(prioritySearchValues.getTitle(), prioritySearchValues.getEmail());
     }
-
 }

@@ -5,7 +5,6 @@ import com.boivalenko.businessapp.teamtasksplanning.web.app.search.CategorySearc
 import com.boivalenko.businessapp.teamtasksplanning.web.app.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,39 +12,33 @@ import java.util.List;
 @RestController
 @RequestMapping("/category")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ADMIN')")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping("/save")
+    @PostMapping("/add")
     public ResponseEntity<String> save(@RequestBody Category category) {
         return this.categoryService.save(category);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+        return this.categoryService.deleteById(id);
+    }
+
+    @PostMapping("/id")
+    public ResponseEntity<Category> findById(@RequestBody Long id) {
+        return this.categoryService.findById(id);
+    }
+
+    @PostMapping("/all")
+    public ResponseEntity<List<Category>> findAll(@RequestBody String login) {
+        return this.categoryService.findAllByLogin(login);
     }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody Category category) {
         return this.categoryService.update(category);
-    }
-
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
-        return this.categoryService.deleteById(id);
-    }
-
-    @PostMapping("/findById")
-    public ResponseEntity<Category> findById(@RequestBody Long id) {
-        return this.categoryService.findById(id);
-    }
-
-    @PostMapping("/findAll")
-    public ResponseEntity<List<Category>> findAll() {
-        return this.categoryService.findAll();
-    }
-
-    @PostMapping("/findAllByEmail")
-    public ResponseEntity<List<Category>> findAllByEmail(@RequestBody String email) {
-        return this.categoryService.findAllByEmail(email);
     }
 
     @PostMapping("/findAllByEmailQuery")

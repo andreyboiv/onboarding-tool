@@ -73,7 +73,7 @@ class CategoryControllerTest {
         String contentRequestResponse = mapper.writeValueAsString(category);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/save")
+                MockMvcRequestBuilders.post("/category/add")
                         .content(contentRequestResponse)
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -158,7 +158,7 @@ class CategoryControllerTest {
         String contentResponse = mapper.writeValueAsString(category);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.delete("/category/deleteById/" + id)
+                MockMvcRequestBuilders.delete("/category/delete/" + id)
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON);
@@ -202,7 +202,7 @@ class CategoryControllerTest {
 
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/findById")
+                MockMvcRequestBuilders.post("/category/id")
                         .content(contentRequest)
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -230,49 +230,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    @DisplayName("Find all Categories")
-    void findAll() throws Exception {
-        Category category = new Category("musterTitle", 999L, 999L, null);
-        Category category2 = new Category("musterTitle2", 9999L, 9999L, null);
-        List<Category> categories = List.of(category, category2);
-
-        HttpStatus httpStatus = HttpStatus.OK;
-
-        ResponseEntity<List<Category>> response = new ResponseEntity<>(categories, httpStatus);
-        when(this.categoryService.findAll())
-                .thenReturn(response);
-        ObjectMapper mapper = new ObjectMapper();
-        String contentResponse = mapper.writeValueAsString(categories);
-
-        MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/findAll")
-                        .characterEncoding(Encoding.DEFAULT_CHARSET)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON);
-
-        MvcResult mvcResult = this.mockMvc.perform(mockHttpServletRequestBuilder)
-                .andDo(print())
-                .andExpectAll(
-                        content().contentType(MediaType.APPLICATION_JSON),
-                        content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
-                        content().json(contentResponse),
-                        status().isOk()
-                ).andReturn();
-
-        String contentAsString = mvcResult.getResponse().getContentAsString(Encoding.DEFAULT_CHARSET);
-        List<Category> categoriesOutput = mapper.readValue(contentAsString, new TypeReference<>() {
-        });
-
-        assertFalse(categoriesOutput.isEmpty());
-        assertEquals(categoriesOutput.size(), categories.size());
-
-        assertEquals(HttpStatus.OK, httpStatus);
-
-        verify(this.categoryService, times(1)).findAll();
-    }
-
-    @Test
-    @DisplayName("Find all Categories by Email")
+    @DisplayName("Find all Categories by Login")
     void findAllByEmail() throws Exception {
         Category category = new Category("musterTitle", 999L, 999L, null);
         Category category2 = new Category("musterTitle2", 9999L, 9999L, null);
@@ -283,15 +241,15 @@ class CategoryControllerTest {
 
         ResponseEntity<List<Category>> response = new ResponseEntity<>(categories, httpStatus);
 
-        when(this.categoryService.findAllByEmail(any(String.class)))
+        when(this.categoryService.findAllByLogin(any(String.class)))
                 .thenReturn(response);
         ObjectMapper mapper = new ObjectMapper();
 
-        String contentRequest = "musteremail@muster.de";
+        String contentRequest = "musterLogin_Andrey_login";
         String contentResponse = mapper.writeValueAsString(categories);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.post("/category/findAllByEmail")
+                MockMvcRequestBuilders.post("/category/all")
                         .content(contentRequest)
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -315,7 +273,7 @@ class CategoryControllerTest {
 
         assertEquals(HttpStatus.OK, httpStatus);
 
-        verify(this.categoryService, times(1)).findAllByEmail(any(String.class));
+        verify(this.categoryService, times(1)).findAllByLogin(any(String.class));
     }
 
 

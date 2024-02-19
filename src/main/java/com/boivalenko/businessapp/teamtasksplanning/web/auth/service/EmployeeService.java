@@ -39,6 +39,7 @@ public class EmployeeService {
     public static final String EMPLOYEE_IST_SCHON_AKTIVIERT = "Employee ist schon aktiviert";
     public static final String AKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT = "Aktivierung des Employee ist nicht geklappt";
     public static final String EMPLOYEE_NICHT_GEFUNDEN_UUID = "Employee nicht gefunden. UUID:";
+    public static final String ES_IST_EIN_FEHLER_WAEHREND_AKTIVATION_AUFGETRETEN_PROBIEREN_SIE_EINE_AKTIVIERUNGS_E_MAIL_NOCH_MAL_GENERIEREN_ZU_LASSEN = "Es ist ein Fehler während Aktivation aufgetreten. Probieren Sie, eine aktivierungs E-mail noch mal generieren zu lassen";
     public static final String EMPLOYEE_IST_ERFOLGREICH_AKTIVIERT_SIE_ERHALTEN_BALD_EINE_E_MAIL_MIT_BEGR_UESS_UNG = "Employee ist erfolgreich aktiviert. Sie erhalten bald eine E-mail mit Begrüßung";
     public static final String EMPLOYEE_IST_SCHON_DEAKTIVIERT = "Employee ist schon deaktiviert";
     public static final String DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT = "Deaktivierung des Employee ist nicht geklappt";
@@ -134,9 +135,7 @@ public class EmployeeService {
         }
 
         if (activity == null) {
-            return new ResponseEntity<>("Es ist ein Fehler während Aktivation aufgetreten. Probieren Sie, eine" +
-                    " aktivierungs E-mail noch mal generieren zu lassen", HttpStatus.NOT_ACCEPTABLE);
-            //   return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(ES_IST_EIN_FEHLER_WAEHREND_AKTIVATION_AUFGETRETEN_PROBIEREN_SIE_EINE_AKTIVIERUNGS_E_MAIL_NOCH_MAL_GENERIEREN_ZU_LASSEN, HttpStatus.NOT_ACCEPTABLE);
         }
 
         //wenn der Employee bereits zuvor aktiviert wurde
@@ -153,7 +152,7 @@ public class EmployeeService {
 
         Optional<Employee> employee = this.employeeRepository.findEmployeeByActivity_Uuid(uuid);
 
-        if (!employee.isPresent()) {
+        if (employee.isEmpty()) {
             return new ResponseEntity<>(EMPLOYEE_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -221,12 +220,11 @@ public class EmployeeService {
 
         Optional<Employee> employeeByLogin = this.employeeRepository.findEmployeeByLogin(employeeDetails.getUsername());
 
-        Employee employee = null;
         if (employeeByLogin.isPresent()) {
-            employee = employeeByLogin.get();
+            Employee employee = employeeByLogin.get();
+            this.emailService.sendPasswordGeandertEmail(employee.getEmail(), employeeDetails.getUsername());
         }
 
-        this.emailService.sendPasswordGeandertEmail(employee.getEmail(), employeeDetails.getUsername());
         return new ResponseEntity<>(PASSWORD_WURDE_ERFOLGREICH_GEAENDERT, HttpStatus.OK);
     }
 

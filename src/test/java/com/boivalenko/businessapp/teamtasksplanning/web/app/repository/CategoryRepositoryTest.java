@@ -17,7 +17,7 @@ import java.util.List;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CategoryRepositoryTest {
 
-    public static final String EMAIL_MUSTER_REPOSITORY_TEST = "email@muster_repository_test234234234.de";
+    public static final String LOGIN_MUSTER_REPOSITORY_TEST = "LoGiN_test234234234.de";
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -26,7 +26,7 @@ class CategoryRepositoryTest {
 
     @BeforeEach
     void initUseCase() {
-        Employee employee = new Employee("loginMuster","passwordMuster", EMAIL_MUSTER_REPOSITORY_TEST,null, null);
+        Employee employee = new Employee(LOGIN_MUSTER_REPOSITORY_TEST, "passwordMuster", "andrey@muster.de", null, null);
         this.employeeRepository.save(employee);
     }
 
@@ -34,29 +34,30 @@ class CategoryRepositoryTest {
     // Negative Tests
     @Test
     @Transactional
-    void findByEmployeesToCategoryEmailOrderByTitleAsc_email_null() {
-        String email = null;
-        List<Category> list = this.categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email);
+    void findByEmployeesToCategoryLoginOrderByTitleAsc_login_null() {
+        String login = null;
+        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login);
         Assertions.assertTrue(list.isEmpty());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
     @Transactional
-    void findByEmployeesToCategoryEmailOrderByTitleAsc_email_leer() {
-        String email = "";
-        List<Category> list = this.categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email);
+    void findByEmployeesToCategoryLoginOrderByTitleAsc_login_leer() {
+        String login = "";
+        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login);
         Assertions.assertTrue(list.isEmpty());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
-    // findByEmployeesToCategoryEmailOrderByTitleAsc
+    // findByEmployeesToCategoryLoginOrderByTitleAsc
     // Positive Tests
     @Test
     @Transactional
-    void findByEmployeesToCategoryEmailOrderByTitleAsc() {
-        List<Category> list = this.categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(EMAIL_MUSTER_REPOSITORY_TEST);
+    void findByEmployeesToCategoryLoginOrderByTitleAsc() {
+        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(LOGIN_MUSTER_REPOSITORY_TEST);
         Assertions.assertFalse(list.isEmpty());
+        Assertions.assertEquals(list.get(0).getEmployeesToCategory().getLogin(), LOGIN_MUSTER_REPOSITORY_TEST);
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 }

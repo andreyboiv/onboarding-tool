@@ -270,48 +270,48 @@ class CategoryServiceTest {
     // findAll
     // Negative Tests
     @Test
-    void findAllByEmail_email_null() {
-        ResponseEntity<List<Category>> all = this.categoryService.findAllByEmail(null);
-        Assertions.assertEquals(CategoryService.EMAIL_UNKORREKT, all.getBody());
+    void findAllByLogin_login_null() {
+        ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(null);
+        Assertions.assertEquals(CategoryService.LOGIN_UNKORREKT, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
-    void findAllByEmail_email_leer() {
-        ResponseEntity<List<Category>> all = this.categoryService.findAllByEmail("");
-        Assertions.assertEquals(CategoryService.EMAIL_UNKORREKT, all.getBody());
+    void findAllByLogin_login_leer() {
+        ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin("");
+        Assertions.assertEquals(CategoryService.LOGIN_UNKORREKT, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
-    void findAllByEmail_liste_leer() {
-        String email = "musteremail@musteremail.de";
+    void findAllByLogin_liste_leer() {
+        String login = "musterLoginAndrey_LoGin";
         List<Category> listeEmpty = new ArrayList<>();
-        when(categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email)).thenReturn(listeEmpty);
-        ResponseEntity<List<Category>> all = this.categoryService.findAllByEmail(email);
-        Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_EMAIL + email, all.getBody());
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login)).thenReturn(listeEmpty);
+        ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
+        Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_LOGIN + login, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
-    void findAllByEmail_liste_null() {
-        String email = "musteremail@musteremail.de";
+    void findAllByLogin_liste_null() {
+        String login = "musterLoginAndrey_LoGin";
         List<Category> listNull = null;
-        when(categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email)).thenReturn(listNull);
-        ResponseEntity<List<Category>> all = this.categoryService.findAllByEmail(email);
-        Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_EMAIL + email, all.getBody());
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login)).thenReturn(listNull);
+        ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
+        Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_LOGIN + login, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     // findAll
     // Positive Tests
     @Test
-    void findAllByEmail() {
-        String email = "musteremail@musteremail.de";
+    void findAllByLogin() {
+        String login = "musterLoginAndrey_LoGin";
         List<Category> list = new ArrayList<>();
         list.add(new Category());
-        when(categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email)).thenReturn(list);
-        ResponseEntity<List<Category>> all = this.categoryService.findAllByEmail(email);
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login)).thenReturn(list);
+        ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
         Assertions.assertEquals(list, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
     }

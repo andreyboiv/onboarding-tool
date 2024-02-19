@@ -29,6 +29,8 @@ public class CategoryService implements IBaseService<Category> {
     public static final String GAR_KEINE_CATEGORY_VORHANDEN = "gar keine Category vorhanden";
     public static final String EMAIL_UNKORREKT = "EMAIL unkorrekt";
     public static final String KEINE_CATEGORY_GEFUNDEN_EMAIL = "keine Category gefunden. Email:";
+    public static final String LOGIN_UNKORREKT = "LOGIN unkorrekt";
+    public static final String KEINE_CATEGORY_GEFUNDEN_LOGIN = "Keine Category gefunden. Login:";
 
 
     private final CategoryRepository categoryRepository;
@@ -116,16 +118,16 @@ public class CategoryService implements IBaseService<Category> {
         return ResponseEntity.ok(all);
     }
 
-    public ResponseEntity<List<Category>> findAllByEmail(String email) {
-        if (email == null || email.trim().length() == 0) {
-            return new ResponseEntity(EMAIL_UNKORREKT, HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<List<Category>> findAllByLogin(String login) {
+        if (login == null || login.trim().length() == 0) {
+            return new ResponseEntity(LOGIN_UNKORREKT, HttpStatus.NOT_ACCEPTABLE);
         }
-        List<Category> allByEmail = this.categoryRepository.findByEmployeesToCategoryEmailOrderByTitleAsc(email);
-        if (allByEmail == null || allByEmail.isEmpty()) {
-            return new ResponseEntity(KEINE_CATEGORY_GEFUNDEN_EMAIL + email,
+        List<Category> allByLogin = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login);
+        if (allByLogin == null || allByLogin.isEmpty()) {
+            return new ResponseEntity(KEINE_CATEGORY_GEFUNDEN_LOGIN + login,
                     HttpStatus.OK);
         }
-        return ResponseEntity.ok(allByEmail);
+        return ResponseEntity.ok(allByLogin);
     }
 
     public ResponseEntity<List<Category>> findAllByEmailQuery(String title, String email) {
