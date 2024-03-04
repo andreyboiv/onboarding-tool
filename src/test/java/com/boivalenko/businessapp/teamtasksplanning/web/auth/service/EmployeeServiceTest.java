@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -846,7 +847,7 @@ class EmployeeServiceTest {
         Activity activity = new Activity("UUID", activated, null);
         employeeVm.setActivity(activity);
 
-        EmployeeDetailsImpl employeeDetails = new EmployeeDetailsImpl(employeeVm);
+        EmployeeDetailsImpl employeeDetails = Mockito.spy(new EmployeeDetailsImpl(employeeVm));
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(employeeDetails, null, null);
@@ -859,9 +860,12 @@ class EmployeeServiceTest {
         HttpCookie httpCookie = new HttpCookie("name", "value");
         when(this.cookieUtils.createJwtCookie(jwt)).thenReturn(httpCookie);
 
+        Long expected = 123235L;
+        doReturn(expected).when(employeeDetails).getID();
+
         ResponseEntity<String> employeeResponseEntity = this.employeeService.logIn(employeeVm);
 
-        assertEquals(EmployeeService.EMPLOYEE_HAT_SICH_ERFOLGREICH_EINGELOGGT, employeeResponseEntity.getBody());
+        assertEquals(String.valueOf(expected), employeeResponseEntity.getBody());
         assertEquals(httpCookie.toString(), employeeResponseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
         org.assertj.core.api.Assertions.assertThatNoException();
     }

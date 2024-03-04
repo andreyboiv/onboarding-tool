@@ -71,9 +71,12 @@ class CategoryServiceTest {
     void save() {
         Category category = new Category("Title", null,
                 null, new Employee());
+
+        when(this.categoryRepository.save(category)).thenReturn(category);
+
         ResponseEntity<Category> categoryResponseEntity = this.categoryService.save(category);
         Assertions.assertEquals(HttpStatus.OK, categoryResponseEntity.getStatusCode());
-        Assertions.assertEquals(CategoryService.CATEGORY_IST_ERFOLGREICH_ABGESPEICHERT, categoryResponseEntity.getBody());
+        Assertions.assertEquals(category, categoryResponseEntity.getBody());
         verify(this.categoryRepository, times(1)).save(any(Category.class));
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -287,7 +290,7 @@ class CategoryServiceTest {
     void findAllByLogin_liste_leer() {
         String login = "musterLoginAndrey_LoGin";
         List<Category> listeEmpty = new ArrayList<>();
-        when(categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login)).thenReturn(listeEmpty);
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login)).thenReturn(listeEmpty);
         ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
         Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_LOGIN + login, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -297,7 +300,7 @@ class CategoryServiceTest {
     void findAllByLogin_liste_null() {
         String login = "musterLoginAndrey_LoGin";
         List<Category> listNull = null;
-        when(categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login)).thenReturn(listNull);
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login)).thenReturn(listNull);
         ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
         Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_LOGIN + login, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -310,7 +313,7 @@ class CategoryServiceTest {
         String login = "musterLoginAndrey_LoGin";
         List<Category> list = new ArrayList<>();
         list.add(new Category());
-        when(categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login)).thenReturn(list);
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login)).thenReturn(list);
         ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
         Assertions.assertEquals(list, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();

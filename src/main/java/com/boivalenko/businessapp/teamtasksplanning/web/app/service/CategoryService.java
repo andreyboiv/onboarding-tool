@@ -47,9 +47,8 @@ public class CategoryService implements IBaseService<Category> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        this.categoryRepository.save(category);
 
-        return new ResponseEntity<>(CATEGORY_IST_ERFOLGREICH_ABGESPEICHERT, HttpStatus.OK);
+        return new ResponseEntity<>(this.categoryRepository.save(category), HttpStatus.OK);
     }
 
     @Override
@@ -122,7 +121,7 @@ public class CategoryService implements IBaseService<Category> {
         if (login == null || login.trim().length() == 0) {
             return new ResponseEntity(LOGIN_UNKORREKT, HttpStatus.NOT_ACCEPTABLE);
         }
-        List<Category> allByLogin = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login);
+        List<Category> allByLogin = this.categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login);
         if (allByLogin == null || allByLogin.isEmpty()) {
             return new ResponseEntity(KEINE_CATEGORY_GEFUNDEN_LOGIN + login,
                     HttpStatus.OK);

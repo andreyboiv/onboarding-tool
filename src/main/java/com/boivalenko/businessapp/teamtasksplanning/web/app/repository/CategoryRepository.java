@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    List<Category> findByEmployeesToCategoryLoginOrderByTitleAsc(String login);
+    List<Category> findByEmployeesToCategoryLoginOrderByIdDesc(String login);
 
     @Query("SELECT c FROM Category c where " +
             "(:title is null or :title='' " +

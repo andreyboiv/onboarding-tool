@@ -50,7 +50,6 @@ public class EmployeeService {
     public static final String SYMBOLE_ENTHALTEN = " Symbole enthalten";
     public static final String PASSWORD_WURDE_NICHT_GEAENDERT = "Password wurde nicht geändert";
     public static final String PASSWORD_WURDE_ERFOLGREICH_GEAENDERT = "Password wurde erfolgreich geändert";
-    public static final String EMPLOYEE_HAT_SICH_ERFOLGREICH_EINGELOGGT = "Employee hat sich erfolgreich eingeloggt";
     public static final String EMPLOYEE_HAT_SICH_ERFOLGREICH_AUSGELOGGT = "Employee hat sich erfolgreich ausgeloggt";
     public static final String WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN = "Weder Login noch E-mail dürfen leer sein";
     public static final String EMPLOYEE_IST_SCHON_AKTIVIERT_SIE_BRAUCHEN_KEINE_REAKTIVIERUNG = "Employee ist schon aktiviert. Sie brauchen keine Reaktivierung";
@@ -231,7 +230,7 @@ public class EmployeeService {
     public ResponseEntity<String> logIn(EmployeeVm employeeVm) {
 
         String employeeValid = EmployeeValid.isValidLoginAndPassword(employeeVm);
-        if (!employeeValid.equals("")) {
+        if (!employeeValid.isEmpty()) {
             return new ResponseEntity<>(employeeValid, HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -260,7 +259,7 @@ public class EmployeeService {
         // SET_COOKIE sagt, dass es um eine Server Side Cookie geht
         httpHeaders.add(HttpHeaders.SET_COOKIE, httpCookie.toString());
 
-        return new ResponseEntity<>(EMPLOYEE_HAT_SICH_ERFOLGREICH_EINGELOGGT, httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(employeeDetails.getID().toString(), httpHeaders, HttpStatus.OK);
     }
 
     public ResponseEntity<String> logOut() {

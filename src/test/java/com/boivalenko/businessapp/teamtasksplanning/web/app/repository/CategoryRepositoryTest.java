@@ -36,7 +36,7 @@ class CategoryRepositoryTest {
     @Transactional
     void findByEmployeesToCategoryLoginOrderByTitleAsc_login_null() {
         String login = null;
-        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login);
+        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login);
         Assertions.assertTrue(list.isEmpty());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -45,7 +45,7 @@ class CategoryRepositoryTest {
     @Transactional
     void findByEmployeesToCategoryLoginOrderByTitleAsc_login_leer() {
         String login = "";
-        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(login);
+        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login);
         Assertions.assertTrue(list.isEmpty());
         org.assertj.core.api.Assertions.assertThatNoException();
     }
@@ -55,7 +55,7 @@ class CategoryRepositoryTest {
     @Test
     @Transactional
     void findByEmployeesToCategoryLoginOrderByTitleAsc() {
-        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByTitleAsc(LOGIN_MUSTER_REPOSITORY_TEST);
+        List<Category> list = this.categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(LOGIN_MUSTER_REPOSITORY_TEST);
         Assertions.assertFalse(list.isEmpty());
         Assertions.assertEquals(list.get(0).getEmployeesToCategory().getLogin(), LOGIN_MUSTER_REPOSITORY_TEST);
         org.assertj.core.api.Assertions.assertThatNoException();

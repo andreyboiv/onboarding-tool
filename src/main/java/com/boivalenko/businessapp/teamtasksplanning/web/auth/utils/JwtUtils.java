@@ -48,7 +48,6 @@ public class JwtUtils {
     private String createToken(EmployeeVm employee, int duration) {
         Date currentDate = new Date();
 
-        employee.setId(null);
         employee.setPassword(null);
         employee.setEmail(null);
         employee.setActivity(null);
