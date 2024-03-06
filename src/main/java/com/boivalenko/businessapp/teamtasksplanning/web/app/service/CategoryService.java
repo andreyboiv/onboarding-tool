@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.CategoryRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.base.IBaseService;
+import com.google.gson.Gson;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,6 @@ public class CategoryService implements IBaseService<Category> {
     public static final String ID_WIRD_AUTOMATISCH_GENERIERT_MAN_MUSS_DAS_NICHT_EINGEBEN = "ID wird automatisch generiert. Man muss das nicht eingeben";
     public static final String NULL = "null";
     public static final String TITLE_DARF_WEDER_NULL_NOCH_LEER_SEIN = "TITLE darf weder NULL noch leer sein";
-    public static final String CATEGORY_IST_ERFOLGREICH_ABGESPEICHERT = "Category ist erfolgreich abgespeichert";
     public static final String ID_DARF_WEDER_NULL_NOCH_0_SEIN = "ID darf weder NULL noch 0 sein";
     public static final String CATEGORY_IST_ERFOLGREICH_UPDATED = "Category ist erfolgreich updated";
     public static final String ID_DARF_NICHT_0_SEIN = "ID darf nicht 0 sein";
@@ -70,7 +70,7 @@ public class CategoryService implements IBaseService<Category> {
 
         this.categoryRepository.save(category);
 
-        return new ResponseEntity<>(CATEGORY_IST_ERFOLGREICH_UPDATED, HttpStatus.OK);
+        return new ResponseEntity<>(new Gson().toJson(CATEGORY_IST_ERFOLGREICH_UPDATED), HttpStatus.OK);
     }
 
     @Override

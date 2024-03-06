@@ -115,7 +115,7 @@ class CategoryControllerTest {
         String contentRequestResponse = mapper.writeValueAsString(category);
 
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder =
-                MockMvcRequestBuilders.put("/category/update")
+                MockMvcRequestBuilders.patch("/category/update")
                         .content(contentRequestResponse)
                         .characterEncoding(Encoding.DEFAULT_CHARSET)
                         .contentType(MediaType.APPLICATION_JSON)

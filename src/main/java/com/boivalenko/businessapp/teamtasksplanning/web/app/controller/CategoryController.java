@@ -36,7 +36,7 @@ public class CategoryController {
         return this.categoryService.findAllByLogin(login);
     }
 
-    @PutMapping("/update")
+    @PatchMapping("/update")
     public ResponseEntity<String> update(@RequestBody Category category) {
         return this.categoryService.update(category);
     }
