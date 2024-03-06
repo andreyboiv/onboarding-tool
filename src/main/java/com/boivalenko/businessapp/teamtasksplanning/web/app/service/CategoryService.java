@@ -86,7 +86,7 @@ public class CategoryService implements IBaseService<Category> {
         }
 
         this.categoryRepository.deleteById(id);
-        return new ResponseEntity<>(CATEGORY_MIT_ID + id + ERFOLGREICH_GELOESCHT, HttpStatus.OK);
+        return new ResponseEntity<>(new Gson().toJson(CATEGORY_MIT_ID + id + ERFOLGREICH_GELOESCHT), HttpStatus.OK);
 
     }
 

@@ -3,6 +3,7 @@ package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.CategoryRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.entity.Employee;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -153,7 +154,7 @@ class CategoryServiceTest {
         ResponseEntity<Category> categoryResponseEntity = this.categoryService.update(category);
         Assertions.assertEquals(true, categoryRepository.existsById(category.getId()));
         Assertions.assertEquals(HttpStatus.OK, categoryResponseEntity.getStatusCode());
-        Assertions.assertEquals(CategoryService.CATEGORY_IST_ERFOLGREICH_UPDATED, categoryResponseEntity.getBody());
+        Assertions.assertEquals(new Gson().toJson(CategoryService.CATEGORY_IST_ERFOLGREICH_UPDATED), categoryResponseEntity.getBody());
 
         verify(this.categoryRepository, times(1)).save(any(Category.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -195,7 +196,7 @@ class CategoryServiceTest {
         Assertions.assertEquals(true, categoryRepository.existsById(id));
         Assertions.assertEquals(HttpStatus.OK, categoryResponseEntity.getStatusCode());
 
-        Assertions.assertEquals(CategoryService.CATEGORY_MIT_ID + id + CategoryService.ERFOLGREICH_GELOESCHT, categoryResponseEntity.getBody());
+        Assertions.assertEquals(new Gson().toJson(CategoryService.CATEGORY_MIT_ID + id + CategoryService.ERFOLGREICH_GELOESCHT), categoryResponseEntity.getBody());
         verify(this.categoryRepository, times(1)).deleteById(any(Long.class));
         org.assertj.core.api.Assertions.assertThatNoException();
     }
