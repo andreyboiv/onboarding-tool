@@ -28,16 +28,21 @@ public class TaskController {
     }
 
     @PostMapping("/id")
-    public ResponseEntity<Task> findById(@RequestBody Long id) {
-        return this.taskService.findById(id);
+    public ResponseEntity<List<Task>> findAllByCategoryID(@RequestBody Long id) {
+        return this.taskService.findAllByCategoryID(id);
     }
 
-    @PostMapping("/all")
+    @PostMapping("/all-email")
     public ResponseEntity<List<Task>> findAllByEmail(@RequestBody String email) {
         return this.taskService.findAllByEmail(email);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/all")
+    public ResponseEntity<List<Task>> findAll(@RequestBody String login) {
+        return this.taskService.findAllByLogin(login);
+    }
+
+    @PatchMapping("/update")
     public ResponseEntity<String> update(@RequestBody Task task) {
         return this.taskService.update(task);
     }

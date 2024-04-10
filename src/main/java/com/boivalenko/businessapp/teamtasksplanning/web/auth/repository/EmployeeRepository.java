@@ -12,7 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    boolean existsEmployeeByLogin(String login);
+
+    boolean existsEmployeeByLoginEqualsIgnoreCase(String login);
 
     boolean existsEmployeeByEmailEqualsIgnoreCase(String email);
 

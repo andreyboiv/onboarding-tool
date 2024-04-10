@@ -22,7 +22,6 @@ public class CategoryService implements IBaseService<Category> {
     public static final String NULL = "null";
     public static final String TITLE_DARF_WEDER_NULL_NOCH_LEER_SEIN = "TITLE darf weder NULL noch leer sein";
     public static final String ID_DARF_WEDER_NULL_NOCH_0_SEIN = "ID darf weder NULL noch 0 sein";
-    public static final String CATEGORY_IST_ERFOLGREICH_UPDATED = "Category ist erfolgreich updated";
     public static final String ID_DARF_NICHT_0_SEIN = "ID darf nicht 0 sein";
     public static final String CATEGORY_MIT_ID = "Category mit ID=";
     public static final String ERFOLGREICH_GELOESCHT = " erfolgreich gelöscht";
@@ -31,7 +30,6 @@ public class CategoryService implements IBaseService<Category> {
     public static final String KEINE_CATEGORY_GEFUNDEN_EMAIL = "keine Category gefunden. Email:";
     public static final String LOGIN_UNKORREKT = "LOGIN unkorrekt";
     public static final String KEINE_CATEGORY_GEFUNDEN_LOGIN = "Keine Category gefunden. Login:";
-
 
     private final CategoryRepository categoryRepository;
 
@@ -68,9 +66,7 @@ public class CategoryService implements IBaseService<Category> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        this.categoryRepository.save(category);
-
-        return new ResponseEntity<>(new Gson().toJson(CATEGORY_IST_ERFOLGREICH_UPDATED), HttpStatus.OK);
+        return new ResponseEntity<>(this.categoryRepository.save(category), HttpStatus.OK);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class CategoryService implements IBaseService<Category> {
         if (login == null || login.trim().length() == 0) {
             return new ResponseEntity(LOGIN_UNKORREKT, HttpStatus.NOT_ACCEPTABLE);
         }
-        List<Category> allByLogin = this.categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login);
+        List<Category> allByLogin = this.categoryRepository.findByEmployeesToCategoryLoginOrderByIdAsc(login);
         if (allByLogin == null || allByLogin.isEmpty()) {
             return new ResponseEntity(KEINE_CATEGORY_GEFUNDEN_LOGIN + login,
                     HttpStatus.OK);

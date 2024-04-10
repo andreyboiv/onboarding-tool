@@ -314,7 +314,7 @@ class EmployeeServiceTest {
         employeeVm.setPassword("StringPassword");
         employeeVm.setEmail("muster@muster.de");
 
-        when(this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())).thenReturn(true);
+        when(this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(employeeVm.getLogin())).thenReturn(true);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
 
         assertEquals(EmployeeService.ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN + " \"" + employeeVm.getLogin()+"\"", employeeResponseEntity.getBody());
@@ -329,7 +329,7 @@ class EmployeeServiceTest {
         employeeVm.setPassword("StringPassword");
         employeeVm.setEmail("muster@muster.de");
 
-        when(this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())).thenReturn(false);
+        when(this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(employeeVm.getLogin())).thenReturn(false);
         when(this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())).thenReturn(true);
         ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
 
@@ -349,7 +349,7 @@ class EmployeeServiceTest {
 
         Activity activity = new Activity("uuid", null, new Employee());
 
-        when(this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())).thenReturn(false);
+        when(this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(employeeVm.getLogin())).thenReturn(false);
         when(this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())).thenReturn(false);
 
         Optional<Activity> activityById = Optional.of(activity);

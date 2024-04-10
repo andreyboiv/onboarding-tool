@@ -151,10 +151,12 @@ class CategoryServiceTest {
                 null, new Employee());
         category.setId(1L);
         when(categoryRepository.existsById(category.getId())).thenReturn(true);
+        when(this.categoryRepository.save(category)).thenReturn(category);
+
         ResponseEntity<Category> categoryResponseEntity = this.categoryService.update(category);
         Assertions.assertEquals(true, categoryRepository.existsById(category.getId()));
         Assertions.assertEquals(HttpStatus.OK, categoryResponseEntity.getStatusCode());
-        Assertions.assertEquals(new Gson().toJson(CategoryService.CATEGORY_IST_ERFOLGREICH_UPDATED), categoryResponseEntity.getBody());
+        Assertions.assertEquals(category, categoryResponseEntity.getBody());
 
         verify(this.categoryRepository, times(1)).save(any(Category.class));
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -291,7 +293,7 @@ class CategoryServiceTest {
     void findAllByLogin_liste_leer() {
         String login = "musterLoginAndrey_LoGin";
         List<Category> listeEmpty = new ArrayList<>();
-        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login)).thenReturn(listeEmpty);
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdAsc(login)).thenReturn(listeEmpty);
         ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
         Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_LOGIN + login, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -301,7 +303,7 @@ class CategoryServiceTest {
     void findAllByLogin_liste_null() {
         String login = "musterLoginAndrey_LoGin";
         List<Category> listNull = null;
-        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login)).thenReturn(listNull);
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdAsc(login)).thenReturn(listNull);
         ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
         Assertions.assertEquals(CategoryService.KEINE_CATEGORY_GEFUNDEN_LOGIN + login, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();
@@ -314,7 +316,7 @@ class CategoryServiceTest {
         String login = "musterLoginAndrey_LoGin";
         List<Category> list = new ArrayList<>();
         list.add(new Category());
-        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdDesc(login)).thenReturn(list);
+        when(categoryRepository.findByEmployeesToCategoryLoginOrderByIdAsc(login)).thenReturn(list);
         ResponseEntity<List<Category>> all = this.categoryService.findAllByLogin(login);
         Assertions.assertEquals(list, all.getBody());
         org.assertj.core.api.Assertions.assertThatNoException();

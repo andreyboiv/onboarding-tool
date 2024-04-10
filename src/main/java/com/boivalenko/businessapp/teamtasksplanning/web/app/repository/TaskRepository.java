@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-
+    List<Task> findByEmployeesToTaskLoginOrderByIdAsc(String login);
     List<Task> findByEmployeesToTaskEmailOrderByTitleAsc(String email);
 
     @Query("SELECT c FROM Task c where " +
@@ -44,4 +44,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
                             @Param("dateTo") Date dateTo,
                             Pageable pageable
     );
+
+    List<Task> findByCategoryIdOrderByIdAsc(Long id);
+
+    boolean existsAllByCategoryId(Long id);
 }

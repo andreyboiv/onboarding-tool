@@ -51,7 +51,7 @@ public class Task extends BaseEntity {
     // Default - EAGER
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "category_id", insertable = false, updatable = false, nullable = false, referencedColumnName = "id")
     @JsonBackReference(value = "categoryBackReference")
     private Category category;
 
@@ -61,7 +61,7 @@ public class Task extends BaseEntity {
     // Default - EAGER
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "priority_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "priority_id", insertable = false, updatable = false, nullable = false, referencedColumnName = "id")
     @JsonBackReference(value = "priorityBackReference")
     private Priority priority;
 

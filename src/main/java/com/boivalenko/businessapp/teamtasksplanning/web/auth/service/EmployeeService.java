@@ -78,7 +78,7 @@ public class EmployeeService {
             return new ResponseEntity<>(employeeValid, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.employeeRepository.existsEmployeeByLogin(employeeVm.getLogin())) {
+        if (this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(employeeVm.getLogin())) {
             String error = ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN + " \"" + employeeVm.getLogin() +"\"";
             return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }

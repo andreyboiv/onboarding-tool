@@ -32,6 +32,10 @@ public class TaskService implements IBaseService<Task> {
     //Wie viel Elementen muss eine Seite enthalten
     public static final Integer PAGE_SIZE_DEFAULT_VALUE = 5;
     public static final String KEIN_TASK_GEFUNDEN_EMAIL = "kein Task gefunden. Email:";
+    public static final String LOGIN_UNKORREKT = "LOGIN unkorrekt";
+    public static final String KEINE_TASK_GEFUNDEN_LOGIN = "Kein Task gefunden. Login:";
+
+
     private final TaskRepository taskRepository;
 
     @Override
@@ -69,9 +73,7 @@ public class TaskService implements IBaseService<Task> {
                     HttpStatus.NOT_ACCEPTABLE);
         }
 
-        this.taskRepository.save(task);
-
-        return new ResponseEntity("Task ist erfolgreich updated", HttpStatus.OK);
+        return new ResponseEntity(this.taskRepository.save(task), HttpStatus.OK);
     }
 
     @Override
@@ -106,6 +108,21 @@ public class TaskService implements IBaseService<Task> {
         return ResponseEntity.ok(task);
     }
 
+    public ResponseEntity<List<Task>> findAllByCategoryID(Long id) {
+        if (id == 0) {
+            return new ResponseEntity("ID darf nicht 0 sein",
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (!this.taskRepository.existsAllByCategoryId(id)) {
+            return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, id),
+                    HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        List<Task> tasks = this.taskRepository.findByCategoryIdOrderByIdAsc(id);
+        return ResponseEntity.ok(tasks);
+    }
+
     @Override
     public ResponseEntity<List<Task>> findAll() {
         List<Task> all = this.taskRepository.findAll();
@@ -126,6 +143,18 @@ public class TaskService implements IBaseService<Task> {
                     HttpStatus.OK);
         }
         return ResponseEntity.ok(allByEmail);
+    }
+
+    public ResponseEntity<List<Task>> findAllByLogin(String login) {
+        if (login == null || login.trim().length() == 0) {
+            return new ResponseEntity(LOGIN_UNKORREKT, HttpStatus.NOT_ACCEPTABLE);
+        }
+        List<Task> allByLogin = this.taskRepository.findByEmployeesToTaskLoginOrderByIdAsc(login);
+        if (allByLogin == null || allByLogin.isEmpty()) {
+            return new ResponseEntity(KEINE_TASK_GEFUNDEN_LOGIN + login,
+                    HttpStatus.OK);
+        }
+        return ResponseEntity.ok(allByLogin);
     }
 
     public ResponseEntity<List<Task>> findAllByEmailQuery(String title, String email) {

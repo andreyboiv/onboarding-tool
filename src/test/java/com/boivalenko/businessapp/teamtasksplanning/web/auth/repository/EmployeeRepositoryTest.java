@@ -30,35 +30,28 @@ class EmployeeRepositoryTest {
 
     @Test
     void existsEmployeeByLogin_null() {
-        boolean exists = this.employeeRepository.existsEmployeeByLogin(null);
+        boolean exists = this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(null);
         Assertions.assertFalse(exists);
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
     void existsEmployeeByLogin_leer() {
-        boolean exists = this.employeeRepository.existsEmployeeByLogin(LOGIN_MUSTER);
+        boolean exists = this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(LOGIN_MUSTER);
         Assertions.assertTrue(exists);
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
     void existsEmployeeByLogin_nicht_existiert() {
-        boolean exists = this.employeeRepository.existsEmployeeByLogin(LOGIN_MUSTER + LOGIN_MUSTER);
-        Assertions.assertFalse(exists);
-        org.assertj.core.api.Assertions.assertThatNoException();
-    }
-
-    @Test
-    void existsEmployeeByLogin_case_sensetiv() {
-        boolean exists = this.employeeRepository.existsEmployeeByLogin(LOGIN_MUSTER.toUpperCase());
+        boolean exists = this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(LOGIN_MUSTER + LOGIN_MUSTER);
         Assertions.assertFalse(exists);
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
     void existsEmployeeByLogin() {
-        boolean exists = this.employeeRepository.existsEmployeeByLogin(LOGIN_MUSTER);
+        boolean exists = this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(LOGIN_MUSTER);
         Assertions.assertTrue(exists);
         org.assertj.core.api.Assertions.assertThatNoException();
     }
