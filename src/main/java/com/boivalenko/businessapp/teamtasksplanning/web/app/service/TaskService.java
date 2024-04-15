@@ -1,5 +1,6 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.app.service;
 
+import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Task;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.repository.TaskRepository;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.search.TaskSearchValues;
@@ -261,5 +262,11 @@ public class TaskService implements IBaseService<Task> {
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    public ResponseEntity<Category> findCategoryByTaskId(Task taskInput) {
+        Task task = this.taskRepository.findById(taskInput.getId()).get();
+        Category category = task.getCategory();
+        return new ResponseEntity(category, HttpStatus.OK);
     }
 }

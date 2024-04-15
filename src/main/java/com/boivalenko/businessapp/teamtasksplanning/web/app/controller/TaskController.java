@@ -1,5 +1,6 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.app.controller;
 
+import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Category;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.entity.Task;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.search.TaskSearchValues;
 import com.boivalenko.businessapp.teamtasksplanning.web.app.service.TaskService;
@@ -56,6 +57,11 @@ public class TaskController {
     @PostMapping("/search")
     public ResponseEntity<Page<Task>> search(@RequestBody TaskSearchValues taskSearchValues) {
         return this.taskService.findByParams(taskSearchValues);
+    }
+
+    @PostMapping("/category")
+    public ResponseEntity<Category> findCategoryByTaskId(@RequestBody Task task) {
+        return this.taskService.findCategoryByTaskId(task);
     }
 
 }
