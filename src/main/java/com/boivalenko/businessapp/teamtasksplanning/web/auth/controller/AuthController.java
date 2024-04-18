@@ -1,6 +1,7 @@
 package com.boivalenko.businessapp.teamtasksplanning.web.auth.controller;
 
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.obj.JsonExcept;
+import com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeDetailsImpl;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService;
 import com.boivalenko.businessapp.teamtasksplanning.web.auth.viewmodel.EmployeeVm;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -66,6 +68,20 @@ public class AuthController {
     @PostMapping("/send-reset-password-email")
     public ResponseEntity<String> sendResetPasswordEmail(@RequestBody String email) {
         return this.employeeService.sendResetPasswordEmail(email);
+    }
+
+    /*
+    Wenn sich der Benutzer am Client bereits angemeldet hat, wird diese Methode bei jeder nächsten Anfrage an eine geschlossene Seite aufgerufen.
+    Bei dieser Methode senden wir lediglich die Benutzerdaten an den Kunden zurück (Name, E-Mail, Rollen usw.)
+    Das Wichtigste ist, dass die Anfrage,
+    bevor sie in diese Methode gelangt, den AuthTokenFilter-Filter passiert,
+    der sicherstellt, dass das JWT-Cookie gefunden und korrekt ist –
+    und den Benutzer automatisch autorisiert.
+ */
+    @PostMapping("/auto")
+    public ResponseEntity<EmployeeVm> autoLogin() { // Body fehlt
+        EmployeeDetailsImpl userDetails = (EmployeeDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(userDetails.getEmployee());
     }
 
     /*
