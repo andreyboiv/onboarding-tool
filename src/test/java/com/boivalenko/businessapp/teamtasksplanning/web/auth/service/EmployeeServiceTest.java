@@ -28,7 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService.ES_IST_EIN_FEHLER_WAEHREND_AKTIVATION_AUFGETRETEN_PROBIEREN_SIE_EINE_AKTIVIERUNGS_E_MAIL_NOCH_MAL_GENERIEREN_ZU_LASSEN;
+import static com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -323,6 +323,23 @@ class EmployeeServiceTest {
     }
 
     @Test
+    void register_employee_not_exists_by_false_email() {
+        EmployeeVm employeeVm = new EmployeeVm();
+        employeeVm.setLogin("StringLogin");
+        employeeVm.setPassword("StringPassword");
+        employeeVm.setEmail("muster@muster.de");
+
+        when(this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(employeeVm.getLogin())).thenReturn(false);
+        when(this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())).thenReturn(false);
+        ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
+
+        String error = ZULAESSIGE_DOMAINS_SIND + ": " + GOFORE_COM +", " + E_MUNDO_DE;
+        assertEquals(error, employeeResponseEntity.getBody());
+        verify(this.employeeRepository, times(0)).save(any(Employee.class));
+        org.assertj.core.api.Assertions.assertThatNoException();
+    }
+
+    @Test
     void register_employee_not_exists_by_email() {
         EmployeeVm employeeVm = new EmployeeVm();
         employeeVm.setLogin("StringLogin");
@@ -345,7 +362,7 @@ class EmployeeServiceTest {
         EmployeeVm employeeVm = new EmployeeVm();
         employeeVm.setLogin("StringLogin");
         employeeVm.setPassword("StringPassword");
-        employeeVm.setEmail("muster@muster.de");
+        employeeVm.setEmail("muster@gofore.com");
 
         Activity activity = new Activity("uuid", null, new Employee());
 
