@@ -59,9 +59,6 @@ public class EmployeeService {
     public static final String RESET_PASSWORD_EMAIL = "Die E-mail mit dem entsprenden Link (mit Token Bearer), um das Password für Ihr Account zu ändern," +
             " erhalten Sie bald wieder. Schauen Sie bitte außerdem Ihren Spam-Ordner an";
     public static final String EMPLOYEE_IST_NICHT_AKTIVIERT = "Employee ist nicht aktiviert";
-    public static final String ZULAESSIGE_DOMAINS_SIND = "Zulässige Domains für eine E-mail sind";
-    public static final String E_MUNDO_DE = "e-mundo.de";
-    public static final String GOFORE_COM = "gofore.com";
 
     private final EmailService emailService;
     private final EmployeeDetailsServiceImpl employeeDetailsService;
@@ -91,11 +88,6 @@ public class EmployeeService {
             return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (this.invalidEmailDomain(employeeVm.getEmail())) {
-            String error = ZULAESSIGE_DOMAINS_SIND + ": " + GOFORE_COM +", " + E_MUNDO_DE;
-            return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
-        }
-
         //Einweg-Hash-Passwort-Encoder: Bcrypt
         employeeVm.setPassword(this.passwordEncoder.encode(employeeVm.getPassword()));
 
@@ -111,11 +103,6 @@ public class EmployeeService {
         this.emailService.sendActivationEmail(employeeVm.getEmail(), employeeVm.getLogin(), activity.getUuid());
 
         return new ResponseEntity<>(EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT, HttpStatus.OK);
-    }
-
-    private boolean invalidEmailDomain(String email) {
-        String substring = email.substring(email.indexOf("@") + 1);
-        return !substring.equals(E_MUNDO_DE) && !substring.equals(GOFORE_COM);
     }
 
     private Employee getEmployeeFromEmployeePojo(EmployeeVm employeeVm) {

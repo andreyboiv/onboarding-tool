@@ -48,13 +48,13 @@ public class EmailService {
 
             String htmlMsg = String.format(
                     "Hallo und Herzlich willkommen,<br/><br/><br/><br/>" +
-                            "Sie haben erfolgreich ein Account für WebApp \"Gofore Germany Onboarding Tool\" " +
+                            "Sie haben erfolgreich ein Account für WebApp \"Onboarding Tool\" " +
                             "erstellt. Login :<b> %s </b> <p/><p/>" +
                             "Für Bestätigung Ihrer Registrierung klicken Sie bitte " +
                             "<a href='%s'>%s</a><br/><br/>",  username, url, "den Link.");
 
             htmlMsg = htmlMsg + "<br/><br/><b>Bitte achten Sie darauf. " +
-                    "<p/><p/> Ohne diese Bestätigung dürfen Sie die WebApp \"Gofore Germany Onboarding Tool\" " +
+                    "<p/><p/> Ohne diese Bestätigung dürfen Sie die WebApp \"Onboarding Tool\" " +
                     "nicht weiter verwenden.</b> <br/><br/><br/><br/>" +
                     " Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
 
@@ -79,7 +79,7 @@ public class EmailService {
             String url = clientURL + "/update-password/" + token;
 
             String htmlMsg = String.format("Hallo, <p/><p/> <b> falls Sie keine Password Änderung " +
-                    "für Ihr Account bei der \"Gofore Germany Onboarding Tool\" WebApp angefordert haben, " +
+                    "für Ihr Account bei der \"Onboarding Tool\" WebApp angefordert haben, " +
                     "können Sie diese E-mail ignorieren. </b> <p/><p/>" +
                     "Ansonsten klicken Sie bitte den Link innerhalb %d min, um den Password ändern zu können. <br/><br/>" +
                     "<a href='%s'>%s</a>", this.resetPasswordTokenExpiration/1000/60, url, "PASSWORD RESET");

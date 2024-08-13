@@ -323,23 +323,6 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void register_employee_not_exists_by_false_email() {
-        EmployeeVm employeeVm = new EmployeeVm();
-        employeeVm.setLogin("StringLogin");
-        employeeVm.setPassword("StringPassword");
-        employeeVm.setEmail("muster@muster.de");
-
-        when(this.employeeRepository.existsEmployeeByLoginEqualsIgnoreCase(employeeVm.getLogin())).thenReturn(false);
-        when(this.employeeRepository.existsEmployeeByEmailEqualsIgnoreCase(employeeVm.getEmail())).thenReturn(false);
-        ResponseEntity<String> employeeResponseEntity = this.employeeService.register(employeeVm);
-
-        String error = ZULAESSIGE_DOMAINS_SIND + ": " + GOFORE_COM +", " + E_MUNDO_DE;
-        assertEquals(error, employeeResponseEntity.getBody());
-        verify(this.employeeRepository, times(0)).save(any(Employee.class));
-        org.assertj.core.api.Assertions.assertThatNoException();
-    }
-
-    @Test
     void register_employee_not_exists_by_email() {
         EmployeeVm employeeVm = new EmployeeVm();
         employeeVm.setLogin("StringLogin");
@@ -362,7 +345,7 @@ class EmployeeServiceTest {
         EmployeeVm employeeVm = new EmployeeVm();
         employeeVm.setLogin("StringLogin");
         employeeVm.setPassword("StringPassword");
-        employeeVm.setEmail("muster@gofore.com");
+        employeeVm.setEmail("muster@muster.com");
 
         Activity activity = new Activity("uuid", null, new Employee());
 
