@@ -164,4 +164,20 @@ public class EmailService {
         return new AsyncResult<>(true);
     }
 
+
+    @Async
+    public Future<Boolean> sendDeaktivierungsEmailtoAdmin(String email, String login) {
+        try {
+            MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
+
+            String htmlMsg = String.format("Es geht um Onboarding von <b>%s </b> . Er/sie hat alle Tasks erledigt", login);
+
+            return this.sendMessage(this.emailFrom, mimeMessage, message, htmlMsg, "Account Deaktivierung für " + login);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new AsyncResult<>(false);
+    }
 }

@@ -53,9 +53,9 @@ public class AuthController {
 
     // Employee Deaktivierung
     @PostMapping("/account-deactivate")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> deActivateEmployee(@RequestBody String uuid) {
-        return this.employeeService.deActivateEmployee(uuid);
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+    public ResponseEntity<String> deActivateEmployee(@RequestBody Long employeeId) {
+        return this.employeeService.deActivateEmployee(employeeId);
     }
 
     //resend E-Mail für account aktivation

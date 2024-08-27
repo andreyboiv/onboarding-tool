@@ -27,8 +27,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
+import java.util.concurrent.Future;
 
-import static com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService.*;
+import static com.boivalenko.businessapp.teamtasksplanning.web.auth.service.EmployeeService.ES_IST_EIN_FEHLER_WAEHREND_AKTIVATION_AUFGETRETEN_PROBIEREN_SIE_EINE_AKTIVIERUNGS_E_MAIL_NOCH_MAL_GENERIEREN_ZU_LASSEN;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -499,7 +500,7 @@ class EmployeeServiceTest {
     void deActivateEmployee_uuid_null() {
         ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(null);
 
-        verify(this.activityRepository, times(0)).findActivityByUuid(any(String.class));
+        verify(this.activityRepository, times(0)).findActivityByEmployeeToActivity_Id(any(Long.class));
 
         assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
@@ -507,10 +508,10 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void deActivateEmployee_uuid_empty() {
-        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee("");
+    void deActivateEmployee_emloyeeid_0L() {
+        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(0L);
 
-        verify(this.activityRepository, times(0)).findActivityByUuid(any(String.class));
+        verify(this.activityRepository, times(0)).findActivityByEmployeeToActivity_Id(any(Long.class));
 
         assertEquals(EmployeeService.UUID_DARF_NICHT_LEER_SEIN, employeeResponseEntity.getBody());
 
@@ -519,32 +520,33 @@ class EmployeeServiceTest {
 
     @Test
     void deActivateEmployee_activity_null() {
-        String someUUID = "someUUID123";
+        Long employeeId = 123L;
 
         Optional<Activity> optionalActivity = Optional.empty();
-        when(this.activityRepository.findActivityByUuid(someUUID)).thenReturn(optionalActivity);
+        when(this.activityRepository.findActivityByEmployeeToActivity_Id(employeeId)).thenReturn(optionalActivity);
 
-        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(someUUID);
+        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(employeeId);
 
-        verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
+        verify(this.activityRepository, times(1)).findActivityByEmployeeToActivity_Id(any(Long.class));
 
-        assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_UUID + someUUID, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.ACTIVITY_NICHT_GEFUNDEN_UUID + employeeId, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }
 
     @Test
     void deActivateEmployee_activity_employee_schon_deaktiviert() {
-        String someUUID = "someUUID123";
+        Long employeeId = 123L;
 
         Boolean activated = false;
-        Activity activity = new Activity(someUUID, activated, new Employee());
+        String uuid = "1234567890";
+        Activity activity = new Activity(uuid, activated, new Employee());
         Optional<Activity> optionalActivity = Optional.of(activity);
-        when(this.activityRepository.findActivityByUuid(someUUID)).thenReturn(optionalActivity);
+        when(this.activityRepository.findActivityByEmployeeToActivity_Id(employeeId)).thenReturn(optionalActivity);
 
-        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(someUUID);
+        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(employeeId);
 
-        verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
+        verify(this.activityRepository, times(1)).findActivityByEmployeeToActivity_Id(any(Long.class));
 
         assertEquals(EmployeeService.EMPLOYEE_IST_SCHON_DEAKTIVIERT, employeeResponseEntity.getBody());
 
@@ -553,17 +555,17 @@ class EmployeeServiceTest {
 
     @Test
     void deActivateEmployee_activity_employee_deaktiverung_klappt_nicht() {
-        String someUUID = "someUUID123";
-
+        Long employeeId = 123L;
         Boolean activated = true;
-        Activity activity = new Activity(someUUID, activated, new Employee());
+        String uuid = "1234567890";
+        Activity activity = new Activity(uuid, activated, new Employee());
         Optional<Activity> optionalActivity = Optional.of(activity);
-        when(this.activityRepository.findActivityByUuid(someUUID)).thenReturn(optionalActivity);
-        when(this.activityRepository.deActivate(someUUID)).thenReturn(0);
+        when(this.activityRepository.findActivityByEmployeeToActivity_Id(employeeId)).thenReturn(optionalActivity);
+        when(this.activityRepository.deActivate(employeeId)).thenReturn(0);
 
-        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(someUUID);
+        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(employeeId);
 
-        verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
+        verify(this.activityRepository, times(1)).findActivityByEmployeeToActivity_Id(any(Long.class));
 
         assertEquals(EmployeeService.DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, employeeResponseEntity.getBody());
 
@@ -574,19 +576,21 @@ class EmployeeServiceTest {
     // Positive Tests
     @Test
     void deActivateEmployee() {
-        String someUUID = "someUUID123";
-
+        Long employeeId = 123L;
         Boolean activated = true;
-        Activity activity = new Activity(someUUID, activated, new Employee());
+        String uuid = "1234567890";
+        Activity activity = new Activity(uuid, activated, new Employee("", "", "email@email.de", null, null));
         Optional<Activity> optionalActivity = Optional.of(activity);
-        when(this.activityRepository.findActivityByUuid(someUUID)).thenReturn(optionalActivity);
-        when(this.activityRepository.deActivate(someUUID)).thenReturn(1);
+        when(this.activityRepository.findActivityByEmployeeToActivity_Id(employeeId)).thenReturn(optionalActivity);
+        when(this.activityRepository.deActivate(employeeId)).thenReturn(1);
+        Future<Boolean> object = null;
+        when(this.emailService.sendDeaktivierungsEmail(activity.getEmployeeToActivity().getEmail(), activity.getEmployeeToActivity().getLogin())).thenReturn(object);
 
-        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(someUUID);
+        ResponseEntity<String> employeeResponseEntity = this.employeeService.deActivateEmployee(employeeId);
 
-        verify(this.activityRepository, times(1)).findActivityByUuid(any(String.class));
+        verify(this.activityRepository, times(1)).findActivityByEmployeeToActivity_Id(any(Long.class));
 
-        assertEquals(EmployeeService.DER_EMPLOYEE_UUID + someUUID + EmployeeService.IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL, employeeResponseEntity.getBody());
+        assertEquals(EmployeeService.DER_EMPLOYEE_UUID + employeeId + EmployeeService.IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL, employeeResponseEntity.getBody());
 
         org.assertj.core.api.Assertions.assertThatNoException();
     }

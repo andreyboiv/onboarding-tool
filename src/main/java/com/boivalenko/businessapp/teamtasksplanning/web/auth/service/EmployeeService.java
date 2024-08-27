@@ -161,23 +161,22 @@ public class EmployeeService {
         return new ResponseEntity<>(EMPLOYEE_IST_ERFOLGREICH_AKTIVIERT_SIE_ERHALTEN_BALD_EINE_E_MAIL_MIT_BEGR_UESS_UNG, HttpStatus.OK);
     }
 
-    public ResponseEntity<String> deActivateEmployee(String uuid) {
+    public ResponseEntity<String> deActivateEmployee(Long employeeID) {
 
-        if (uuid == null || uuid.isEmpty()) {
+        if (employeeID == null || employeeID.equals(0L)) {
             return new ResponseEntity<>(UUID_DARF_NICHT_LEER_SEIN, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        // UUID Prüfung
         Activity activity = null;
 
-        Optional<Activity> activityById = this.activityRepository.findActivityByUuid(uuid);
+        Optional<Activity> activityById = this.activityRepository.findActivityByEmployeeToActivity_Id(employeeID);
 
         if (activityById.isPresent()) {
             activity = activityById.get();
         }
 
         if (activity == null) {
-            return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_UUID + uuid, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(ACTIVITY_NICHT_GEFUNDEN_UUID + employeeID, HttpStatus.NOT_ACCEPTABLE);
         }
 
         // Wenn der Employee bereits zuvor deaktiviert wurde
@@ -186,7 +185,7 @@ public class EmployeeService {
         }
 
         // Gibt die Anzahl der aktualisierten Datensätze zurück (sollte 1 sein)
-        int updatedCount = this.activityRepository.deActivate(uuid);
+        int updatedCount = this.activityRepository.deActivate(employeeID);
 
         if (updatedCount != 1) {
             return new ResponseEntity<>(DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT, HttpStatus.NOT_ACCEPTABLE);
@@ -195,7 +194,10 @@ public class EmployeeService {
         //es wird eine E-Mail mit weiteren Hinweisen nach der erfolgreichen Deaktivierung abgeschickt.
         this.emailService.sendDeaktivierungsEmail(activity.getEmployeeToActivity().getEmail(), activity.getEmployeeToActivity().getLogin());
 
-        return new ResponseEntity<>(DER_EMPLOYEE_UUID + uuid + IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL, HttpStatus.OK);
+        //es wird eine E-Mail mit weiteren Hinweisen nach der erfolgreichen Deaktivierung abgeschickt.
+        this.emailService.sendDeaktivierungsEmailtoAdmin(activity.getEmployeeToActivity().getEmail(), activity.getEmployeeToActivity().getLogin());
+
+        return new ResponseEntity<>(DER_EMPLOYEE_UUID + employeeID + IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL, HttpStatus.OK);
     }
 
     public ResponseEntity<String> updatePassword(String password) {
