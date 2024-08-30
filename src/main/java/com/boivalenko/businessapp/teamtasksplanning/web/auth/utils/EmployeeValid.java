@@ -13,12 +13,12 @@ public final class EmployeeValid {
     public static final String EMPLOYEE_DARF_NICHT_NULL_SEIN = "Employee darf nicht null sein";
     public static final String ID_WIRD_AUTOMATISCH_GENERIERT_MAN_MUSS_DA_NICHTS_EINGEBEN = "ID wird automatisch generiert. Man muss da nichts eingeben";
     public static final String LOGIN_DARF_WEDER_NULL_NOCH_LEER_SEIN = "LOGIN darf weder NULL noch leer sein";
-    public static final String LOGIN_MUSS_MINDESTENS = "LOGIN muss mindestens ";
+    public static final String LOGIN_MUSS_MINDESTENS = "Login muss mindestens ";
     public static final String SYMBOLE_ENTHALTEN = " Symbole enthalten";
-    public static final String PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN = "PASSWORD darf weder NULL noch leer sein";
-    public static final String PASSWORD_MUSS_MINDESTENS = "PASSWORD muss mindestens ";
-    public static final String EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN = "EMAIL darf weder NULL noch leer sein";
-    public static final String EMAIL_FORMAT_IST_UNKORREKT = "EMAIL Format ist unkorrekt";
+    public static final String PASSWORD_DARF_WEDER_NULL_NOCH_LEER_SEIN = "Passwort darf weder NULL noch leer sein";
+    public static final String PASSWORD_MUSS_MINDESTENS = "Passwort muss mindestens ";
+    public static final String EMAIL_DARF_WEDER_NULL_NOCH_LEER_SEIN = "E-MAIL darf weder NULL noch leer sein";
+    public static final String EMAIL_FORMAT_IST_UNKORREKT = "E-MAIL Format ist unkorrekt";
 
     private EmployeeValid(){
         throw new AssertionError("Es dürfen keine Objekte des Klasses erzeugt werden");

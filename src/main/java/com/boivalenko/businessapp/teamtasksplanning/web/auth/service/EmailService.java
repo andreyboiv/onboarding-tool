@@ -47,18 +47,21 @@ public class EmailService {
             String url = clientURL + "/activate-account/" + uuid;
 
             String htmlMsg = String.format(
-                    "Hallo und Herzlich willkommen,<br/><br/><br/><br/>" +
-                            "Sie haben erfolgreich ein Account für WebApp \"Onboarding Tool\" " +
-                            "erstellt. Login :<b> %s </b> <p/><p/>" +
-                            "Für Bestätigung Ihrer Registrierung klicken Sie bitte " +
-                            "<a href='%s'>%s</a><br/><br/>",  username, url, "den Link.");
+                    "Hey,<br/><br/>" +
+                            "<b>falls Du jetzt das erste Mal vom \"Onboarding Tool\" hörst, dann ignoriere bitte diese E-mail. <p/>" +
+                            "Du brauchst das gar nicht weiter lesen! Jemand anderer hat deine E-mail anscheint (fehlerhaft) eingegeben... </b><p/><p/>" +
 
-            htmlMsg = htmlMsg + "<br/><br/><b>Bitte achten Sie darauf. " +
-                    "<p/><p/> Ohne diese Bestätigung dürfen Sie die WebApp \"Onboarding Tool\" " +
-                    "nicht weiter verwenden.</b> <br/><br/><br/><br/>" +
-                    " Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
+                            "ANSONSTEN hast Du alles richtig gemacht! :-) Und Du hast ja erfolgreich ein Account für das \"Onboarding Tool\" " +
+                            "erstellt. <p/><p/>" +
+                            "Dein Name bzw. Login im System lautet:<b> %s </b> <p/>Dein Passwort musstest du dir selbst merken oder irgendwo abspeichern können. <p/>" +
+                            "Dabei hast du die Möglichkeit , jeder Zeit dein Passwort zurückzusetzen. <p/><p/>" +
+                            "" +
 
-            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Activation erforderlich");
+                            "<b>WAS DIR NOCH FEHLT... GANZ WICHTIG!!! Für die Aktivierung deines Accounts musstest " +
+                            "<a href='%s'>%s</a> klicken</b><br/><br/>" +
+                            "Viel Spaß beim Onboarding <br/> Dein Onboarding Team",  username, url, "den Link.");
+
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Registrierung deines Accounts beim \"Onboarding Tool\" war erfolgreich");
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -78,15 +81,15 @@ public class EmailService {
             // das ist tatsächlich ein entry point beim Frontend....
             String url = clientURL + "/update-password/" + token;
 
-            String htmlMsg = String.format("Hallo, <p/><p/> <b> falls Sie keine Password Änderung " +
-                    "für Ihr Account bei der \"Onboarding Tool\" WebApp angefordert haben, " +
-                    "können Sie diese E-mail ignorieren. </b> <p/><p/>" +
-                    "Ansonsten klicken Sie bitte den Link innerhalb %d min, um den Password ändern zu können. <br/><br/>" +
-                    "<a href='%s'>%s</a>", this.resetPasswordTokenExpiration/1000/60, url, "PASSWORD RESET");
+            String htmlMsg = String.format("Hey,<br/><br/> <b> falls du keine Passwort Änderung " +
+                    "für Dein Account beim \"Onboarding Tool\" wünschst, <p/>" +
+                    "kannst du diese E-mail SICHER ignorieren. </b> <p/><p/>" +
+                    "Ansonsten klick bitte den folgenden Link innerhalb %d min, um den Passwort ändern zu können. <br/><br/>" +
+                    "<a href='%s'>%s</a>", this.resetPasswordTokenExpiration/1000/60, url, "Passwort zurücksetzen");
 
-            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
+            htmlMsg = htmlMsg + "<br/><br/>Viel Spaß beim Onboarding <br/> Dein Onboarding Team";
 
-            return this.sendMessage(email, mimeMessage, message, htmlMsg, "PASSWORD RESET");
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Passwort zurücksetzen beim Onboarding");
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -101,12 +104,12 @@ public class EmailService {
             MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s</b> . <p/><p/>Willkommen beim Team. <p/><p/>" +
-                    "Nun dürfen Sie sich einloggen/ausloggen. <p/><p/> Außerdem können Sie ihr Password in beliebiger Zeit ändern", login);
+            String htmlMsg = String.format("Hey <b>%s</b><br/><br/>Wir freuen uns echt riesig, Dich beim Team begrüßen zu dürfen! <p/><p/>" +
+                    "Dein Onboarding Account ist nun ja aktiviert und Du kannst dich gerne einloggen/ausloggen. <p/> Und natürlich kannst du bitte gerne Deine Tasks machen... ;-)", login);
 
-            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
+            htmlMsg = htmlMsg + "<br/><br/>Viel Spaß beim Onboarding <p/><p/> Dein Onboarding Team";
 
-            return this.sendMessage(email, mimeMessage, message, htmlMsg, "IHR ACCOUNT IST AKTIVIERT! Willkomen beim Team!");
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Dein Onboarding Account ist aktiviert");
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -119,12 +122,13 @@ public class EmailService {
             MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s </b>. <p/><p/>Wir müssen Ihnen mitteilen, " +
-                    "Ihr Account ist deaktiviert. <p/><p/>Bei Fragen wenden Sie sich bitte an Administrator.", login);
+            String htmlMsg = String.format("Hey <b>%s </b>, <br/><br/>" +
+                    "dein Account beim Onboarding ist deaktiviert. <p/> Der Grund: Du hast ja alle Tasks erledigt markiert und brauchst kein Onboarding mehr." +
+                    " <p/><p/><b>Wenn Du doch was nachholen musst, wende dich bitte an jemanden vom Onboarding Team, dass du den Zugang wieder bekommst.</b>", login);
 
-            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
+            htmlMsg = htmlMsg + "<br/><br/>Tschau & Viel Erfolg und Spaß bei Kunden Projekten <p/><p/> Dein Onboarding Team";
 
-            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Account Deaktivierung");
+            return this.sendMessage(email, mimeMessage, message, htmlMsg, "Account Deaktivierung beim Onboarding Tool");
 
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -138,10 +142,10 @@ public class EmailService {
             MimeMessage mimeMessage = sender.createMimeMessage(); // es wird nicht eine TXT Datei erzeugt, sondern HTML
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
 
-            String htmlMsg = String.format("Hallo Liebe(-r) <b>%s </b>. <p/><p/><p/><p/>Ihr Password wurde erfolgreich geändert. <p/><p/><p/><p/>" +
-                    "<p/><p/> <b>Wenden Sie sich bitte zügig an Administrator, falls Sie Ihr Password doch nicht geändert haben.</b> <p/><p/>", login);
+            String htmlMsg = String.format("Hey <b>%s </b>. <p/><p/><p/><p/>Dein Password wurde erfolgreich geändert. <p/><p/><p/><p/>" +
+                    "<p/><p/> <b>Wende dich bitte zügig an Administrator, falls Du Dein Password doch nicht geändert hast.</b> <p/><p/>", login);
 
-            htmlMsg = htmlMsg + "<br/><br/>Mit freundlichen Grüßen <p/><p/> Andrey Boivalenko";
+            htmlMsg = htmlMsg + "<br/><br/>Viel Spaß bei Onboarding <p/><p/> Onboarding Team";
 
             return this.sendMessage(email, mimeMessage, message, htmlMsg, "Password erfolgreich geändert");
 

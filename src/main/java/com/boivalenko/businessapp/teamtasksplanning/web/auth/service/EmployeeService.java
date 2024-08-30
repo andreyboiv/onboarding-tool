@@ -33,7 +33,7 @@ public class EmployeeService {
 
     public static final String ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DEM_LOGIN = "Es existiert schon ein Employee mit dem Login";
     public static final String ES_EXISTIERT_SCHON_EIN_EMPLOYEE_MIT_DER_E_MAIL = "Es existiert schon ein Employee mit der E-mail";
-    public static final String EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT = "Employee ist erfolgreich registriert. Die E-mail mit einem Aktivierungslink ist abgeschickt";
+    public static final String EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT = "Danke für die Registrierung. Schau bitte dein Postfach (vielleicht auch den Spam-Ordner) in ein paar Minuten";
     public static final String UUID_DARF_NICHT_LEER_SEIN = "UUID darf nicht leer sein";
     public static final String ACTIVITY_NICHT_GEFUNDEN_UUID = "Activity nicht gefunden. UUID:";
     public static final String EMPLOYEE_IST_SCHON_AKTIVIERT = "Employee ist schon aktiviert";
@@ -45,19 +45,18 @@ public class EmployeeService {
     public static final String DEAKTIVIERUNG_DES_EMPLOYEE_IST_NICHT_GEKLAPPT = "Deaktivierung des Employee ist nicht geklappt";
     public static final String DER_EMPLOYEE_UUID = "Der Employee (uuid:";
     public static final String IST_ERFOLGREICH_DEAKTIVIERT_DABEI_ERHAELT_ER_EINE_BENACHRICHTIGUNG_PER_E_MAIL = ") ist erfolgreich deaktiviert. Dabei erhält er eine Benachrichtigung per E-mail";
-    public static final String PASSWORD_DARF_NICHT_LEER_SEIN = "Password darf nicht leer sein";
-    public static final String PASSWORD_MUSS_MINDESTENS = "PASSWORD muss mindestens ";
+    public static final String PASSWORD_DARF_NICHT_LEER_SEIN = "Passwort darf nicht leer sein";
+    public static final String PASSWORD_MUSS_MINDESTENS = "Passwort muss mindestens ";
     public static final String SYMBOLE_ENTHALTEN = " Symbole enthalten";
-    public static final String PASSWORD_WURDE_NICHT_GEAENDERT = "Password wurde nicht geändert";
-    public static final String PASSWORD_WURDE_ERFOLGREICH_GEAENDERT = "Password wurde erfolgreich geändert";
+    public static final String PASSWORD_WURDE_NICHT_GEAENDERT = "Passwort wurde nicht geändert";
+    public static final String PASSWORD_WURDE_ERFOLGREICH_GEAENDERT = "Passwort wurde erfolgreich geändert";
     public static final String EMPLOYEE_HAT_SICH_ERFOLGREICH_AUSGELOGGT = "Employee hat sich erfolgreich ausgeloggt";
     public static final String WEDER_LOGIN_NOCH_E_MAIL_DUERFEN_LEER_SEIN = "Weder Login noch E-mail dürfen leer sein";
-    public static final String EMPLOYEE_IST_SCHON_AKTIVIERT_SIE_BRAUCHEN_KEINE_REAKTIVIERUNG = "Employee ist schon aktiviert. Sie brauchen keine Reaktivierung";
+    public static final String EMPLOYEE_IST_SCHON_AKTIVIERT_SIE_BRAUCHEN_KEINE_REAKTIVIERUNG = "Dein Account ist schon aktiviert. Du brauchst keine Reaktivierung...";
     public static final String EMAIL_MIT_AKTIVIERUNGSLINK = "Die E-mail mit dem Aktivierungslink " +
             "erhalten Sie bald wieder. Schauen Sie bitte außerdem Ihren Spam-Ordner an";
     public static final String E_MAIL_DARF_NICHT_LEER_SEIN = "E-mail darf nicht leer sein";
-    public static final String RESET_PASSWORD_EMAIL = "Die E-mail mit dem entsprenden Link (mit Token Bearer), um das Password für Ihr Account zu ändern," +
-            " erhalten Sie bald wieder. Schauen Sie bitte außerdem Ihren Spam-Ordner an";
+    public static final String RESET_PASSWORD_EMAIL = "Schau bitte dein Postfach (vielleicht auch den Spam-Ordner) in ein paar Minuten. Da erhälst du weitere Anweisungen, um dein Passwort zurücksetzen zu können";
     public static final String EMPLOYEE_IST_NICHT_AKTIVIERT = "Employee ist nicht aktiviert";
 
     private final EmailService emailService;
