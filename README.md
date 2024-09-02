@@ -30,15 +30,10 @@ Das Frontend Projekt: <a href="https://github.com/andreyboiv/onboarding-tool-fro
 <p>
 <b><h2>Kurze Beschreibung des Projektes (fachlich):</h2></b>
 <p>
-<ins>
-Neue Mitarbeiter eines Unternehmens sollen ihre Onboarding Aufgaben 
-erledigen.</ins> Die Aufgaben können von einem Mitarbeiter 
-entweder erledigt markiert oder entsprechend nicht erledigt 
-markiert werden. Das Ziel des Tools ist ja, 
-dass ein Mitarbeiter alle seine Arbeitsaufgaben (Tasks) 
-erfolgreich erledigt markiert. 
-In dem Fall wird sowohl ein Admin als auch der Mitarbeiter 
-selbst per E-Mail benachrichtigt.
+Ein neuer Mitarbeiter hat eine gewisse Anzahl von Onboarding Aufgaben zu
+erledigen. Wenn alle diese Aufgaben vom Mitarbeiter erledigt sind, soll der Workflow ja beenden. 
+Dabei wird der Mitarbeiter vom System ausgeloggt bzw. deaktiviert und per E-mail benachrichtigt. Die Benachrichtigung erhält 
+das Onboarding Team entsprechend auch.
 <p>
 <p>
 <b><h2>Was wurde gemacht (technisch):</h2></b>
