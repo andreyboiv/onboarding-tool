@@ -31,8 +31,10 @@ Das Frontend Projekt: <a href="https://github.com/andreyboiv/onboarding-tool-fro
 <b><h2>Kurze Beschreibung des Projektes (fachlich):</h2></b>
 <p>
 Ein neuer Mitarbeiter hat eine gewisse Anzahl von Onboarding Aufgaben zu
-erledigen. Wenn alle diese Aufgaben vom Mitarbeiter erledigt sind, soll der Workflow ja beenden. 
-Dabei wird der Mitarbeiter vom System ausgeloggt bzw. deaktiviert und per E-mail benachrichtigt. Die Benachrichtigung erhält 
+erledigen. Wenn alle diese Aufgaben vom Mitarbeiter erledigt sind, 
+soll der Workflow ja beenden. 
+Dabei wird der Mitarbeiter vom System ausgeloggt bzw. 
+deaktiviert und per E-Mail benachrichtigt. Die Benachrichtigung erhält 
 das Onboarding Team entsprechend auch.
 <p>
 <p>
