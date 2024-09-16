@@ -1,0 +1,37 @@
+<div class="spinner" *ngIf="spinner && spinner.visibility | async"></div>
+
+<mat-toolbar color="primary">
+  <button mat-icon-button aria-label="Menu icon" *ngIf="isMobile" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <h1>Onboarding für {{employee?.login}}</h1>
+</mat-toolbar>
+
+<mat-sidenav-container autosize>
+  <mat-sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'">
+    <mat-nav-list>
+      <span class="not-found" *ngIf="!categories || categories.length === 0">
+        <span>Keine Kategorien gefunden</span>
+      </span>
+      <app-categories
+        [categories] = "categories"
+        [anzahlAllUncompletedCountAllCat] = "anzahlAllUncompletedCountAllCat"
+        [employeesToCategory] = "employee"
+        (showTasksOfCategoryEvent) = "showTasksOfCategoryEvent($event)"
+      ></app-categories>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <h2><div style="font-size: 16px;"><b>Tasks</b></div></h2>
+    <app-tasks
+    [tasks] = "tasks"
+    [selectedCategory]="selectedCategory"
+    [employee]="employee"
+    (updateTaskEvent)="updateTask($event)"
+    >
+    </app-tasks>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+

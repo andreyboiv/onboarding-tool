@@ -1,0 +1,6 @@
+<p *ngIf="!cookieEnabled">Cookies sind in Ihrem Browser momentan ausgeschaltet.
+  Bitte schalten Sie die Cookies ein, dann laden Sie bitte die Seite neue. Danke</p>
+
+<router-outlet *ngIf="cookieEnabled"></router-outlet>
+
+

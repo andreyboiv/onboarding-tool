@@ -1,0 +1,62 @@
+h1 {
+  padding: 0 1rem;
+}
+
+h2 {padding: 1rem;}
+
+mat-toolbar {
+  position:fixed;
+  top:0;
+  z-index: 2;
+}
+
+mat-sidenav-container {
+  height:100%;
+}
+
+mat-sidenav {
+  padding-top: 3.5rem;
+  width: 20rem;
+  @media screen and (min-width: 600px) {
+    padding-top: 4rem;
+  }
+
+  .entry {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding:0.75rem;
+    margin-left: 1rem;
+  }
+
+  .not-found {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding:0.75rem;
+    margin-left: 1rem;
+    color:red;
+  }
+
+  .button-flat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding:0.75rem;
+    margin-left: 1rem;
+  }
+
+  .button-text {
+    padding-left: 1rem;
+    padding-right: 3rem;
+  }
+
+
+}
+
+mat-sidenav-content {
+  padding-top: 3.5rem;
+  @media screen and (min-width: 600px) {
+    padding-top: 4rem;
+  }
+}

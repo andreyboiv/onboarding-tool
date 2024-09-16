@@ -1,0 +1,19 @@
+<mat-dialog-content>
+<h1 mat-dialog-title>Info</h1>
+<div mat-dialog-content>
+  Glückwünsch!!! Du hast ja alle Tasks erledigt. Nun hast Du die folgenden Optionen:
+  <p></p>
+  <p></p>
+  1. Klick bitte den Button "Daten übermitteln" unten, wenn Du dir sicher bist, dass alle Tasks von Dir erfolgreich durchgeführt wurden.
+  In diesem Fall erhält dein Onboarding Team Bescheid und kontaktiert dich umgegend.
+  Dabei ist GANZE WICHTIGE INFO für dich: Dein Account beim Onboarding Tool wird deaktiviert,
+  dass weder Du noch welche andere Person sich unter dein Account anmeldet und unter deinem Account was ändern würde.
+  <p></p>
+  <p></p>
+  2. Klick bitte den Button "Abbrechen" unten, wenn Du DOCH etwas korrigieren/nachprüfen/nachholen würdest, bevor Du die Daten endlich übermitteln möchstest...
+</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button class="button-flat" color="primary" (click)="dialogRef.close(true)">Daten übermitteln</button>
+  <button mat-flat-button class="button-flat" color="primary" (click)="dialogRef.close(false)">Abbrechen</button>
+</mat-dialog-actions>

@@ -1,0 +1,37 @@
+<div class="form_wrapper">
+  <div class="form_container">
+    <div class="title_container">
+      <h2>Autorisierung</h2>
+    </div>
+    <div class="row clearfix">
+      <div class="">
+        <form [formGroup]="loginForm" (ngSubmit)="submitAuthorisationForm()">
+          <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+            <input id="login" type="text" name="login" placeholder="Login" formControlName="login" required />
+          </div>
+          <div *ngIf="getLogin()?.errors && (getLogin()?.dirty || getLogin()?.touched)">
+            <p *ngIf="getLogin()?.errors?.['required']" class="error_meldung">Bitte Daten eingeben</p>
+            <p *ngIf="getLogin()?.errors?.['minlength']" class="error_meldung">Name muss mindestens 6 Symbole enthalten</p>
+            <p *ngIf="getLogin()?.errors?.['pattern']" class="error_meldung">Name darf nur Buchstaben enthalten</p>
+          </div>
+          <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+            <input id="password" type="password" name="password" formControlName="password" placeholder="Passwort" required />
+          </div>
+          <div *ngIf="getPassword()?.errors && (getPassword()?.dirty || getPassword()?.touched)">
+            <p *ngIf="getPassword()?.errors?.['required']" class="error_meldung">Bitte Daten eingeben</p>
+            <p *ngIf="getPassword()?.errors?.['minlength']" class="error_meldung">Passwort muss mindestens 8 Symbole enthalten</p>
+          </div>
+          <input class="button col-md-6 col-sm-12" [disabled]="loginForm.invalid" type="submit" value="Einloggen" />
+          <div *ngIf="error">
+            <p class="error_meldung">{{error}}</p>
+          </div>
+        </form>
+        <p></p>
+        <p></p>
+        <button (click)="register()">Zur Registrierung Form</button>
+        <p></p>
+        <button (click)="resetPassword()">Passwort zurücksetzen</button>
+      </div>
+    </div>
+  </div>
+</div>

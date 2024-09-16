@@ -1,0 +1,65 @@
+<div class="form_wrapper">
+  <div class="form_container">
+    <div class="title_container">
+      <h2>Registrierung</h2>
+    </div>
+    <div class="row clearfix">
+      <div class="">
+        <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
+          <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
+            <input id="login" type="text" name="login" placeholder="Name" formControlName="login" required />
+          </div>
+          <div *ngIf="getLogin()?.errors && (getLogin()?.dirty || getLogin()?.touched)">
+            <p *ngIf="getLogin()?.errors?.['required']" class="error_meldung">Bitte Daten eingeben</p>
+            <p *ngIf="getLogin()?.errors?.['minlength']" class="error_meldung">Name muss mindestens 6 Symbole enthalten</p>
+            <p *ngIf="getLogin()?.errors?.['pattern']" class="error_meldung">Name darf nur Buchstaben enthalten</p>
+          </div>
+          <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+            <input id="email" type="email" name="email" placeholder="E-mail" formControlName="email" required [email]="true" />
+          </div>
+          <div *ngIf="getEmail()?.errors && (getEmail()?.dirty || getEmail()?.touched)">
+            <p *ngIf="getEmail()?.errors?.['required']" class="error_meldung">Bitte Daten eingeben</p>
+            <p *ngIf="getEmail()?.errors?.['pattern']" class="error_meldung">Bitte gültige Format eingeben</p>
+          </div>
+           <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+             <input id="password" type="password" name="password" formControlName="password" placeholder="Passwort" required />
+           </div>
+          <div *ngIf="getPassword()?.errors && (getPassword()?.dirty || getPassword()?.touched)">
+             <p *ngIf="getPassword()?.errors?.['required']" class="error_meldung">Bitte Daten eingeben</p>
+             <p *ngIf="getPassword()?.errors?.['minlength']" class="error_meldung">Password muss mindestens 8 Symbole enthalten</p>
+           </div>
+           <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+             <input id="confirm_password" type="password" name="confirm_password" formControlName="confirm_password" placeholder="Passwort wiederholen..." required />
+           </div>
+          <div *ngIf="getConfirmPassword()?.errors && (getConfirmPassword()?.dirty || getConfirmPassword()?.touched)">
+             <p *ngIf="getConfirmPassword()?.errors?.['required']" class="error_meldung">Bitte Daten eingeben</p>
+             <p *ngIf="getConfirmPassword()?.errors?.['minlength']" class="error_meldung">Password muss mindestens 8 Symbole enthalten</p>
+           </div>
+              <p *ngIf="registerForm.errors?.['PasswordNoMatch']"
+                 class="error_meldung">Bitte das gleiche Password 2 mal eingeben
+              </p>
+          <div>
+            <h2>Captcha</h2>
+            <p (copy)="false">{{ captchaText }}</p>
+            <div class="col-md-6 col-sm-12">
+              <button cButton (click)="generateCaptcha()">Neuen Captcha generieren</button>
+            </div>
+            <p></p>
+          </div>
+          <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+            <input id="confirm_captcha" type="text" name="confirm_captcha" formControlName="confirm_captcha" placeholder="Captcha wiederholen..." required />
+          </div>
+          <input class="button col-md-6 col-sm-12" type="submit"
+                 [disabled]="registerForm.invalid"
+                 value="Registrieren"/>
+          <div *ngIf="error">
+             <p class="error_meldung">{{error}}</p>
+           </div>
+        </form>
+        <p></p>
+        <p></p>
+        <button (click)="einloggen()">Zur Autorisierung Form</button>
+      </div>
+    </div>
+  </div>
+</div>

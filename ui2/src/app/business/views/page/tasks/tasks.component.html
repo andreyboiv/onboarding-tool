@@ -1,0 +1,36 @@
+<div>
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let index = index;">
+        {{ index + 1 }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bezeichnung</th>
+      <td mat-cell *matCellDef="let task"
+          [ngStyle]="{'text-decoration':task.completed === true ? 'line-through' : ''}">{{ task.title }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="operations">
+
+      <th mat-header-cell *matHeaderCellDef></th>
+
+      <td class="col-operations text-right nopadding-right" mat-cell *matCellDef="let task">
+
+        <mat-checkbox
+          class="nopaddding nomargin table-icon"
+          (click)="$event.stopPropagation()"
+          (change)="$event ? onToggleCompleted(task) : null"
+          [checked]="task.completed">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+</div>

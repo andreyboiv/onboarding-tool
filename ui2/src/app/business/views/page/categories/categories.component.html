@@ -1,0 +1,36 @@
+<div id="categories">
+  <ul style="margin-bottom: 2rem">
+    <div
+      (mouseleave)="updateEditIconVisible(false, -1)"
+      (mouseenter)="updateEditIconVisible(true, -1)"
+
+      (click)="openAllTasksOfAllCategories()"
+    >
+      <div [ngClass]="(showEditIConCategoryIcon && -1 === indexCategoryMouseOver)? 'overCategoryItem' : 'notOverCategoryItem'"
+           [class.active]="allCategorien"
+      >
+        <span class="category-title" style="font-weight: bold">Alle Kategorien</span>
+        <mat-label matTooltip="Anzahl der noch ausstehenden Tasks von allen Kategorien"
+                   style="font-size: 20px">{{ anzahlAllUncompletedCountAllCat || 0 }}
+        </mat-label>
+      </div>
+    </div>
+    <li style="margin-top: 2rem"
+        *ngFor="let category of categories, let index = index"
+        (mouseleave)="updateEditIconVisible(false, index)"
+        (mouseenter)="updateEditIconVisible(true,index)"
+
+        (click)="showTasksOfCategory(category)"
+    >
+      <div
+        [class.active]="(selectedCategory && category) && (category.id === selectedCategory.id)"
+        [ngClass]="(showEditIConCategoryIcon && index === indexCategoryMouseOver)? 'overCategoryItem' : 'notOverCategoryItem'">
+
+        <span class="category-title">{{ category.title }}</span>
+        <mat-label matTooltip="Anzahl der noch ausstehenden Tasks einer Kategorie"
+                   style="font-size: 20px">{{ category.uncompletedCount || 0 }}
+        </mat-label>
+      </div>
+    </li>
+  </ul>
+</div>

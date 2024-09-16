@@ -1,0 +1,60 @@
+<div class="form_wrapper">
+  <div class="form_container">
+    <div class="title_container">
+      <h2>Aktivierungsmail erneut senden</h2>
+    </div>
+    <div class="row clearfix">
+      <div class="">
+        <form *ngIf="showForm" [formGroup]="aktivateForm" (ngSubmit)="submitAktivateForm()">
+          <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+            <cdk-accordion class="example-accordion" style="color:red">
+              @for (item of items; track item; let index = $index) {
+                <cdk-accordion-item
+
+                  #accordionItem="cdkAccordionItem"
+                  class="example-accordion-item"
+                  role="button"
+                  tabindex="0"
+                  [attr.id]="'accordion-header-' + index"
+                  [attr.aria-expanded]="accordionItem.expanded"
+                  [attr.aria-controls]="'accordion-body-' + index">
+                  <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
+                    {{ item }}
+                    <span class="example-accordion-item-description">
+          Klick , um {{ accordionItem.expanded ? 'zuklappen' : 'aufzuklappen' }}
+        </span>
+                  </div>
+                  <div
+                    class="example-accordion-item-body"
+                    role="region"
+                    [style.display]="accordionItem.expanded ? '' : 'none'"
+                    [attr.id]="'accordion-body-' + index"
+                    [attr.aria-labelledby]="'accordion-header-' + index">Du siehst ganze diese Form, weil die
+                    Aktivierung Deines Accounts fehlgeschlagen wurde... Es kann auch sein, dass Dein Account schon vorher aktiviert wurde.
+                    Das kannst Du auf jeden Fall prüfen lassen, wenn Du Deine E-mail unten im Feld angibst
+                  </div>
+                </cdk-accordion-item>
+              }
+            </cdk-accordion>
+          </div>
+          <div class="input_field col-md-6 col-sm-12"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+            <input id="email" type="email" name="email" placeholder="E-mail" formControlName="email" required [email]="true" />
+          </div>
+          <div *ngIf="getEmail()?.errors && (getEmail()?.dirty || getEmail()?.touched)">
+            <p *ngIf="getEmail()?.errors?.['required']" class="error_meldung">Bitte Daten eingeben</p>
+            <p *ngIf="getEmail()?.errors?.['pattern']" class="error_meldung">Bitte gültige Format eingeben</p>
+          </div>
+          <input class="button col-md-6 col-sm-12" [disabled]="aktivateForm.invalid" type="submit" value="Aktivierungsmail erneut senden" />
+          <div *ngIf="error">
+            <p class="error_meldung">{{error}}</p>
+          </div>
+        </form>
+        <p></p>
+        <p></p>
+        <a routerLink="/index">Zur Autorisierung Form</a>
+        <p></p>
+        <a routerLink="/register">Zur Registrierung Form</a>
+      </div>
+    </div>
+  </div>
+</div>
