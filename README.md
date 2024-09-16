@@ -43,13 +43,13 @@ $ docker-compose down
 
 #### Onboarding-Tool Database
 
-PostgreSQL database *postgres* contains only single schema: *teamtasksplanning*
+PostgreSQL database *postgres* contains only single schema: *onboarding*
 
 After running the app it can be accessible using this connectors:
 
 - Host: *localhost*
 - Database: *postgres*
-- Schema: *teamtasksplanning*
+- Schema: *onboarding*
 - User: *postgres*
 - Password: *root*
 
