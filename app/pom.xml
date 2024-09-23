@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.boivalenko.businessapp.web</groupId>
-    <artifactId>teamtasksplanning</artifactId>
+    <artifactId>onboarding</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>teamtasksplanning</name>
-    <description>teamtasksplanning</description>
+    <name>onboarding</name>
+    <description>onboarding</description>
     <properties>
         <java.version>16</java.version>
     </properties>
