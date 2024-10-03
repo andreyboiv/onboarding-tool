@@ -51,19 +51,9 @@ public class Task extends BaseEntity {
     // Default - EAGER
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", insertable = false, updatable = false, nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "category_id", updatable = false, nullable = false, referencedColumnName = "id")
     @JsonBackReference(value = "categoryBackReference")
     private Category category;
-
-    // Ein Task kann nur eine Priorität haben
-    // (andererseits kann dieselbe Priorität
-    // in mehreren Tasks verwendet werden)
-    // Default - EAGER
-    @EqualsAndHashCode.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "priority_id", insertable = false, updatable = false, nullable = false, referencedColumnName = "id")
-    @JsonBackReference(value = "priorityBackReference")
-    private Priority priority;
 
     // Foreign Key
     // Default - EAGER

@@ -28,8 +28,6 @@ Aktionen nach Bedarf)
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Activity extends BaseEntity {
 
-    // wird ein mal mit trigger eingesetzt.
-    // deswegen braucht man kein update machen -> updatable = false
     // uuid ist für die Registration eines Employess gedacht
     @Basic
     @Column(name = "uuid", nullable = false, updatable = false, length = -1)

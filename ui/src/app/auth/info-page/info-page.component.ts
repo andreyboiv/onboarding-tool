@@ -22,6 +22,12 @@ export class InfoPageComponent implements OnInit {
   }
 
   toIndex() {
-    this.router.navigate(['index'], {skipLocationChange: true})
+    window.close();
+
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['index'])
+    );
+
+    window.open(url, '_blank');
   }
 }

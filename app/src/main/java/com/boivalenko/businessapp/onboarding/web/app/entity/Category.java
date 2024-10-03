@@ -31,16 +31,12 @@ public class Category extends BaseEntity {
     @Column(name = "title", nullable = false, length = -1)
     private String title;
 
-    // updatable muss "false" sein,
-    // weil die Werte von einem Trigger gesteuert werden
     @Basic
-    @Column(name = "completed_count", insertable = false, updatable = false, nullable = true)
+    @Column(name = "completed_count", nullable = true)
     private Long completedCount = 0L;
 
-    // updatable muss "false" sein,
-    // weil die Werte von einem Trigger gesteuert werden
     @Basic
-    @Column(name = "uncompleted_count", insertable = false, updatable = false, nullable = true)
+    @Column(name = "uncompleted_count", nullable = true)
     private Long uncompletedCount = 0L;
 
     @EqualsAndHashCode.Exclude

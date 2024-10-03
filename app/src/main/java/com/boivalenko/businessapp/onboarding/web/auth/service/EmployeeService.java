@@ -1,7 +1,13 @@
 package com.boivalenko.businessapp.onboarding.web.auth.service;
 
+import com.boivalenko.businessapp.onboarding.web.app.entity.Category;
+import com.boivalenko.businessapp.onboarding.web.app.entity.Task;
+import com.boivalenko.businessapp.onboarding.web.app.repository.CategoryRepository;
+import com.boivalenko.businessapp.onboarding.web.app.repository.PowerRepository;
+import com.boivalenko.businessapp.onboarding.web.app.repository.TaskRepository;
 import com.boivalenko.businessapp.onboarding.web.auth.entity.Activity;
 import com.boivalenko.businessapp.onboarding.web.auth.entity.Employee;
+import com.boivalenko.businessapp.onboarding.web.auth.entity.Powers;
 import com.boivalenko.businessapp.onboarding.web.auth.repository.ActivityRepository;
 import com.boivalenko.businessapp.onboarding.web.auth.repository.EmployeeRepository;
 import com.boivalenko.businessapp.onboarding.web.auth.utils.CookieUtils;
@@ -21,8 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.boivalenko.businessapp.onboarding.web.auth.utils.EmployeeValid.MIN_PASSWORD_LENGTH;
 
@@ -63,7 +68,12 @@ public class EmployeeService {
     private final EmployeeDetailsServiceImpl employeeDetailsService;
 
     private final EmployeeRepository employeeRepository;
+    private final PowerRepository powersRepository;
     private final ActivityRepository activityRepository;
+    // private final StatRepository statRepository;
+    private final TaskRepository taskRepository;
+    private final CategoryRepository categoryRepository;
+    //   private final PriorityRepository priorityRepository;
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
@@ -93,15 +103,103 @@ public class EmployeeService {
         Employee employee = this.getEmployeeFromEmployeePojo(employeeVm);
         this.employeeRepository.save(employee);
 
+        /*Beim Einfügen eines neuen Employee
+        wird eine neue Zeile in der Tabelle "activity" erstellt*/
         Activity activity = new Activity();
         activity.setEmployeeToActivity(employee);
         activity.setUuid(UUID.randomUUID().toString());
         this.activityRepository.save(activity);
 
+        //Beim Einfügen eines neuen Employee wird ihm eine neue Ermächtigung - "USER" zugewiessen
+        Powers powers = new Powers();
+        powers.setEmployeesToPowers(new HashSet<>(Arrays.asList(employee)));
+        powers.setName("USER");
+        this.powersRepository.save(powers);
+
+        this.direktoriesErstellen(employee);
+
         //es wird eine E-Mail mit Account Aktivierung Benachrichtigung herausgeschickt
         this.emailService.sendActivationEmail(employeeVm.getEmail(), employeeVm.getLogin(), activity.getUuid());
 
         return new ResponseEntity<>(EMPLOYEE_IST_ERFOLGREICH_REGISTRIERT_DIE_E_MAIL_MIT_EINEM_AKTIVIERUNGSLINK_IST_ABGESCHICKT, HttpStatus.OK);
+    }
+
+    private void direktoriesErstellen(Employee employee) {
+
+        /* Beim Einfügen eines neuen Employee
+        wird eine neue Zeile in der Tabelle "stat" erstellt
+        Stat stat = new Stat();
+        stat.setEmployeeToStat(employee);
+        this.statRepository.save(stat);*/
+
+        /* Beim Einfügen eines neuen Employee werden die
+        entsprechenden Categories
+        für den neuen Employee erstellt */
+        Category categoryEinarbeitung = this.categoryErstellen("Einarbeitung", employee);
+        Category categoryTeammeetings = this.categoryErstellen("Teammeetings", employee);
+        Category categoryHaupttasks = this.categoryErstellen("Haupttasks", employee);
+
+        /* Beim
+        Einfügen eines neuen Employee werden Prioritäten erstellt
+        Priority priorityNiedrig = this.priorityErstellen("Niedrig", "#caffdd", employee);
+        Priority priorityMedium = this.priorityErstellen("Medium", "#b488e3", employee);
+        Priority priorityHoch = this.priorityErstellen("Hoch", "#f05f5f", employee);
+        Priority prioritySehrHoch = this.priorityErstellen("Sehr hoch", "#ed3434", employee);
+        Priority prioritySehrKritisch = this.priorityErstellen("Sehr Kritisch", "#a10303", employee);*/
+
+        /* Beim Einfügen eines neuen Employee werden Aufträge (Tasks)
+        für den erstellten employee erstellt
+        this.taskErstellen("Einen Arbeitsplatz mit einem Rechner bekommen", prioritySehrHoch, categoryHaupttasks, employee);
+        this.taskErstellen("An dem Begrüßung/Kennenlernen Teammeeting der ganzen Firma teilnehmen", prioritySehrHoch, categoryTeammeetings, employee);
+        this.taskErstellen("Ziele bis zum Ende der Probezeit mit dem Teamleiter & Geschäftsführung vereinbaren", prioritySehrHoch, categoryTeammeetings, employee);
+        this.taskErstellen("Notwendige Tools und Software für die Arbeit auf dem Rechner installieren", prioritySehrHoch, categoryEinarbeitung, employee);
+        this.taskErstellen("Alle entsprechende Rechte/Zugriffe von Repositories der Firma bekommen", prioritySehrHoch, categoryEinarbeitung, employee);
+        this.taskErstellen("Grundlagen von Geschäftsprozessen einarbeiten", priorityHoch, categoryEinarbeitung, employee);
+        this.taskErstellen("Begrüßungs-Kuchen für die Kollegen gerne zubereiten... :)", priorityHoch, categoryHaupttasks, employee);
+    */
+        /* Beim Einfügen eines neuen Employee werden Aufträge (Tasks)
+        für den erstellten employee erstellt */
+        this.taskErstellen("Einen Arbeitsplatz mit einem Rechner bekommen", categoryHaupttasks, employee);
+        this.taskErstellen("An dem Begrüßung/Kennenlernen Teammeeting der ganzen Firma teilnehmen", categoryTeammeetings, employee);
+        this.taskErstellen("Ziele bis zum Ende der Probezeit mit dem Teamleiter & Geschäftsführung vereinbaren", categoryTeammeetings, employee);
+        this.taskErstellen("Notwendige Tools und Software für die Arbeit auf dem Rechner installieren", categoryEinarbeitung, employee);
+        this.taskErstellen("Alle entsprechende Rechte/Zugriffe von Repositories der Firma bekommen", categoryEinarbeitung, employee);
+        this.taskErstellen("Grundlagen von Geschäftsprozessen einarbeiten", categoryEinarbeitung, employee);
+        this.taskErstellen("Begrüßungs-Kuchen für die Kollegen gerne zubereiten... :)", categoryHaupttasks, employee);
+
+    }
+
+    private Category categoryErstellen(String title, Employee employee) {
+        Category category = new Category();
+        category.setTitle(title);
+        category.setCompletedCount(0L);
+        category.setEmployeesToCategory(employee);
+        this.categoryRepository.save(category);
+        return category;
+    }
+
+  /*  private Priority priorityErstellen(String title, String color, Employee employee) {
+        Priority priority = new Priority();
+        priority.setTitle(title);
+        priority.setColor(color);
+        priority.setEmployeesToPriority(employee);
+        this.priorityRepository.save(priority);
+        return priority;
+    } */
+
+    private void taskErstellen(String title, Category category, Employee employee) {
+        Task task = new Task();
+        task.setCompleted(false);
+        task.setTaskDate(new Date());
+        task.setTitle(title);
+
+        category.setUncompletedCount(category.getUncompletedCount() + 1L);
+        this.categoryRepository.save(category);
+
+        task.setCategory(category);
+        task.setEmployeesToTask(employee);
+        //   task.setPriority(priority);
+        this.taskRepository.save(task);
     }
 
     private Employee getEmployeeFromEmployeePojo(EmployeeVm employeeVm) {

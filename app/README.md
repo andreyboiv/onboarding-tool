@@ -40,7 +40,7 @@ das Onboarding Team entsprechend auch.
 <p>
 <b><h2>Was wurde gemacht (technisch):</h2></b>
 
-1. Eine Datenbank mit Geschäftslogik (Triggers) wurde entworfen
+1. Eine Datenbank wurde entworfen
 2. Erstellen und Konfigurieren eines Spring Boot-Projekts
 3. Datenbank-Mapping wurde realisiert (entsprechende Entity-Klassen wurden erstellt).
    Dabei wurden Beziehungen (One-to-One, One-to-Many und Many-to-Many)
@@ -56,8 +56,7 @@ das Onboarding Team entsprechend auch.
 <p>
 * - Alle Controllers, Services und Repositories wurden manuell grundsätzlich getestet. 
 Deshalb war die JUnit Testing nur ja an wichtigsten Stellen nötig. 
-Außerdem sind z.B. CategoryController, PriorityController, 
-StatController und TaskController momentan von außen nicht erreichbar geworden. 
+Außerdem sind z.B. CategoryController und TaskController momentan von außen nicht erreichbar geworden. 
 Wichtig zu testen sind die Klassen, die mit der Authentifizierung (Anmeldedaten) 
 und mit der Autorisierung (Rechten) zu tun sind. Das sind die entsprechenden JUnit Tests 
 dafür: AuthControllerTest, EmployeeServiceTest und 
@@ -157,13 +156,11 @@ für Postman kann man unter "\resources\postman_tests_restful_webservices_reques
 <b>Die Datenbank (DB) enthält 8 Tabellen und alle Tabellen haben Primary Key mit Auto_Increment. Das sind die Tabellen:</b>
   
 1. employee
-2. stat
-3. activity
-4. powers
-5. employee_powers
-6. category
-7. priority
-8. task
+2. activity
+3. powers
+4. employee_powers
+5. category
+6. task
 
 <b><h3>Beschreibung der Tabellen:</h3></b>
 <p>
@@ -171,11 +168,10 @@ für Postman kann man unter "\resources\postman_tests_restful_webservices_reques
 Die Daten in der Tabelle werden manuell von Mitarbeitern/Administrator ausgefüllt. 
 Die Tabelledaten dienen sowohl für Präsentation als auch für Modifikation.
 <p>
-2. Die Tabelle <b><ins>"stat"</ins></b> zeigt Statistik von allen abgeschlossenen und fehlgeschlagenen Aufgaben (Tasks) für jeden Mitarbeiter.
+2. Die Tabelle <b><ins>"activity"</ins></b> zeigt die Registrierungsdaten eines Mitarbeiters an. Die Tabelle "activity" steuert Mitarbeiterdaten wie die Tabelle "employee" und steht zur Tabelle "employee" in einer 1:1-Beziehung.
+Daten der Tabelle dienen nur für Präsentation und nicht für Modifikation.
 <p>
-3. Die Tabelle <b><ins>"activity"</ins></b> zeigt die Registrierungsdaten eines Mitarbeiters an. Die Tabellen "stat" und "activity" steuern Mitarbeiterdaten wie die Tabelle "employee" und stehen zur Tabelle "employee" in einer 1:1-Beziehung. Die Daten der Tabellen "stat" und "activity" sind von einem SQL Trigger gesteuert. Die Tabellendaten ("stat" und "activity") dienen nur für Präsentation und nicht für Modifikation.
-<p>
-4. Die Tabelle <b><ins>"powers"</ins></b> ist eine Tabelle, die Befugnisse eines Mitarbeiters enthält. Standardmäßig hat die Tabelle die folgenden Berechtigungen:
+3. Die Tabelle <b><ins>"powers"</ins></b> ist eine Tabelle, die Befugnisse eines Mitarbeiters enthält. Standardmäßig hat die Tabelle die folgenden Berechtigungen:
 <br>
    &nbsp;&nbsp;&nbsp;  a. Berechtigungen eines Mitarbeiters (USER) 
 <br>
@@ -183,10 +179,11 @@ Die Tabelledaten dienen sowohl für Präsentation als auch für Modifikation.
 <br>
 Die Daten in der Tabelle dienen nur für Präsentation und nicht für Änderung.
 <p>
-5. Die Tabelle <b><ins>"employee_powers"</ins></b> ist eine Tabelle eines Mitarbeiters und seiner Befugnisse. Die Befugnissdaten werden aus der Tabelle "powers" entnommen. Dementsprechend sind die Tabellen "employee" und "powers" mit einer N-zu-N-Beziehung durch die Tabelle "employee_powers" verbunden. Ein Mitarbeiter kann mehrere Befugnisse haben. Die Daten der Tabelle "employee_powers" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Bei der Registrierung eines neuen Mitarbeiters im System werden diesem Mitarbeiter standardmäßig nur die Rechte eines Mitarbeiters (USER) zugewiesen. Die Daten in der Tabelle „employee_powers“ dienen nur für Präsentation und nicht für Änderung. Gleichzeitig dürfen einige Mitarbeiter ausnahmsweise Administratorrechte haben. Dazu muss der Datenbank Administrator einen entsprechenden Eintrag in die Tabelle "employee_powers" einfügen.
+4. Die Tabelle <b><ins>"employee_powers"</ins></b> ist eine Tabelle eines Mitarbeiters und seiner Befugnisse. Die Befugnissdaten werden aus der Tabelle "powers" entnommen. Dementsprechend sind die Tabellen "employee" und "powers" mit einer N-zu-N-Beziehung durch die Tabelle "employee_powers" verbunden. Ein Mitarbeiter kann mehrere Befugnisse haben.
+Bei der Registrierung eines neuen Mitarbeiters im System werden diesem Mitarbeiter standardmäßig nur die Rechte eines Mitarbeiters (USER) zugewiesen. Die Daten in der Tabelle „employee_powers“ dienen nur für Präsentation und nicht für Änderung. Gleichzeitig dürfen einige Mitarbeiter ausnahmsweise Administratorrechte haben. Dazu muss der Datenbank Administrator einen entsprechenden Eintrag in die Tabelle "employee_powers" einfügen.
 <p>
-6. Tabelle <b><ins>"category"</ins></b> ist eine Tabelle, die Aufgabenkategorien enthält. Die Standarddaten der Tabelle "category" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten der Tabelle werden hauptsächlich nur für Präsentation verwendet. Dies bedeutet natürlich nicht, dass keine neue Datensätze in die Tabelle "category" hinzugefügt werden können. Man muss aber dabei auf statistische Daten achten (sie werden anhand eines SQL Triggers gesteuert), dass sie nicht geändert werden. In diesem Fall gibt es einige Begrenzungen (z. B. "insertable = false" und "updatable = false" Parameter)
+5. Tabelle <b><ins>"category"</ins></b> ist eine Tabelle, die Aufgabenkategorien enthält. 
+Die Daten der Tabelle werden hauptsächlich nur für Präsentation verwendet. 
+Dies bedeutet natürlich nicht, dass keine neuen Datensätze in die Tabelle "category" hinzugefügt werden können.
 <p>
-7. Tabelle <b><ins>"priority"</ins></b> ist eine Tabelle, die Aufgabenprioritäten enthält. Die Standarddaten der Tabelle "priority" werden anhand eines SQL Triggers gefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten in der Tabelle können später ergänzt und geändert werden.
-<p>
-8. Tabelle <b><ins>"task"</ins></b> ist eine Tabelle, die Aufgaben eines Mitarbeiters enthält. Aufgaben haben Beschreibung, Kategorien und Prioritäten. Eine Aufgabe ist zu einem Mitarbeiter zugeordnet. Die Daten der Tabelle "task" werden anhand eines SQL Triggers ausgefüllt, wenn ein neuer Mitarbeiter im System registriert wird. Die Daten (außer Statistik) der Tabelle können später ergänzt und geändert werden.
+6. Tabelle <b><ins>"task"</ins></b> ist eine Tabelle, die Aufgaben eines Mitarbeiters enthält. Aufgaben haben Beschreibung, Kategorien und Prioritäten. Eine Aufgabe ist zu einem Mitarbeiter zugeordnet. Die Daten der Tabelle können später ergänzt und geändert werden.

@@ -51,12 +51,6 @@ public class Employee extends BaseEntity {
 
     @OneToMany(mappedBy = "employeesToCategory",fetch = FetchType.LAZY)
     private List<Category> categories;
-
-    @OneToMany(mappedBy = "employeesToPriority",fetch = FetchType.LAZY)
-    private List<Priority> priorities;
-
-    @OneToOne(mappedBy = "employeeToStat",fetch = FetchType.LAZY, optional = false)
-    private Stat stat;
 */
 
     @EqualsAndHashCode.Exclude

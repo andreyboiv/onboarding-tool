@@ -5,8 +5,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient} from "@angular/c
 import {RequestInterceptor} from "./auth/interceptor/request-interceptor.service";
 import {TASK_URL_TOKEN} from "./business/services/TaskService";
 import {CATEGORY_URL_TOKEN} from "./business/services/CategoryService";
-import {PRIORITY_URL_TOKEN} from "./business/services/PriorityService";
-import {STAT_URL_TOKEN} from "./business/services/StatService";
 import {environment} from "../environments/environments";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -33,18 +31,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: CATEGORY_URL_TOKEN,
       useValue: environment.backendURL + '/category'
-    },
-
-
-    {
-      provide: PRIORITY_URL_TOKEN,
-      useValue: environment.backendURL + '/priority'
-    },
-
-
-    {
-      provide: STAT_URL_TOKEN,
-      useValue: environment.backendURL + '/stat'
     }, provideAnimationsAsync()
   ]
 };

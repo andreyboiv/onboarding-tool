@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
     const tmpUser = new Employee();
     tmpUser.login = this.getLogin()?.value;
     tmpUser.password = this.getPassword()?.value;
+
     this.authService.login(tmpUser).subscribe({
         next: (responseMessage) => {
           this.error = '';

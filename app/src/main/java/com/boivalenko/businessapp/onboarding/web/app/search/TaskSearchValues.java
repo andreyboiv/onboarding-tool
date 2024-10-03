@@ -15,7 +15,6 @@ public class TaskSearchValues {
     private String title;
     private Integer completed;
     private Long categoryId;
-    private Long priorityId;
     private String email;
 
     // Für Intervall

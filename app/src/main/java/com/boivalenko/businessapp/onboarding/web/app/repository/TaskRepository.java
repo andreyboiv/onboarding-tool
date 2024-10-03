@@ -28,7 +28,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("SELECT t FROM Task t where " +
             "(:title is null or :title='' or lower(t.title) like lower(concat('%', :title,'%'))) and " +
             "(:completed is null or t.completed=:completed) and " +
-            "(:priorityId is null or t.priority.id=:priorityId) and " +
             "(:categoryId is null or t.category.id=:categoryId) and " +
             "(cast(:dateFrom as date) is null or t.taskDate>=:dateFrom) and " +
             "(cast(:dateTo as date) is null or t.taskDate<=:dateTo) and " +
@@ -37,7 +36,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Page<Task> findAllByParams(
             @Param("title") String title,
                             @Param("completed") Boolean completed,
-                            @Param("priorityId") Long priorityId,
                             @Param("categoryId") Long categoryId,
                             @Param("email") String email,
                             @Param("dateFrom") Date dateFrom,

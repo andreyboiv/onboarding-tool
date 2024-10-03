@@ -2,6 +2,7 @@ package com.boivalenko.businessapp.onboarding.web.app.service;
 
 import com.boivalenko.businessapp.onboarding.web.app.entity.Category;
 import com.boivalenko.businessapp.onboarding.web.app.entity.Task;
+import com.boivalenko.businessapp.onboarding.web.app.repository.CategoryRepository;
 import com.boivalenko.businessapp.onboarding.web.app.repository.TaskRepository;
 import com.boivalenko.businessapp.onboarding.web.app.search.TaskSearchValues;
 import com.boivalenko.businessapp.onboarding.web.base.IBaseService;
@@ -38,6 +39,7 @@ public class TaskService implements IBaseService<Task> {
 
 
     private final TaskRepository taskRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public ResponseEntity save(Task task) {
@@ -72,6 +74,19 @@ public class TaskService implements IBaseService<Task> {
         if (!this.taskRepository.existsById(task.getId())) {
             return new ResponseEntity(String.format(ID_NICHT_GEFUNDEN, task.getId()),
                     HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (task.getCategory() != null) {
+            Category category = task.getCategory();
+            category.setUncompletedCount(task.getCompleted() ? category.getUncompletedCount() - 1 : category.getUncompletedCount() + 1);
+            this.categoryRepository.save(category);
+        } else {
+            boolean taskCompleted = task.getCompleted();
+            task = this.taskRepository.findById(task.getId()).get();
+            task.setCompleted(taskCompleted);
+            Category category = task.getCategory();
+            category.setUncompletedCount(taskCompleted ? category.getUncompletedCount() - 1 : category.getUncompletedCount() + 1);
+            this.categoryRepository.save(category);
         }
 
         return new ResponseEntity(this.taskRepository.save(task), HttpStatus.OK);
@@ -180,7 +195,6 @@ public class TaskService implements IBaseService<Task> {
 
         String title = taskSearchValues.getTitle() != null && !taskSearchValues.getTitle().equals("") ? taskSearchValues.getTitle() : null;
         Boolean completed = taskSearchValues.getCompleted() != null && !taskSearchValues.getCompleted().equals("") && taskSearchValues.getCompleted() == 1;
-        Long priorityId = taskSearchValues.getPriorityId() != null && !taskSearchValues.getPriorityId().equals("") ? taskSearchValues.getPriorityId() : null;
         Long categoryId = taskSearchValues.getCategoryId() != null && !taskSearchValues.getCategoryId().equals("") ? taskSearchValues.getCategoryId() : null;
 
         //Sort Column darf nicht NULL sein,
@@ -249,7 +263,6 @@ public class TaskService implements IBaseService<Task> {
         // zurückgegebenen Elemente die Gesamtzahl der Seiten, Seitenzahl usw. enthält:
         Page<Task> result = this.taskRepository.findAllByParams(title,
                 completed,
-                priorityId,
                 categoryId,
                 email,
                 dateFrom,

@@ -119,6 +119,6 @@ export class RegisterComponent implements OnInit {
   }
 
   einloggen() {
-    this.router.navigate(['main'], {skipLocationChange: true})
+    this.router.navigate(['index'], {skipLocationChange: true})
   }
 }

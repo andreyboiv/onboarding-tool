@@ -135,6 +135,10 @@ export class MainComponent implements OnInit {
   }
 
   updateTask(task: Task) {
+    if (this.selectedCategory) {
+      task.category = this.selectedCategory;
+    }
+
     this.taskService.update(task).subscribe(result => {
       if (this.selectedCategory) {
         this.updateCategoryStatForKnownCategory(this.selectedCategory);
