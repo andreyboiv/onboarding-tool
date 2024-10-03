@@ -108,6 +108,7 @@ public class EmployeeService {
         Activity activity = new Activity();
         activity.setEmployeeToActivity(employee);
         activity.setUuid(UUID.randomUUID().toString());
+        activity.setActivated(false);
         this.activityRepository.save(activity);
 
         //Beim Einfügen eines neuen Employee wird ihm eine neue Ermächtigung - "USER" zugewiessen
