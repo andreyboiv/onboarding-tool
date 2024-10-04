@@ -17,7 +17,7 @@ Die credentials eines Employees
  */
 
 @Entity
-@Table(name = "employee", schema = "onboarding", catalog = "postgres")
+@Table(name = "employee", schema = "public", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor

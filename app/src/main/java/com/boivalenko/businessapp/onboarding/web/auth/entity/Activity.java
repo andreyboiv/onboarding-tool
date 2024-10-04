@@ -16,7 +16,7 @@ Aktionen nach Bedarf)
 */
 
 @Entity
-@Table(name = "activity", schema = "onboarding", catalog = "postgres")
+@Table(name = "activity", schema = "public", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor

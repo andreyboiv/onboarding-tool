@@ -15,7 +15,7 @@ Kategorie von Tasks eines Employees
  */
 
 @Entity
-@Table(name = "category", schema = "onboarding", catalog = "postgres")
+@Table(name = "category", schema = "public", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor

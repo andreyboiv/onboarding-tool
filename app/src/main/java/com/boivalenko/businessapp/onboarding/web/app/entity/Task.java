@@ -18,7 +18,7 @@ mit denen alle andere Klassen verbunden sind
  */
 
 @Entity
-@Table(name = "task", schema = "onboarding", catalog = "postgres")
+@Table(name = "task", schema = "public", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor

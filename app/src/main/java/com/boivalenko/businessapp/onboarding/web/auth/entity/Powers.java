@@ -14,7 +14,7 @@ Alle Rechte, die zu einem EmployeeVm zugewiesen werden können
 */
 
 @Entity
-@Table(name = "powers", schema = "onboarding", catalog = "postgres")
+@Table(name = "powers", schema = "public", catalog = "postgres")
 @Getter
 @Setter
 @AllArgsConstructor
