@@ -14,7 +14,7 @@
     <name>onboarding</name>
     <description>onboarding</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
 

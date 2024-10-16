@@ -161,7 +161,8 @@ $RECYCLE.BIN/
 *.lnk
 
 ### IntelliJ IDEA ###
-.idea
+# IDEs and editors
+.idea/*
 *.iws
 *.iml
 *.ipr

@@ -28,6 +28,18 @@ class CategoryRepositoryTest {
     void initUseCase() {
         Employee employee = new Employee(LOGIN_MUSTER_REPOSITORY_TEST, "passwordMuster", "andrey@muster.de", null, null);
         this.employeeRepository.save(employee);
+        this.categoryErstellen("Einarbeitung", employee);
+        this.categoryErstellen("Teammeetings", employee);
+        this.categoryErstellen("Haupttasks", employee);
+    }
+
+    private Category categoryErstellen(String title, Employee employee) {
+        Category category = new Category();
+        category.setTitle(title);
+        category.setCompletedCount(0L);
+        category.setEmployeesToCategory(employee);
+        this.categoryRepository.save(category);
+        return category;
     }
 
     // findByEmployeesToCategoryEmailOrderByTitleAsc

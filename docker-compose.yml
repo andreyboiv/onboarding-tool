@@ -1,0 +1,48 @@
+services:
+  db:
+    container_name: db
+    image: postgres:16.4-alpine3.20
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - '5555:5432'
+    networks:
+      - network-1
+ #   volumes:
+ #     - type: bind
+ #       source: C:\Users\Andrey.Boivalenko\IdeaProjects\pet\onboarding\tmp
+ #       target: /var/lib/postgresql/data
+  onboarding_backend:
+    container_name: onboarding_backend
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    image: onboarding_backend
+    networks:
+      - network-1
+    ports:
+      - "8083:8083"
+    depends_on:
+      db:
+        condition: service_started
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+  onboarding_frontend:
+    container_name: onboarding_frontend
+    build:
+      context: ui/
+      dockerfile: Dockerfile
+    image: angular-docker
+    networks:
+      - network-1
+    ports:
+      - "4200:80"
+    depends_on:
+      onboarding_backend:
+        condition: service_started
+networks:
+  network-1:

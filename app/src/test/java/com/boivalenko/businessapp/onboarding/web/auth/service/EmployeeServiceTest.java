@@ -1,5 +1,8 @@
 package com.boivalenko.businessapp.onboarding.web.auth.service;
 
+import com.boivalenko.businessapp.onboarding.web.app.repository.CategoryRepository;
+import com.boivalenko.businessapp.onboarding.web.app.repository.PowerRepository;
+import com.boivalenko.businessapp.onboarding.web.app.repository.TaskRepository;
 import com.boivalenko.businessapp.onboarding.web.auth.entity.Activity;
 import com.boivalenko.businessapp.onboarding.web.auth.entity.Employee;
 import com.boivalenko.businessapp.onboarding.web.auth.repository.ActivityRepository;
@@ -43,6 +46,15 @@ class EmployeeServiceTest {
 
     @Mock
     private ActivityRepository activityRepository;
+
+    @Mock
+    private PowerRepository powerRepository;
+
+    @Mock
+    private CategoryRepository categoryRepository;
+
+    @Mock
+    private TaskRepository taskRepository;
 
     @InjectMocks
     private EmployeeService employeeService;

@@ -31,6 +31,16 @@ Instructions how to install **Docker** on [Ubuntu](https://docs.docker.com/insta
 
 An entire application can be ran with a single command in a terminal:
 
+onboarding/app/
+```
+$ mvn package -Dmaven.test.skip
+```
+
+onboarding/ui/
+```
+$ ng build
+```
+onboarding/
 ```
 $ docker-compose up -d
 ```
