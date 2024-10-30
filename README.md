@@ -2,6 +2,11 @@
 
 It's about onboarding new employees at a company.
 
+
+### <a href="https://onboarding.boivalenko.de" target="_blank"> DEMO of the project (only Frontend)</a>
+
+---
+
 A new employee has a certain number of onboarding tasks to complete. 
 When all of these tasks have been completed by the employee, 
 the workflow should end. The employee is logged out or deactivated 
@@ -29,17 +34,20 @@ Instructions how to install **Docker** on [Ubuntu](https://docs.docker.com/insta
 
 ### How to run it?
 
-An entire application can be ran with a single command in a terminal:
+An entire application can be run with a single command in a terminal:
 
 onboarding/app/
 ```
-$ mvn package -Dmaven.test.skip
+$ rm target
+$ mvn clean package --% -Dmaven.test.skip=true
 ```
 
 onboarding/ui/
 ```
+$ rm dist
 $ ng build
 ```
+
 onboarding/
 ```
 $ docker-compose up -d
