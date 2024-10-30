@@ -2,11 +2,10 @@
 
 It's about onboarding new employees at a company.
 
-
-### <a href="https://onboarding.boivalenko.de" target="_blank"> DEMO of the project (only Frontend)</a>
+---
+### DEMO of the project (only Frontend): https://onboarding.boivalenko.de
 
 ---
-
 A new employee has a certain number of onboarding tasks to complete. 
 When all of these tasks have been completed by the employee, 
 the workflow should end. The employee is logged out or deactivated 
