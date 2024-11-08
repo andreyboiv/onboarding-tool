@@ -3,7 +3,8 @@
 It's about onboarding new employees at a company.
 
 ---
-### DEMO of the project (only Frontend): https://onboarding.boivalenko.de
+### DEMO:
+https://onboarding.boivalenko.de
 
 ---
 A new employee has a certain number of onboarding tasks to complete. 
