@@ -62,7 +62,7 @@ export class SendEmailResetPassword implements OnInit {
   }
 
   toIndex() {
-    this.router.navigate(['index'], {skipLocationChange: true})
+    this.router.navigate([''], {skipLocationChange: true})
   }
 
   register() {

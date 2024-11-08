@@ -4,20 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="537bc1ad-23a3-47eb-a1dd-c3c3181833b0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/application-docker.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/Dockerfile" afterDir="false" />
+    <list default="true" id="537bc1ad-23a3-47eb-a1dd-c3c3181833b0" name="Changes" comment="edit README.md">
+      <change afterPath="$PROJECT_DIR$/docker-compose_.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/traefik/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/nginx/default.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/application-local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/application-local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/boivalenko/businessapp/onboarding/web/app/repository/CategoryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/boivalenko/businessapp/onboarding/web/app/repository/CategoryRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/boivalenko/businessapp/onboarding/web/auth/service/EmployeeServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/boivalenko/businessapp/onboarding/web/auth/service/EmployeeServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ui/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/src/assets/ssl/certificate.config" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/assets/ssl/certificate.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/boivalenko/businessapp/onboarding/web/auth/config/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/boivalenko/businessapp/onboarding/web/auth/config/SpringConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/application-docker.properties" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/application-docker.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/ui/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/src/app/auth/info-page/info-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/app/auth/info-page/info-page.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/src/app/auth/register/register.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/app/auth/register/register.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/src/app/auth/reset-password/send-email/send-email-reset-password.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/app/auth/reset-password/send-email/send-email-reset-password.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/src/environments/environments.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/environments/environments.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +43,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 2
@@ -53,7 +56,6 @@
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="openDirectoriesWithSingleClick" value="true" />
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
@@ -67,9 +69,11 @@
     "Docker.docker-compose.yml.onboarding_backend: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Andrey.Boivalenko/IdeaProjects/pet/onboarding/onboarding",
+    "last_opened_file_path": "C:/Users/andre/Documents/IDEADaten/projekts/pet/spring-boot-onboarding-tool",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -78,7 +82,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
-    "ts.external.directory.path": "C:\\Users\\Andrey.Boivalenko\\IdeaProjects\\pet\\onboarding\\onboarding\\ui\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2020.3\\plugins\\JavaScriptLanguage\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -187,10 +191,36 @@
       <workItem from="1728908579916" duration="8712000" />
       <workItem from="1728991465237" duration="11948000" />
       <workItem from="1729085293629" duration="9681000" />
+      <workItem from="1730899524660" duration="2214000" />
+      <workItem from="1730988354947" duration="1220000" />
+      <workItem from="1731058378441" duration="7502000" />
     </task>
+    <task id="LOCAL-00001" summary="edit README.md">
+      <created>1731085903123</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731085903123</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="edit README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit README.md" />
   </component>
 </project>

@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
 
     this.registerForm = new FormGroup({
       "login": new FormControl("", [Validators.required, Validators.minLength(6), Validators.pattern('[a-zA-Z ]*')]),
-      "email": new FormControl("", [Validators.required, 	Validators.pattern(PatternConstants.EMAIL_PATTERN)]),
+      "email": new FormControl("", [Validators.required, Validators.pattern(PatternConstants.EMAIL_PATTERN)]),
       "password": new FormControl("", [Validators.required, Validators.minLength(8)]),
       "confirm_password": new FormControl("", [Validators.required, Validators.minLength(8)]),
       "confirm_captcha": new FormControl("", [Validators.required]),
@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
 
   submitRegisterForm() {
 
-    if (this.registerForm.invalid || (this.captchaText !== this.getConfirmCaptcha()?.value)) {
+    if (this.registerForm.invalid) {
       return;
     }
 
@@ -70,7 +70,7 @@ export class RegisterComponent implements OnInit {
         next: (responseMessage) => {
           this.error = '',
             this.router.navigate(['/info-page', {
-                msg: responseMessage}], {skipLocationChange: true})
+              msg: responseMessage}], {skipLocationChange: true})
         },
         error: (err) => {
           this.responseMessage = '';
@@ -109,7 +109,7 @@ export class RegisterComponent implements OnInit {
 
   generateCaptcha(): void {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZadcdefghijklmnopqrstuvwxyz0123456789';
-    const captchaLength = 14;
+    const captchaLength = 4;
     let captcha = '';
     for (let i = 0; i < captchaLength; i++) {
       const index = Math.floor(Math.random() * chars.length);
@@ -119,6 +119,6 @@ export class RegisterComponent implements OnInit {
   }
 
   einloggen() {
-    this.router.navigate(['index'], {skipLocationChange: true})
+    this.router.navigate([''], {skipLocationChange: true})
   }
 }

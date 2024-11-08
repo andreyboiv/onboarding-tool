@@ -12,8 +12,8 @@ services:
       - network
   #   volumes:
   #     - type: bind
-  #       source: /db_data
-  #       target: /var/lib/postgresql/data
+  #      source: data
+  #      target: /var/lib/postgresql/data
   onboarding_backend:
     container_name: onboarding_backend
     build:
@@ -22,8 +22,12 @@ services:
     image: onboarding_backend
     networks:
       - network
-    ports:
-      - "8083:8083"
+      - traefik_web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_web"
+      - "traefik.http.routers.onboarding_backend.rule=Host(`testboivalenko.de`) && PathPrefix(`/api`)"
+      - "traefik.http.services.onboarding_backend.loadbalancer.server.port=8083"
     depends_on:
       db:
         condition: service_started
@@ -37,14 +41,18 @@ services:
       context: ui/
       dockerfile: Dockerfile
     image: onboarding_frontend
-    volumes:
-      - ./ui/src/assets/ssl:/usr/share/nginx/html
     networks:
       - network
-    ports:
-      - "4200:80"
+      - traefik_web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_web"
+      - "traefik.http.routers.onboarding_frontend.rule=Host(`testboivalenko.de`)"
+      - "traefik.http.services.onboarding_frontend.loadbalancer.server.port=80"
     depends_on:
       onboarding_backend:
         condition: service_started
 networks:
   network:
+  traefik_web:
+    external: true

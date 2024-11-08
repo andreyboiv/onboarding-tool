@@ -99,8 +99,8 @@ public class SpringConfig {
                 //Browser Standard Authorization Form ausschalten
                 .httpBasic(httpBasic -> httpBasic.disable())
 
-                //Wird unbedingt HTTPS verwendet bei allen Requests
-                .requiresChannel(r -> r.anyRequest().requiresSecure())
+                //Wird unbedingt HTTPS verwendet bei allen Requests. Nur local verwenden. Auf VPS kann traefik alles bzgl. HTTPS machen
+                //.requiresChannel(r -> r.anyRequest().requiresSecure())
 
                 //Filter in FilterChain hinzugefügt. Der Filter wird VOR dem SessionManagementFilter ausgeführt
                 .addFilterBefore(this.authTokenFilter, SessionManagementFilter.class)

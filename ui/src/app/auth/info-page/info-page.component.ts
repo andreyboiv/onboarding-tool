@@ -25,7 +25,7 @@ export class InfoPageComponent implements OnInit {
     window.close();
 
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['index'])
+      this.router.createUrlTree([''])
     );
 
     window.open(url, '_blank');
